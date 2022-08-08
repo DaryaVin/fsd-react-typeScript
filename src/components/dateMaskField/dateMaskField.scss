@@ -1,0 +1,26 @@
+.dateMaskField{
+  display: inline-flex;
+  flex-wrap: nowrap;
+} 
+
+.dateMaskField__dateElement {
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
+  
+}
+
+.dateMaskField__wrap {
+  position: relative;
+}
+.dateMaskField__wrap .dateMaskField__dateElement {
+  position: absolute;
+  width: 100%;
+  left: 0;
+}
+.dateMaskField__lengthDefinitionElement {
+  padding: 0;
+  min-width: 1rem;
+}

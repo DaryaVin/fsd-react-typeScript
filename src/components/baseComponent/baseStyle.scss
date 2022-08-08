@@ -1,0 +1,64 @@
+@import "./baseVariables&Mixins.scss";
+
+*, *:before, *:after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+body {
+  @include baseText;
+  color: $color1Opacity75;
+}
+h1 {
+  @include h1;
+  color: $color1;
+
+}
+h2 {
+  @include h2;
+  color: $color1;
+}
+h3 {
+  @include h3;
+  color: $color1;
+}
+a {
+  text-transform: inherit;
+  text-decoration: inherit;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+}
+.label {
+  @include h3;
+  color: $color1;
+  &.label_for_field {
+    padding-bottom: 5px;
+  }
+}
+
+// --------------------- Position and size styles ---------------------- //
+.startContener {
+  display: flex;
+  justify-content: start;
+}
+.spaceBetweenContener {
+  display: flex;
+  justify-content: space-between;
+}
+.columnsContener{
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+.block_size_s {
+  width: $width_size_s;
+}
+.block_size_m {
+  width: $width_size_m;
+}
+.block_size_l {
+  width: $width_size_l;
+}

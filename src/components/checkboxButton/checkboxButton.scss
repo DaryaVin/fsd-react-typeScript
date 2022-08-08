@@ -1,0 +1,79 @@
+@import '../baseComponent/baseVariables&Mixins.scss';
+
+.checkboxButton{
+  @include baseText;
+  line-height: 18px;
+  color: $color1Opacity50;
+  display: inline-flex;
+  align-items: top;
+  justify-content: start;
+  max-width: $width;
+  * {
+    cursor: pointer;
+  }
+  &.checkboxButton_theme_withExplanation {
+    .checkboxButton__label {
+      font-weight: bold;
+      color: $color1Opacity75;
+    }
+  }
+}
+.checkboxButton__field {
+  position: relative;
+  .checkboxButton__button:checked ~ .checkboxButton__checkmark {
+    border-color: $color2;
+    .checkboxButton__innerPoint {
+      display: inline-block;
+    }
+  }
+  .checkboxButton__button:focus ~ .checkboxButton__checkmark {
+    outline: 1px solid $color1;
+  }
+}
+.checkboxButton__button {
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+}
+.checkboxButton__checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+     z-index: -1;
+    border: 1px solid $color1Opacity25;
+    border-radius: 4px;
+  }
+  .checkboxButton__innerPoint {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: center;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 6px;
+    height: 8px;
+    outline: none;
+    @include linearGradient(background, $color2, $color2Gradiend);
+    &::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: 5px;
+      height: 7px;
+      background: $colorBcg;
+    }
+  }
+.checkboxButton__label {
+  padding-left: 10px;
+  text-align: left;
+}
+.checkboxButton__explanation {
+    color: $color1Opacity50;
+    font-size: 12px;
+    line-height: 14px;
+    padding-top: 5px;
+    font-weight: normal;
+  }

@@ -1,0 +1,23 @@
+@import '../baseComponent/baseVariables&Mixins.scss';
+
+.bulletList{
+  @include baseText;
+  color: $color1Opacity75;
+  list-style: none;
+}
+.bulletList__item {
+  padding-left: 20px;
+  position: relative;
+  width: 240px;
+  margin-bottom: 10px;
+  &::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: $color1Opacity25;
+    position: absolute;
+    top: 7px;
+    left: 0px;
+  }
+}

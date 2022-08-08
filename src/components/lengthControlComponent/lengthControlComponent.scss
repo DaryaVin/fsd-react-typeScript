@@ -1,0 +1,42 @@
+@import "../baseComponent/baseVariables&Mixins.scss";
+
+.lengthControlComponent {
+  position: relative;
+  display: inline-block;
+  min-width: 0.5em;
+  min-height: 1em;
+  // border: 1px solid red;
+  // line-height: inherit;
+  // padding: 10px;
+  // box-sizing: content-box;
+}
+.lengthControlComponent__mainElement {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  // box-sizing: content-box;
+  // position: absolute;
+  // width: 100%;
+  // min-width: 0.5em;
+  // min-height: 0.5em;
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  outline: none;
+  color:inherit;
+}
+.lengthControlComponent__lengthDefinitionElement {
+  padding: 0;
+  position: relative;
+  // display: inline-block;
+  // min-width: 0.5em;
+  // min-height: 0.5rem;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: transparent;
+  line-height: inherit;
+}

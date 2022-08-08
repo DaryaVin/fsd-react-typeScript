@@ -1,0 +1,30 @@
+@import "../baseComponent/baseVariables&Mixins.scss";
+
+.rateButton {
+display: inline-flex;
+flex-wrap: nowrap;
+justify-content: center;
+align-items: center;
+list-style: none;
+}
+.rateButton__item {
+  position: relative;
+}
+.rateButton__radioButton {
+  display: none;
+}
+.rateButton__icon {
+position: absolute;
+top: 0;
+bottom: 0;
+right: 0;
+left: 0;
+}
+.rateButton__svgGradient {
+  stop:first-child {
+    stop-color: $color2;
+  }
+  stop:last-child {
+    stop-color: $color2Gradiend;
+}
+}

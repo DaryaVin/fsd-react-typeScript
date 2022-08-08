@@ -1,0 +1,35 @@
+@import "../baseComponent/baseVariables&Mixins.scss";
+
+.rateBox {
+display: inline-flex;
+flex-wrap: nowrap;
+justify-content: center;
+align-items: center;
+list-style: none;
+}
+.rateBox__item {
+  position: relative;
+}
+.rateBox__wrap {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+.rateBox__icon {
+position: absolute;
+top: 0;
+bottom: 0;
+right: 0;
+left: 0;
+}
+.rateBox__svgGradient {
+  stop:first-child {
+    stop-color: $color2;
+  }
+  stop:last-child {
+    stop-color: $color2Gradiend;
+}
+}

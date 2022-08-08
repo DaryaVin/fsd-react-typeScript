@@ -1,0 +1,112 @@
+// --------------------- Variables --------------------- //
+$color1: #1F2041;
+$color1Opacity75: rgba(31, 32, 65, 0.75);
+$color1Opacity50: rgba(31, 32, 65, 0.5);
+$color1Opacity25: rgba(31, 32, 65, 0.25);
+$color1Opacity05: rgba(31, 32, 65, 0.05);
+$color2: #BC9CFF;
+$color2Gradiend: #8BA4F9;
+$color3: #6FCF97;
+$color3Gradiend: #66D2EA;
+$colorBcg: #FFFFFF;
+
+$width: 320px;
+$width_size_s: 150px;
+$width_size_m: 266px;
+$width_size_l: 320px;
+
+// --------------------- font face ---------------------- //
+@font-face {
+  font-family: Quicksand;
+  src: url("../../font/Quicksand/Quicksand-VariableFont_wght.ttf");
+}
+@font-face {
+  font-family: Quicksand;
+  src: url("../../font/Quicksand/static/Quicksand-Bold.ttf");
+  font-weight: bold;
+}
+@font-face {
+  font-family: Montserrat;
+  src: url("../../font/Montserrat/Montserrat-Regular.ttf");
+}
+@font-face {
+  font-family: Montserrat;
+  src: url("../../font/Montserrat/Montserrat-Bold.ttf");
+  font-weight: bold;
+}
+// --------------------- Color mixins ---------------------- //
+@mixin linearGradient($property, $color1, $color2) {
+  #{$property}: linear-gradient(180deg, $color1 0%, $color2 100%);
+}
+
+@mixin linearGradientForSVG($color1, $color2, $offset1, $offset2) {
+    stop:first-child {
+      offset: $offset1;
+      stop-color: $color1;
+    }
+    stop:last-child {
+      offset: $offset2;
+      stop-color: $color2;
+  }
+}
+
+// --------------------- Text mixins ---------------------- //
+@mixin baseText {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 24px;
+}
+@mixin h1 {
+  font-family: 'Quicksand', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 30px;
+}
+@mixin h2 {
+  font-family: 'Quicksand', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 19px;
+  line-height: 24px;
+}
+@mixin h3 {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 15px;
+  text-transform: uppercase;
+}
+
+// --------------------- Base mixins ---------------------- //
+@mixin field {
+  box-sizing: border-box;
+  border: 1px solid $color1Opacity25;
+  border-radius: 4px;
+  padding: 12px 15px;
+  width: $width;
+  outline: none;
+  @include baseText;
+  line-height: 18px;
+  color: $color1Opacity75;
+  * {
+    color: inherit;
+  }
+  &.empty,
+  .empty {
+    color: $color1Opacity25;
+    * {
+      color: inherit;
+    }
+  }
+  &::placeholder,
+  *::placeholder {
+    color: $color1Opacity25;
+  }
+  &:hover, &:focus, &:focus-within {
+    border-color: $color1Opacity50;
+  }
+}

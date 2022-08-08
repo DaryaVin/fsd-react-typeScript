@@ -1,0 +1,35 @@
+@import "../baseComponent/baseVariables&Mixins.scss";
+
+.numberPicker {
+  display: flex;
+  width: 92px;
+}
+.numberPicker__button {
+  // box-sizing: border-box;
+  min-width: 30px;
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  border: 1px solid $color1Opacity25;
+  color: $color1Opacity50;
+  border-radius: 50%;
+  &:active:not(:disabled) {
+    transform: scale(0.95, 0.95);
+  }
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+.numberPicker__number {
+  margin: 6px 0px 9px 0px;
+  height: 15px;
+  width: 32px;
+  text-align: center;
+  border: none;
+  outline: none;
+  appearance: textfield;
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+}

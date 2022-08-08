@@ -1,0 +1,20 @@
+@import "../baseComponent/baseVariables&Mixins.scss";
+
+.textField  {
+  display: inline-flex;
+  position: relative;
+  width: $width;
+  @include field;
+  & > *:first-child {
+    width: 100%;
+    border: none;
+    outline: none;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    flex-grow: 1;
+    color: inherit;
+    line-height: inherit;
+    font: inherit;
+  }
+}

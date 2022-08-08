@@ -1,0 +1,68 @@
+@import '../baseComponent/baseVariables&Mixins.scss';
+
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  @include h3;
+  outline-width: 0;
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+  padding: 0;
+  background: none;
+  border: none;
+  color: inherit;
+  &:focus {
+    outline-width: 1px;
+    outline-color: $color1;
+  }
+  &:disabled {
+    opacity: 0.5;
+  }
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+}
+.button_theme_textOnly {
+  background: none;
+  border: none;
+}
+.button_theme_withBorder {
+  $border: 2px;
+  box-sizing: border-box;
+  padding: 12px 18px 13px 18px;
+  color: $color2;
+  border: $border solid transparent;
+  border-radius: 22px;
+  background: transparent;
+  background-clip: padding-box;
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    border-radius: inherit;
+  }
+  &::before {
+    z-index: -2;
+    margin: -$border;
+    @include linearGradient(background, $color2, $color2Gradiend);
+  }
+  &::after {
+    z-index: -1;
+    background: $colorBcg;
+  }
+  &:disabled {
+    opacity: 1;
+    &::before {
+      opacity: 0.5;
+    }
+  }
+}
+.button_theme_fillBcg {
+  @include linearGradient(background, $color2, $color2Gradiend);
+  border-radius: 22px;
+  color: $colorBcg;
+  border: none;
+  padding: 14px 20px 15px 20px;
+}

@@ -3,7 +3,7 @@ import "./checkboxButton.scss";
 
 interface CheckboxButtonProps extends  React.InputHTMLAttributes<HTMLInputElement>{
   label: string,
-  children?: null,
+  // children?: null,
   explanation?: string,
   theme?: "withExplanation",
   type?: "checkbox",
@@ -21,6 +21,7 @@ export const CheckboxButton = ({label, explanation, theme, className, ...props}:
       </div>
       <div className={"checkboxButton__label"}>
         {label}
+        {props.children}
         {
           theme === "withExplanation" 
           && (<p className="checkboxButton__explanation">{explanation}</p>)

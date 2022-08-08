@@ -13,6 +13,7 @@ import { RateBox } from './components/rateBox/rateBox';
 import { Button } from './components/button/button';
 import { BulletList } from './components/bulletList/bulletList';
 import { CheckboxButton } from './components/checkboxButton/checkboxButton';
+import { RadioButton } from './components/radioButton/radioButton';
 
 
 
@@ -117,7 +118,13 @@ function App() {
         theme={'withExplanation'} 
         explanation="Ширина коридоров "
       />
-      
+      <RadioButton 
+        checked={isCheckedCheckboxButtonState} 
+        onClick={() => setIsCheckedCheckboxButtonState(!isCheckedCheckboxButtonState)}
+        // onKeyDown={(e) => {if (e.code === "Enter") setIsCheckedCheckboxButtonState(!isCheckedCheckboxButtonState)}}  
+        >
+            Широкий коридор
+      </RadioButton>
     </div>
 
 );

@@ -7,9 +7,6 @@
   display: inline-flex;
   justify-content: space-between;
   align-items: center;
-  &:not(:last-child) {
-    margin-right: 20px;
-  }
   * {
     cursor: pointer;
   }
@@ -29,7 +26,7 @@
     }
   }
   .radioButton__button:focus  ~ .radioButton__checkmark  {
-    outline: 1px solid $color1;
+    outline: auto;
   }
 }
 .radioButton__button {

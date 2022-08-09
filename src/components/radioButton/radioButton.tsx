@@ -8,7 +8,7 @@ interface RadioButtonProps extends  React.InputHTMLAttributes<HTMLInputElement>{
   type?: "radio",
   className?: string,
 }
-export const RadioButton = ({label, explanation, className, ...props}: RadioButtonProps) => {
+export const RadioButton = ({label, explanation, className, children, ...props}: RadioButtonProps) => {
   return (
     <>
     <label className={"radioButton" + (className ? " " + className : "")}>
@@ -20,7 +20,7 @@ export const RadioButton = ({label, explanation, className, ...props}: RadioButt
       </div>
       <div className={"radioButton__label"}>
         {label}
-        {props.children}
+        {children}
       </div>
     </label>
     </>

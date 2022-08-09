@@ -1,0 +1,70 @@
+@import '../baseComponent/baseVariables&Mixins.scss';
+
+.likeButton {
+  $border: 1px;
+  height: 20px;
+  min-width: 40px;
+  max-width: $width_size_s;
+  font: inherit;
+  line-height: 13px;
+  font-size: 10px;
+  box-sizing: border-box;
+  color: $color1Opacity25;
+  border: $border solid  $color1Opacity25;
+  border-radius: 10px;
+  background: transparent;
+  background-clip: padding-box;
+  display: inline-flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  &::before, &::after {
+    content: '';
+    display: none;
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    border-radius: inherit;
+  }
+  &::before {
+    z-index: -2;
+    margin: -$border;
+    @include linearGradient(background, $color2, $color2Gradiend);
+  }
+  &::after {
+    z-index: -1;
+    background: $colorBcg;
+  }
+  &.likeButton_checked {
+    border-color: transparent;
+    color: $color2;
+    &::before, &::after {
+      display: inline-block;
+    }
+  }
+  &:focus-within {
+    outline: auto;
+  }
+}
+
+.likeButton__button {
+  opacity: 0;
+  position: absolute;
+  right: 0; left: 0; top: 0; bottom: 0;
+  border-radius: 10px;
+}
+
+.likeButton__checkmark {
+  color: inherit;
+  height: 20px;
+  width: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.likeButton__innerPoint {
+  width: 10px;
+  height: 10px;
+}
+.likeButton__label {
+  padding-right: 5px;
+}

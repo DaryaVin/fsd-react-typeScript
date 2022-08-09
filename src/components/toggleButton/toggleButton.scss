@@ -1,0 +1,71 @@
+@import '../baseComponent/baseVariables&Mixins.scss';
+
+.toggleButton {
+  @include baseText;
+  color: $color1Opacity75;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: $width;
+  * {
+    cursor: pointer;
+  }
+}
+.toggleButton__field {
+  position: relative;
+  height: 20px;
+  .toggleButton__button:checked ~ .toggleButton__checkmark {
+    border-color: $color2;
+    &::before {
+      transform: translateX(20px);
+      @include linearGradient(background, $color2, $color2Gradiend);
+    }
+  }
+}
+.toggleButton__button {
+  width: 40px;
+  height: 20px;
+  border-radius: 50%;
+  opacity: 0;
+  outline: auto;
+  outline-style: red;
+  &:focus ~ .toggleButton__checkmark {
+    outline: auto;
+  }
+}
+
+
+.toggleButton__checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 40px;
+  // z-index: -1;
+  border: 1px solid $color1Opacity25;
+  border-radius: 10px;
+  transition: background 450ms ease;
+  // transition: 1s;
+  &::before {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    transform-origin: center;
+    margin: 3px;
+    width: 12px;
+    height: 12px;
+    outline: none;
+    @include linearGradient(background, $color1Opacity25, $color1Opacity25);
+    transition:
+      background 450ms ease,
+      transform 450ms ease;
+    // transition: 1s;
+  }
+}
+
+.toggleButton__label {
+  display: inline-block;
+  // max-width: 230px;
+  padding-left: 10px;
+  text-align: left;
+}

@@ -1,0 +1,31 @@
+@import "../baseComponent/baseVariables&Mixins.scss";
+
+.review {
+  width: 100%;
+  display: grid;
+  grid: 48px 1fr / auto 1fr;
+  gap: 10px 10px;
+}
+.review__photo {
+  @include linearGradient("background", $color2, $color2Gradiend);
+  color: $colorBcg;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 50%;
+  justify-self: center;
+}
+.review__info {
+  font: inherit;
+
+}
+.review__likeButton {
+  justify-self: center;
+
+}
+.review__content {
+
+}

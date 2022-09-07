@@ -1,0 +1,18 @@
+@import "../baseComponent/baseVariables&Mixins.scss";
+
+.card {
+  @include field;
+  padding: 40px 30px 30px 30px;
+  box-shadow: 0px 0px 25px $color1Opacity05;
+  border-color: $color1Opacity05;
+  box-sizing: content-box;
+  // width: $width + 60px;
+  & > *:not(:last-child) {
+    display: inline-block;
+    margin-bottom: 20px;
+    max-width: $width;
+  }
+  &:hover, &:focus, &:focus-within {
+    border-color: $color1Opacity25;
+  }
+}

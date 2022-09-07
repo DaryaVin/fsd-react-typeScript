@@ -5,6 +5,15 @@
   position: relative;
   width: $width;
   @include field;
+  &.textField_textField {
+    background-color: $color1Opacity05;
+    * {
+      background-color: transparent;
+    }
+    &:hover {
+      border-color: $color1Opacity25;
+    }
+  }
   & > *:first-child {
     width: 100%;
     border: none;

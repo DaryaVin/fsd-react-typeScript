@@ -2,7 +2,7 @@ import React, { Children, useEffect, useState } from "react";
 import "./carousel.scss";
 
 interface CarouselProps {
-  children: JSX.Element[],
+  children: JSX.Element | JSX.Element[],
   width: number,
   height: number,
   className?: string,

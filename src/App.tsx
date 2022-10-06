@@ -14,7 +14,59 @@ import { Button } from './components/button/button';
 import { BulletList } from './components/bulletList/bulletList';
 import { CheckboxButton } from './components/checkboxButton/checkboxButton';
 import { RadioButton } from './components/radioButton/radioButton';
+import { ToggleButton } from './components/toggleButton/toggleButton';
+import { LikeButton } from './components/likeButton/likeButton';
+import { Review } from './components/review/review';
+import { Card } from './components/card/card';
 
+interface DTOUser {
+  email: string,
+  password: string,
+  firstName: string,
+  lastName: string,
+  sex: "male" | "female",
+  dateBirthday: Date,
+  urlPhoto?: string,
+  subscription?: boolean,
+}
+
+
+class User {
+  // email: string;
+  // password: string;
+  firstName: string;
+  lastName: string;
+  sex: "male" | "female";
+  dateBirthday: Date;
+  urlPhoto?: string | null;
+  subscription: boolean;
+  protected _email: string = "";
+  protected _password: string = "";
+  get email(): string {
+    return this._email;
+  }
+  set email(value: string) {
+    //checking for email
+    this._email = value;
+  }
+  get password(): string {
+    return this._password;
+  }
+  set password(value: string) {
+    // checking for password
+    this._password = value;
+  }
+  constructor(data: DTOUser) {
+    this.email = data.email;
+    this.password = data.password;
+    this.firstName = data.firstName;
+    this.lastName = data.lastName;
+    this.sex = data.sex;
+    this.dateBirthday = data.dateBirthday;
+    data.urlPhoto? this.urlPhoto = data.urlPhoto : this.urlPhoto = null;
+    data.subscription ? this.subscription = data.subscription : this.subscription = false;
+  }
+}
 
 
 function App() {
@@ -25,6 +77,9 @@ function App() {
   let [currentPagePaginationState, setCurrentPagePaginationState] = useState<number>(1);
   let [raitingState, setRaitingState] = useState<1 | 2 | 3 | 4 | 5 | null>(null);
   let [isCheckedCheckboxButtonState, setIsCheckedCheckboxButtonState] = useState<boolean>(false);
+  let [isLikeState, setIsLikeState] = useState<boolean>(false);
+  let [numberLikeState, setNumberLikeState] = useState<number>(6465666);
+  let [dateState, setDateState] = useState<Date>(new Date(2022, 7, 12));
 
   const dropdownButtonBlock = [(
     <TextField className='block_size_s'>
@@ -91,17 +146,6 @@ function App() {
       <Pagination currentPage={currentPagePaginationState} totalCount={150} pageSize={12} onPageChange={setCurrentPagePaginationState}></Pagination>
       <Carousel width={200} height={200} >
           <div>item1</div>
-          <div>item2</div>
-          <div>item3</div>
-          <div>item1</div>
-          <div>item2</div>
-          <div>item3</div>
-          <div>
-            <img height={100} src="https://funart.pro/uploads/posts/2021-04/1617390513_58-p-oboi-ogromnoe-nebo-62.jpg" alt="небо"/>
-          </div>
-          <img src="https://sun9-36.userapi.com/s/v1/if2/gGvuTFxkHFeHNEGL-aMcPnCu6EGYDCCQ-BpDy0LQu1GqMHQgEk2caM5Ynzq-YTjxAKnw-cNIxZR4WZWwZ57kfdDG.jpg?size=453x604&quality=96&type=album" alt="небо"/>
-          <div>item1</div>
-          <div>item2</div>
           
       </Carousel>
       <RateButton state={raitingState} setState={setRaitingState}/>
@@ -112,19 +156,55 @@ function App() {
       </BulletList>
       <CheckboxButton 
         checked={isCheckedCheckboxButtonState} 
-        onClick={() => setIsCheckedCheckboxButtonState(!isCheckedCheckboxButtonState)}
+        onChange={() => setIsCheckedCheckboxButtonState(!isCheckedCheckboxButtonState)}
         // onKeyDown={(e) => {if (e.code === "Enter") setIsCheckedCheckboxButtonState(!isCheckedCheckboxButtonState)}}  
         label='Широкий коридор' 
         theme={'withExplanation'} 
         explanation="Ширина коридоров "
-      />
+      >
+
+        label='Широкий коридор' 
+      </CheckboxButton>
       <RadioButton 
         checked={isCheckedCheckboxButtonState} 
-        onClick={() => setIsCheckedCheckboxButtonState(!isCheckedCheckboxButtonState)}
+        onChange={() => setIsCheckedCheckboxButtonState(!isCheckedCheckboxButtonState)}
         // onKeyDown={(e) => {if (e.code === "Enter") setIsCheckedCheckboxButtonState(!isCheckedCheckboxButtonState)}}  
         >
             Широкий коридор
       </RadioButton>
+      <ToggleButton>
+        sjvgksjvksjvkj  kj kj kl v f f f fcv fgbfb
+      </ToggleButton>
+      <LikeButton 
+        checked={isLikeState} 
+        numberLikes={numberLikeState} 
+        onChange={(e => {setIsLikeState(!isLikeState); setNumberLikeState(numberLikeState+1)})}
+      />
+      <Review id="1" authorName='kjskddj kfjskljf' dateToCreating={dateState} content="jshsdhsdjf" listWhoLikedThisReview={["1", "2"]}></Review>
+      <Card>
+        <label>
+          lsdfksdkf
+          <TextField disabled>
+            <input type="text" placeholder='sjss'/>
+          </TextField>
+        </label>
+        <label>
+          lsdfksdkf
+          <TextField>
+            <>
+              jfkjdskjsdgjdsgjdskjgf
+            </>
+          </TextField>
+        </label>
+        <label>
+          lsdfksdkf
+          <TextField>
+            <>
+              jfkjdskjsdgjdsgjdskjgf
+            </>
+          </TextField>
+        </label>
+      </Card>
     </div>
 
 );

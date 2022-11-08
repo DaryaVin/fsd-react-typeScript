@@ -1,44 +1,43 @@
 import React, { useEffect, useRef, useState } from "react";
+import { CreateWrapElement, KEYWORD_CREATEWRAPELEMENT, WrapElementContentType } from "../../hooks and hocs/createWrapElement";
 import "./dropdown.scss";
 
 interface DropdownProps {
-  buttonBlock: JSX.Element | JSX.Element[],
-  contenerBlock: JSX.Element,
+  buttonBlock: WrapElementContentType,
+  contenerBlock: WrapElementContentType,
   className?: string,
   hasDropButton?: boolean,
   theme?: "field",
 }
-export const Dropdown = (props: DropdownProps) => { 
+export const Dropdown = ({ buttonBlock, contenerBlock, className, hasDropButton, theme }: DropdownProps) => {
   let [show, setShow] = useState<boolean>(false);
 
   const dropButton = (<button type="button" className="dropdown__dropButton ">Кнопка выподающего элемента</button>);
-  const buttonBlock = Array.isArray(props.buttonBlock) 
-                      ? props.buttonBlock.map((item, index) => {
-                          const newChildrenWrap = !Array.isArray(item.props.children) 
-                                                  ? React.createElement("div", 
-                                                                        {className: "dropdown__wrap"}, 
-                                                                        [item.props.children, dropButton]
-                                                                      ) 
-                                                  : null;
-                          const newChildren = newChildrenWrap ? newChildrenWrap : [...item.props.children, dropButton];
-                          let newElem = React.cloneElement(item, 
-                                                            {key:index, 
-                                                            className: "dropdown__wrap " + item.props.className}, 
-                                                            newChildren
-                                                          );
-                          return newElem;
-                        }) 
-                      : React.cloneElement(
-                          props.buttonBlock, 
-                          {className: "dropdown__wrap " + props.buttonBlock.props.className}, 
-                          [props.buttonBlock.props.children, dropButton]
-                        );
-  
+  let newButtonBlock: any;
+  if (Array.isArray(buttonBlock)) {
+    newButtonBlock = buttonBlock.map((item, index) => {
+      return <CreateWrapElement
+        key={index}
+        className="dropdown__wrap"
+        childrenContent={[KEYWORD_CREATEWRAPELEMENT, dropButton]}
+      >
+        {item}
+      </CreateWrapElement>
+    })
+  } else {
+    newButtonBlock = <CreateWrapElement
+      className="dropdown__wrap"
+      childrenContent={[KEYWORD_CREATEWRAPELEMENT, dropButton]}
+    >
+      {buttonBlock}
+    </CreateWrapElement>
+  }
+
   const onClickButtonBlock = (e: React.MouseEvent) => {
     const buttonBlock = e.currentTarget;
-    const dropButton =  Array.from(buttonBlock.getElementsByClassName("dropdown__dropButton"));
-    if ( (props.hasDropButton && dropButton.find((i) => i === e.target)) 
-      || (!props.hasDropButton)
+    const dropButton = Array.from(buttonBlock.getElementsByClassName("dropdown__dropButton"));
+    if ((hasDropButton && dropButton.find((i) => i === e.target))
+      || (!hasDropButton)
     ) {
       setShow(!show);
     }
@@ -47,38 +46,38 @@ export const Dropdown = (props: DropdownProps) => {
   const dropdownComponent = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const onClick = (e: MouseEvent | FocusEvent) => {
-      if ( (dropdownComponent.current instanceof Element) 
+      if ((dropdownComponent.current instanceof Element)
         && (e.target instanceof Element)
         && (!dropdownComponent.current.contains(e.target))
       ) {
-          setShow(false);
+        setShow(false);
       }
     }
     document.addEventListener('click', onClick);
     document.addEventListener('focusin', onClick)
-    return () =>{ 
+    return () => {
       document.removeEventListener('click', onClick);
       document.removeEventListener('focusin', onClick);
     }
   }, []);
 
   return (
-    <div 
-      className={"dropdown " + (props.className ? props.className : "") + (props.theme ? " dropdown_theme_field" : "")}
+    <div
+      className={"dropdown " + (className || "") + (theme ? " dropdown_theme_" + theme : "")}
       ref={dropdownComponent}
     >
-      <div 
-        className={show ? "dropdown__buttonBlock dropdown__buttonBlock_version_show" : "dropdown__buttonBlock"} 
-        key={"dropdown__buttonBlock"} 
+      <div
+        className={"dropdown__buttonBlock" + (show ? " dropdown__buttonBlock_version_show" : "")}
+        key={"dropdown__buttonBlock"}
         onClick={onClickButtonBlock}
       >
-        {buttonBlock}
+        {newButtonBlock}
       </div>
-      <div 
-        className={show ? "dropdown__contenerBlock show"  : "dropdown__contenerBlock" }
+      <div
+        className={"dropdown__contenerBlock" + (show ? " show" : "")}
         key={"dropdown__contenerBlock"}
       >
-        {props.contenerBlock}
+        {contenerBlock}
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 import React from "react";
 import "./review.scss";
 import { LikeButton } from "../likeButton/likeButton";
+import { CreateWrapElement } from "../../hooks and hocs/createWrapElement";
 
 const useDateFormat = (date: Date, reportDate: Date): string => {
   const oneDay = 1000 * 60 * 60 * 24;
@@ -20,7 +21,7 @@ const useDateFormat = (date: Date, reportDate: Date): string => {
       case 5: return "5 дней назад";
       case 6: return "6 дней назад";
       case 7: return "Неделю назад";
-      default: return date.toLocaleString("Ru-ru", {day: "numeric", month: 'short'});
+      default: return date.toLocaleString("Ru-ru", { day: "numeric", month: 'short' });
     }
   }
   if (reportDate <= date && date.getTime() - reportDate.getTime() < 8 * oneDay) {
@@ -28,7 +29,7 @@ const useDateFormat = (date: Date, reportDate: Date): string => {
     const reportDate1 = new Date(reportDate.getTime());
     date1.setHours(0, 0, 0, 0);
     reportDate1.setHours(0, 0, 0, 0);
-    const differenceDate = Math.ceil((date1.getTime() - reportDate1.getTime() ) / oneDay);
+    const differenceDate = Math.ceil((date1.getTime() - reportDate1.getTime()) / oneDay);
     switch (differenceDate) {
       case 0: return "Cегодня";
       case 1: return "Завтра";
@@ -38,16 +39,16 @@ const useDateFormat = (date: Date, reportDate: Date): string => {
       case 5: return "Через 5 дней";
       case 6: return "Через 6 дней";
       case 7: return "Через неделю";
-      default: return date.toLocaleString("Ru-ru", {day: "numeric", month: 'short'});
+      default: return date.toLocaleString("Ru-ru", { day: "numeric", month: 'short' });
     }
   }
   if (reportDate.getFullYear() === date.getFullYear()) {
-    return date.toLocaleString("Ru-ru", {day: "numeric", month: 'short'});
+    return date.toLocaleString("Ru-ru", { day: "numeric", month: 'short' });
   }
-  return date.toLocaleString("Ru-ru", {day: "numeric", month: 'short', year: 'numeric'}).slice(0, -2);
+  return date.toLocaleString("Ru-ru", { day: "numeric", month: 'short', year: 'numeric' }).slice(0, -2);
 }
 
-interface ReviewProps{
+interface ReviewProps {
   id: string,
   authorName: string,
   dateToCreating: Date,
@@ -59,19 +60,17 @@ interface ReviewProps{
 export const Review = ({
   id,
   authorName,
-  dateToCreating, 
+  dateToCreating,
   content,
   listWhoLikedThisReview,
-  authorPhoto, 
-  className, 
+  authorPhoto,
+  className,
 }: ReviewProps) => {
   return (
-    <div className={className ? className +  " review" : "review"}>
-      {
-        authorPhoto 
-        ? React.cloneElement(authorPhoto, {className: authorPhoto.props.className + " review__photo"}, authorPhoto.props.children)
-        : <div className="review__photo">Фото нет</div>
-      }
+    <div className={className ? className + " review" : "review"}>
+      <CreateWrapElement className="review__photo">
+        {authorPhoto || "Фото нет"}
+      </CreateWrapElement>
       <div className="review__info">
         <div className="review__authorName">
           {authorName}

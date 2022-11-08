@@ -1,4 +1,5 @@
 import React from "react";
+import { CreateWrapElement } from "../../hooks and hocs/createWrapElement";
 import "./lengthControlComponent.scss";
 
 interface LengthControlComponentProps {
@@ -18,7 +19,7 @@ export const LengthControlComponent = (props: LengthControlComponentProps) => {
           if (children.props.children.type) {
             val = DefinitionValueFunc(children.props.children);
           }
-          if (typeof children.props.children === "string"){
+          if (typeof children.props.children === "string") {
             val = children.props.children;
           }
         }
@@ -33,10 +34,9 @@ export const LengthControlComponent = (props: LengthControlComponentProps) => {
         <span className="lengthControlComponent__lengthDefinitionElement">
           {lengthDefinitionElementValue}
         </span>
-        {React.cloneElement(children, 
-                            {className: (children.props.className || "") + " lengthControlComponent__mainElement"}, 
-                            children.props.children
-                          )}
+        <CreateWrapElement tagForWrap="input" className="lengthControlComponent__mainElement">
+          {children}
+        </CreateWrapElement>
       </span>
     </>
   )

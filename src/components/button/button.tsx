@@ -1,18 +1,18 @@
 import React from "react";
+import { CreateWrapElement, WrapElementContentType } from "../../hooks and hocs/createWrapElement";
 import "./button.scss";
 
-interface ButtonProps{
-  children: JSX.Element,
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: WrapElementContentType,
   theme?: "withBorder" | "fillBcg" | "textOnly",
   className?: string,
-} 
-export const Button = ({theme = "textOnly", children, className}:ButtonProps) => {
-  let newClassName = "button button_theme_" + theme;
-  if (children.props.className) newClassName += " " + children.props.className;
-  if (className) newClassName += " " + className;
+}
+export const Button = ({ theme = "textOnly", children, className, ...props }: ButtonProps) => {
+  const newClassName = "button button_theme_" + theme
+    + (className ? " " + className: "");
   return (
-    <>
-      {React.cloneElement(children, {className: newClassName}, children.props.children)}
-    </>
+    <CreateWrapElement tagForWrap="button" {...props} className={newClassName}>
+      {children}
+    </CreateWrapElement>
   )
 }

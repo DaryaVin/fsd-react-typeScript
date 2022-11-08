@@ -5,7 +5,7 @@
   position: relative;
   width: $width;
   @include field;
-  &.textField_textField {
+  &.textField_disabled {
     background-color: $color1Opacity05;
     * {
       background-color: transparent;

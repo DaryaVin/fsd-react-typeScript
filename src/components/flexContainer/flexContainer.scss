@@ -1,0 +1,136 @@
+@import '../baseComponent/baseVariables&Mixins.scss';
+.JIStart,
+.JIEnd,
+.JICenter,
+.JIAuto,
+.JIBaseline,
+.JIStretch,
+.JCStart,
+.JCEnd,
+.JCSpaceBetween,
+.JCSpaceAround,
+.JCSpaceEvenly,
+.JCCenter,
+.JCStretch,
+.AIStart,
+.AIEnd,
+.AICenter,
+.AIAuto,
+.AIBaseline,
+.AIStretch,
+.ACStart,
+.ACEnd,
+.ACSpaceBetween,
+.ACSpaceAround,
+.ACSpaceEvenly,
+.ACStratch,
+.ACCenter,
+.FDRow,
+.FDColomn,
+.FDRowReverse,
+.FDColomnReverse,
+.FWWrap,
+.FWNoWrap,
+.FWWrapReverse {
+  display: flex;
+}
+
+.JIStart {
+  justify-items: start;
+}
+.JIEnd {
+  justify-items: end;
+}
+.JICenter {
+  justify-items: center;
+}
+.JIAuto {
+  justify-items: auto;
+}
+.JIBaseline {
+  justify-items: baseline;
+}
+.JIStretch {
+  justify-items: stretch;
+}
+.JCStart {
+  justify-content: start;
+}
+.JCEnd {
+  justify-content: end;
+}
+.JCSpaceBetween {
+  justify-content: space-between;
+}
+.JCSpaceAround {
+  justify-content: space-around;
+}
+.JCSpaceEvenly {
+  justify-content: space-evenly;
+}
+.JCCenter {
+  justify-content: center;
+}
+.JCStretch {
+  justify-content: stretch;
+}
+.AIStart {
+  align-items: start;
+}
+.AIEnd {
+   align-items: end;
+}
+.AICenter {
+  align-items: center;
+}
+.AIAuto {
+  align-items: auto;
+}
+.AIBaseline {
+  align-items: baseline;
+}
+.AIStretch {
+  align-items: stretch;
+}
+.ACStart {
+  align-content: start;
+}
+.ACEnd {
+  align-content: end;
+}
+.ACSpaceBetween {
+  align-content: space-between;
+}
+.ACSpaceAround {
+  align-content: space-around;
+}
+.ACSpaceEvenly {
+  align-content: space-evenly;
+}
+.ACCenter {
+  align-content: center;
+}
+.ACStratch {
+  align-content: stretch;
+}
+.FDRow {
+  flex-direction: row;
+}
+.FDColomn {
+  flex-direction: column;
+}
+.FDRowReverse {
+  flex-direction: row-reverse;
+}
+.FDColomnReverse {
+  flex-direction: column-reverse;
+}
+.FWWrap {
+  flex-wrap: wrap;
+}
+.FWNoWrap {
+  flex-wrap: nowrap;
+}
+.FWWrapReverse {
+  flex-wrap: wrap-reverse;
+}

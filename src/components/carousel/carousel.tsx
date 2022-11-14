@@ -1,5 +1,5 @@
 import React, { Children, useEffect, useState } from "react";
-import { CreateWrapElement, WrapElementContentType } from "../../hooks and hocs/createWrapElement";
+import { CreateWrapElement, WrapElementContentType } from "../createWrapElement/createWrapElement";
 import "./carousel.scss";
 
 interface CarouselProps {

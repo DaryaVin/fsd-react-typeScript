@@ -1,5 +1,5 @@
 import React from "react";
-import { CreateWrapElement, WrapElementContentType } from "../../hooks and hocs/createWrapElement";
+import { CreateWrapElement, WrapElementContentType } from "../createWrapElement/createWrapElement";
 import "./textField.scss";
 import "./card.scss";
 

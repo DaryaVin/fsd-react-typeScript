@@ -92,9 +92,6 @@ $width_size_l: 320px;
   @include baseText;
   line-height: 18px;
   color: $color1Opacity75;
-  * {
-    color: inherit;
-  }
   &.empty,
   .empty {
     color: $color1Opacity25;

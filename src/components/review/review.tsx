@@ -1,7 +1,7 @@
 import React from "react";
 import "./review.scss";
 import { LikeButton } from "../likeButton/likeButton";
-import { CreateWrapElement } from "../../hooks and hocs/createWrapElement";
+import { CreateWrapElement } from "../createWrapElement/createWrapElement";
 
 const useDateFormat = (date: Date, reportDate: Date): string => {
   const oneDay = 1000 * 60 * 60 * 24;

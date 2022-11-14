@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { CreateWrapElement, KEYWORD_CREATEWRAPELEMENT, WrapElementContentType } from "../../hooks and hocs/createWrapElement";
+import { CreateWrapElement, KEYWORD_CREATEWRAPELEMENT, WrapElementContentType } from "../createWrapElement/createWrapElement";
 import "./dropdown.scss";
 
 interface DropdownProps {

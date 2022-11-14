@@ -1,4 +1,4 @@
-import React, { Attributes, ReactChild, ReactChildren } from 'react'
+import React from 'react'
 
 export type WrapElementContentType = JSX.Element | number | string | (number | JSX.Element | string)[];
 export const KEYWORD_CREATEWRAPELEMENT = "children.props.children";

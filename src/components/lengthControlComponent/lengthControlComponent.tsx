@@ -1,5 +1,5 @@
 import React from "react";
-import { CreateWrapElement } from "../../hooks and hocs/createWrapElement";
+import { CreateWrapElement } from "../createWrapElement/createWrapElement";
 import "./lengthControlComponent.scss";
 
 interface LengthControlComponentProps {

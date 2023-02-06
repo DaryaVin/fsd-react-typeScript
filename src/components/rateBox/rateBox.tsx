@@ -14,8 +14,7 @@ export const RateBox = ({size = 24, rating, className}: RateBoxProps) => {
       <ul className={className ? className +  " rateBox" : "rateBox"}>
         {[...Array(5)].map((item, index) => {
           const width = (rating - index) >= 1 ? size : (rating - index) > 0 ?  (rating - index) * size : 0;
-          console.log();
-          
+
           return (
               <li className="rateBox__item" style={{width: size, height: size}} key={index}>
                 <div className="rateBox__wrap" style={{height: size, width: width}}>
@@ -26,9 +25,9 @@ export const RateBox = ({size = 24, rating, className}: RateBoxProps) => {
                         <stop offset="100%" stopColor="grey"/>
                       </linearGradient>
                     </defs>
-                    <FaStar 
-                      className="rateBox__icon rateBox__icon_full" 
-                      size={size} 
+                    <FaStar
+                      className="rateBox__icon rateBox__icon_full"
+                      size={size}
                       fill={"url(#grad1)"}
                     />
                    </svg>
@@ -41,9 +40,9 @@ export const RateBox = ({size = 24, rating, className}: RateBoxProps) => {
                         <stop offset="100%" stopColor="grey"/>
                       </linearGradient>
                     </defs>
-                    <FaRegStar 
+                    <FaRegStar
                       className="rateBox__icon rateBox__icon_empty"
-                      size={size} 
+                      size={size}
                       fill={"url(#grad1)"}
                     />
                    </svg>

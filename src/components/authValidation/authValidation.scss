@@ -1,0 +1,11 @@
+@import "../baseComponent/baseVariables&Mixins.scss";
+
+.authValidation {
+  border: $colorError solid 1px;
+  border-radius: 5px;
+  padding: 1rem;
+  max-width: $width_size_l + 60px;
+  width: 100%;
+  color: $colorError;
+  background-color: rgba($color:  $colorError, $alpha: 0.15);
+}

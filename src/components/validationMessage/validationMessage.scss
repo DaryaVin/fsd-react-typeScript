@@ -1,0 +1,6 @@
+@import "../baseComponent/baseVariables&Mixins.scss";
+
+.validationMessage {
+  color: $colorError;
+  font-size: 85%;
+}

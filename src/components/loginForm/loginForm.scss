@@ -1,0 +1,22 @@
+@import "../baseComponent/baseVariables&Mixins.scss";
+
+.loginForm {
+  .loginForm__submitButton {
+    padding-left: 30px;
+    padding-right: 13px;
+    width: $width;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+// .loginForm__setField {
+//   display: flex;
+//   flex-direction: column;
+// }
+.loginForm__buttonArrow {
+  width: 16px;
+  height: 16px;
+  transform: scale(1.45);
+}

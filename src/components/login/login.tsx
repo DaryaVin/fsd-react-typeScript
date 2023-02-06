@@ -1,7 +1,13 @@
 import React from 'react'
+import { CheckAuthLoading } from '../checkAuthLoading/checkAuthLoading'
+import { LoginForm } from '../loginForm/loginForm'
 
 export const Login = () => {
   return (
-    <div>Login</div>
+    <div>
+      <CheckAuthLoading>
+        <LoginForm/>
+      </CheckAuthLoading>
+    </div>
   )
 }

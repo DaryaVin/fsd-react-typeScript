@@ -56,6 +56,8 @@ interface FlexContainerProps {
   alignContent?: "start" | "end" | "center" | "stretch" | "space-between" | "space-around" | "space-evenly",
   flexDirection?: "row" | "colomn" | "row-reverse" | "colomn-reverse",
   flexWrap?: "wrap" | "nowrap" | "wrap-reverse",
+  rowGap?: number,
+  columnGap?: number,
   tagForWrap?: string,
 }
 export const FlexContainer = ({
@@ -66,6 +68,8 @@ export const FlexContainer = ({
   alignContent,
   flexDirection,
   flexWrap,
+  rowGap,
+  columnGap,
   tagForWrap = "div",
 }: FlexContainerProps) => {
   let newClassName = "";
@@ -76,7 +80,7 @@ export const FlexContainer = ({
   if (flexDirection) newClassName += " " + flexDirectionClass[flexDirection];
   if (flexWrap) newClassName += " " + flexWrapClass[flexWrap];
   return (
-    <CreateWrapElement className={newClassName} tagForWrap={tagForWrap}>
+    <CreateWrapElement className={newClassName} tagForWrap={tagForWrap} style={{rowGap, columnGap}}>
       {children}
     </CreateWrapElement>
   )

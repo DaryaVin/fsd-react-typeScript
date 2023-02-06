@@ -7,11 +7,12 @@ import { MainBackgroundAnimation } from "./components/mainBackgroundAnimation/ma
 import { Profile } from "./components/profile/profile";
 import { Registration } from "./components/registration/registration";
 import { SearchRooms } from "./components/searchRooms/searchRooms";
+import { VerificationEmail } from "./components/verificationEmail/verificationEmail";
 
 export interface routesType {
   path: string,
-  Component: () => JSX.Element,
-  isPrivate?: boolean,
+  Component: React.ElementType,
+  requireAuth?: "auth" | "unauth",
   redirect?: string,
   childrenRoutes?: routesType[],
 }
@@ -27,10 +28,20 @@ export const routes: routesType[] = [
       {
         path: "login",
         Component: Login,
+        requireAuth: "unauth",
+        redirect: "/profile",
       },
       {
         path: "registration",
         Component: Registration,
+        requireAuth: "unauth",
+        redirect: "/verification-email",
+      },
+      {
+        path: "verification-email",
+        Component: VerificationEmail,
+        requireAuth: "auth",
+        redirect: "/login",
       },
       {
         path: "search-rooms",
@@ -39,13 +50,13 @@ export const routes: routesType[] = [
       {
         path: "profile",
         Component: Profile,
-        isPrivate: true,
+        requireAuth: "auth",
         redirect: "/login",
       },
       {
         path: "cart",
         Component: Cart,
-        isPrivate: true,
+        requireAuth: "auth",
         redirect: "/login",
       },
       {

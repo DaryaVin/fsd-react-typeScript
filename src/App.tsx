@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import "./components/baseComponent/baseStyle.scss";
-import {BrowserRouter} from "react-router-dom";
-import { Header } from './components/header/header';
-import { Footer } from './components/footer/footer';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+import { BrowserRouter } from "react-router-dom";
 import { AppRouter } from './components/appRouter/appRouter';
 
 function App() {
-  return(
-    <BrowserRouter>
-      <AppRouter></AppRouter>
-    </BrowserRouter>
+  return (
+    <Provider store={store}>
+      <BrowserRouter>
+        <AppRouter></AppRouter>
+      </BrowserRouter>
+    </Provider>
   );
 }
 export default App;

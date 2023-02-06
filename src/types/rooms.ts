@@ -1,6 +1,6 @@
 export interface RoomState {
     rooms: any[];
-    loading: boolean;
+    isLoading: boolean;
     error: null | string;
 };
 

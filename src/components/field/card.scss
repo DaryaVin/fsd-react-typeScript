@@ -14,10 +14,4 @@
   &:focus-within {
     border-color: $color1Opacity25;
   }
-  fieldset {
-    display: flex;
-    flex-direction: column;
-    row-gap: 10px;
-    border: 0;
-  }
 }

@@ -4,7 +4,6 @@
   @include baseText;
   color: $color1Opacity75;
   display: inline-flex;
-  justify-content: space-between;
   align-items: center;
   max-width: $width;
   * {
@@ -41,11 +40,9 @@
   left: 0;
   height: 20px;
   width: 40px;
-  // z-index: -1;
   border: 1px solid $color1Opacity25;
   border-radius: 10px;
   transition: background 450ms ease;
-  // transition: 1s;
   &::before {
     content: "";
     position: absolute;
@@ -59,13 +56,11 @@
     transition:
       background 450ms ease,
       transform 450ms ease;
-    // transition: 1s;
   }
 }
 
 .toggleButton__label {
   display: inline-block;
-  // max-width: 230px;
   padding-left: 10px;
   text-align: left;
 }

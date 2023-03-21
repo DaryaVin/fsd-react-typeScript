@@ -21,8 +21,6 @@ export const authReducer = (state: AuthState = initialState, action: AuthAction)
             return { ...state, isLoading: true, error: null };
         }
         case AuthActionType.FETCH_AUTH__SUCCESS: {
-            console.log("FETCH_AUTH__SUCCESS", action.payload);
-
             return { ...state, isLoading: false, error: null, auth: action.payload };
         }
         case AuthActionType.FETCH_AUTH__ERROR: {
@@ -53,20 +51,11 @@ export const authReducer = (state: AuthState = initialState, action: AuthAction)
             return { ...state, isLoading: true, error: null };
         }
         case AuthActionType.FETCH_USER_INFO__SUCCESS: {
-            return {
-                ...state,
-                isLoading: false,
-                error: null,
-                userInfo: {
-                    email: "",
-                    password: "",
-                    firstName: "",
-                    lastName: "",
-                    sex: undefined,
-                    dateBirthday: null,
-                    isSubscription: false,
-                },
-            };
+            if (action.payload === null || action.payload === undefined) {
+                return { ...state, isLoading: false, error: null, userInfo: initialState.userInfo, }
+            }
+            const newUserInfo = action.payload.password ? {...action.payload} : {...action.payload, password: ""}
+            return { ...state, isLoading: false, error: null, userInfo: newUserInfo, };
         }
         case AuthActionType.FETCH_USER_INFO__ERROR: {
             return { ...state, isLoading: false, error:{ message: action.payload, userInfo: state.userInfo } };

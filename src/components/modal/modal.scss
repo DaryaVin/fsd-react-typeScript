@@ -1,0 +1,81 @@
+@import "../baseComponent/baseVariables&Mixins.scss";
+
+.modal {
+  height: 100vh;
+  width: 100vw;
+  background-color: $color1Opacity25;
+  z-index: 1000;
+  // position: absolute;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  transform: scale(1);
+  pointer-events: none;
+  opacity: 0;
+  transition: 0.5s;
+  &.modal_isActive {
+    // transform: scale(1);
+    opacity: 1;
+    pointer-events: all;
+    .modal_content {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}
+@keyframes modal_isActive {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+
+.modal_content {
+  position: relative;
+  transform: scale(0.5);
+      opacity: 0.5;
+  // transform: scale(0.5);
+  transition: 0.5s all;
+}
+
+.modal__closeButton {
+  font-size: 0;
+  height: 1.5rem;
+  width: 1.5rem;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: 0;
+  transition: opacity ease 0.5s;
+  opacity: 0.4;
+  &:hover,
+  &:focus {
+    opacity: 1;
+  }
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;left: 50%;
+    height: 100%;
+    width: 10%;
+    transform-origin: center;
+    background-color: $color1Opacity75;
+  }
+
+  &::before {
+    transform: translate(-50%, 0) rotate(45deg) ;
+  }
+
+  &::after {
+    transform: translate(-50%, 0)  rotate(-45deg);
+  }
+
+}

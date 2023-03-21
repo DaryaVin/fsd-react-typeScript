@@ -48,7 +48,7 @@ enum flexWrapClass {
   "wrap-reverse" = "FWWrapReverse",
 }
 
-interface FlexContainerProps {
+export interface FlexContainerProps {
   children: WrapElementContentType,
   justifyItems?: "start" | "end" | "center" | "baseline" | "stretch" | "auto",
   justifyContent?: "start" | "end" | "center" | "stretch" | "space-between" | "space-around" | "space-evenly",
@@ -59,6 +59,7 @@ interface FlexContainerProps {
   rowGap?: number,
   columnGap?: number,
   tagForWrap?: string,
+  [prop: string]: any
 }
 export const FlexContainer = ({
   children,
@@ -71,6 +72,7 @@ export const FlexContainer = ({
   rowGap,
   columnGap,
   tagForWrap = "div",
+  ...props
 }: FlexContainerProps) => {
   let newClassName = "";
   if (justifyContent) newClassName += " " + justifyContentClass[justifyContent];
@@ -79,8 +81,9 @@ export const FlexContainer = ({
   if (alignItems) newClassName += " " + alignItemsClass[alignItems];
   if (flexDirection) newClassName += " " + flexDirectionClass[flexDirection];
   if (flexWrap) newClassName += " " + flexWrapClass[flexWrap];
+  if (props.className) newClassName += " " + props.className;
   return (
-    <CreateWrapElement className={newClassName} tagForWrap={tagForWrap} style={{rowGap, columnGap}}>
+    <CreateWrapElement {...props} className={newClassName} tagForWrap={tagForWrap} style={{rowGap, columnGap}}>
       {children}
     </CreateWrapElement>
   )

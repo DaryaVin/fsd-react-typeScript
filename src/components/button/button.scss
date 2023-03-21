@@ -37,6 +37,7 @@
   border-radius: 22px;
   background: transparent;
   background-clip: padding-box;
+  z-index: 1;
   &::before, &::after {
     content: '';
     position: absolute;
@@ -44,13 +45,13 @@
     border-radius: inherit;
   }
   &::before {
+    z-index: -1;
+    background: $colorBcg;
+  }
+  &::after {
     z-index: -2;
     margin: -$border;
     @include linearGradient(background, $color2, $color2Gradiend);
-  }
-  &::after {
-    z-index: -1;
-    background: $colorBcg;
   }
   &:disabled {
     opacity: 1;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export type WrapElementContentType = JSX.Element | number | string | (number | JSX.Element | string)[];
 export const KEYWORD_CREATEWRAPELEMENT = "children.props.children";
@@ -25,7 +25,7 @@ export const CreateWrapElement = ({ children, className = "", tagForWrap = "div"
     return newArrElement;
   }
 
-  if (!Array.isArray(children)
+   if (!Array.isArray(children)
     && typeof children !== "string"
     && typeof children !== "number"
     && children.type !== Symbol.for('react.fragment')) {

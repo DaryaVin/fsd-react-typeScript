@@ -9,8 +9,8 @@ import {
   ChangeDateBirthdayAction,
   ChangeIsSubscriptionAction,
   FetchRegistration,
+  FetchNewUserInfo,
 } from "../../store/actions/authActions";
-import { Controller, useForm } from 'react-hook-form';
 import { FiArrowRight } from 'react-icons/fi';
 import { NavLink } from 'react-router-dom';
 import { Button } from '../button/button';
@@ -40,239 +40,15 @@ const RegForm = ({
   ChangeDateBirthdayAction,
   ChangeIsSubscriptionAction,
   FetchRegistration,
+  FetchNewUserInfo,
 }: RegistrationFormProps) => {
-
-  // const {
-  //   control,
-  //   handleSubmit,
-  //   formState: { errors},
-  // } = useForm({
-  //   mode: "onChange"
-  // });
-
-  // return (
-  //   <Field theme="card" className="loginForm">
-  //       <Form onSubmit={handleSubmit(onSubmit)}>
-  //         <h1>Регистрация аккаунта</h1>
-  //         <FormFieldset key={"personInfo"}>
-  //           <Controller
-  //             name='firstname'
-  //             control={control}
-  //             render={({
-  //               field: { onChange }
-  //             }) => (
-  //               <Field key={"firstName"}>
-  //                 <input
-  //                   type="text"
-  //                   placeholder="Имя"
-  //                   value={userInfo?.firstName}
-  //                   onChange={(e) => { ChangeFirstNameAction(e.target.value); onChange(e); }}
-  //                 />
-  //               </Field>
-  //             )}
-  //           />
-  //           <div key={"firstnameErrors"}>
-  //             {
-  //               errors?.firstname
-  //               && <p>{errors?.firstname?.message || "В поле допущена ошибка!"}</p>
-  //             }
-  //           </div>
-  //           <Controller
-  //             name='lastname'
-  //             control={control}
-  //             render={({
-  //               field: { onChange }
-  //             }) => (
-  //               <Field key={"lastName"}>
-  //                 <input
-  //                   type="text"
-  //                   placeholder="Фамилия"
-  //                   value={userInfo?.lastName}
-  //                   onChange={(e) => { ChangeLastNameAction(e.target.value); onChange(e); }}
-  //                 />
-  //               </Field>
-  //             )}
-  //           />
-  //           <div key={"lastnameErrors"}>
-  //             {
-  //               errors?.lastname
-  //               && <p>{errors?.lastname?.message || "В поле допущена ошибка!"}</p>
-  //             }
-  //           </div>
-  //           <FlexContainer key={"sex"}
-  //             justifyContent="start"
-  //             columnGap={20}
-  //           >
-  //             <Controller
-  //               key={"male"}
-  //               name='sex'
-  //               control={control}
-  //               render={({
-  //                 field: { onChange },
-  //               }) => (
-  //                 <RadioButton
-  //                   value={"male"}
-  //                   checked={userInfo?.sex === "male" ? true : false}
-  //                   onChange={(e) => { if (e.target.checked) ChangeSexAction("male"); onChange(e); }}
-  //                 >
-  //                   Мужчина
-  //                 </RadioButton>
-  //               )}
-  //             />
-  //             <Controller
-  //               key={"female"}
-  //               name='sex'
-  //               control={control}
-  //               render={({
-  //                 field: { onChange },
-  //               }) => (
-  //                 <RadioButton
-  //                   value={"female"}
-  //                   checked={userInfo?.sex === "female" ? true : false}
-  //                   onChange={(e) => { if (e.target.checked) ChangeSexAction("female"); onChange(e); }}
-  //                 >
-  //                   Женщина
-  //                 </RadioButton>
-  //               )}
-  //             />
-  //           </FlexContainer>
-  //           <div key={"sexErrors"}>
-  //             {
-  //               errors?.sex
-  //               && <p>{errors?.sex?.message || "В поле допущена ошибка!"}</p>
-  //             }
-  //           </div>
-  //         </FormFieldset>
-  //         <FormFieldset key={"birthday"}>
-  //           <legend key={"label"}>Дата рождения</legend>
-  //           <Controller
-  //             name="birthday"
-  //             key={"field"}
-  //             control={control}
-  //             render={({
-  //               field: { onChange }
-  //             }) => (
-  //               <Field>
-  //                 <DateMaskField
-  //                   state={userInfo?.dateBirthday ? userInfo.dateBirthday : null}
-  //                   setState={(date) => { ChangeDateBirthdayAction(date); onChange(date) }}
-  //                   minDate={new Date(1900, 0, 0)}
-  //                   maxDate={new Date()}
-  //                 />
-  //               </Field>
-  //             )}
-  //           />
-  //           <div key={"birthdayErrors"}>
-  //             {
-  //               errors?.birthday
-  //               && <p>{errors?.birthday?.message || "В поле допущена ошибка!"}</p>
-  //             }
-  //           </div>
-  //         </FormFieldset>
-  //         <FormFieldset key={"forServesInfo"}>
-  //           <legend>Данные для входа в сервис</legend>
-  //           <Controller
-  //             name="email"
-  //             key={"email"}
-  //             rules={{ required: "Поле почты обязательно для заполнения", }}
-  //             control={control}
-  //             render={({
-  //               field: { onChange }
-  //             }) => (
-  //               <Field>
-  //                 <input
-  //                   value={userInfo?.email}
-  //                   type="text"
-  //                   placeholder="Email"
-  //                   onChange={(e) => { ChangeEmailAction(e.target.value); onChange(e) }}
-  //                 />
-  //               </Field>
-  //             )}
-  //           />
-  //           <div key={"emailErrors"}>
-  //             {
-  //               errors?.email
-  //               && <p>{errors?.email?.message || "В поле допущена ошибка!"}</p>
-  //             }
-  //           </div>
-  //           <Controller
-  //             name="password"
-  //             key={"password"}
-  //             rules={{ required: "Поле пароля обязательно для заполнения", }}
-  //             control={control}
-  //             render={({
-  //               field: { onChange }
-  //             }) => (
-  //               <Field>
-  //                 <input
-  //                   value={userInfo?.password}
-  //                   type="text"
-  //                   placeholder="Пароль"
-  //                   onChange={(e) => { ChangePasswordAction(e.target.value); onChange(e) }}
-  //                 />
-  //               </Field>
-  //             )}
-  //           />
-  //           <div key={"passwordErrors"}>
-  //             {
-  //               errors?.password
-  //               && <p>{errors?.password?.message || "В поле допущена ошибка!"}</p>
-  //             }
-  //           </div>
-  //           <Controller
-  //             name='isSubscribed'
-  //             key={'isSubscribed'}
-  //             control={control}
-  //             defaultValue={false}
-  //             render={({
-  //               field: { onChange },
-  //             }) => (
-  //               <ToggleButton
-  //                 onChange={(e) => { ChangeIsSubscriptionAction(e.target.checked); onChange(e) }}
-  //                 checked={userInfo?.isSubscription}
-  //               >
-  //                 Получать спецпредложения
-  //               </ToggleButton>
-  //             )}
-  //           />
-  //           <div key={"isSubscribedErrors"}>
-  //             {
-  //               errors?.isSubscribed
-  //               && <p>{errors?.isSubscribed?.message || "В поле допущена ошибка!"}</p>
-  //             }
-  //           </div>
-  //         </FormFieldset>
-  //         <Button key={"buttonSubmit"}
-  //           theme="fillBcg"
-  //           className="loginForm__submitButton"
-  //           type="submit"
-  //           disabled={(!userInfo?.email || !userInfo?.password) && !errors}
-  //         >
-  //           <span></span>
-  //           Зарегистрироваться
-  //           <FiArrowRight className="loginForm__buttonArrow"></FiArrowRight>
-  //         </Button>
-  //         <FlexContainer key={"helpInfo"}
-  //           tagForWrap="label"
-  //           justifyContent="space-between"
-  //           alignItems="center"
-  //         >
-  //           Уже есть аккаунт на Toxin
-  //           <Button theme="withBorder">
-  //             <NavLink to="/login">войти</NavLink>
-  //           </Button>
-  //         </FlexContainer>
-  //       </Form>
-  //     </Field>
-  // )
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (onSubmit) {
       await onSubmit(event, userInfo);
     } else {
       if (userInfo) {
-        await FetchRegistration(userInfo?.email, userInfo?.password);
+        await FetchRegistration(userInfo);
       }
     }
   }
@@ -430,6 +206,7 @@ const mapDispatchToProps = {
   ChangeDateBirthdayAction,
   ChangeIsSubscriptionAction,
   FetchRegistration,
+  FetchNewUserInfo,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

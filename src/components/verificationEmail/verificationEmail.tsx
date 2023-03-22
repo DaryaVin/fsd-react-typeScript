@@ -8,8 +8,7 @@ import { Button } from '../button/button';
 interface VerificationEmailProps {
 
 }
-const VerifyEmail = ({ auth }: ConnectorProps) => {
-  console.log(auth);
+const VerifyEmail = ({ auth}: ConnectorProps) => {
   const location = useLocation();
   if (auth && auth.emailVerified) {
     return <Navigate to={"/profile"} state={{ from: { location } }}></Navigate>

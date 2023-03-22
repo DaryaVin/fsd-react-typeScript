@@ -11,30 +11,38 @@ interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Modal = ({ children, isActive, setIsActive, ...props }: ModalProps) => {
   const [show, setShow] = useState<boolean>(!isActive);
+  const [display, setDisplay] = useState<boolean>(isActive);
+
   useEffect(() => {
-    setTimeout(() => setShow(isActive), 500);
-  });
+    if (isActive) {
+      setDisplay(isActive);
+      setTimeout(() => setShow(isActive), 500);
+    } else {
+      setShow(isActive);
+      setTimeout(() => setDisplay(isActive), 500);
+    }
+  }, [isActive]);
 
   let newClassName = 'modal' + (props.className ? " " + props.className : "");
 
-  const toggleIsActive = async () => {
+  const toggleIsActive = () => {
     setShow(!show);
-   await setTimeout(() => setIsActive(!isActive), 500);
+    setTimeout(() => setIsActive(!isActive), 500);
   }
 
   return (
-    isActive
-    ? <div {...props} className={newClassName + (show ? " modal_isActive" : "")} onClick={toggleIsActive}>
+    display
+      ? <div {...props} className={newClassName + (show ? " modal_isActive" : "")} onClick={toggleIsActive}>
         <div className='modal_content'>
 
-        <Field className='modal_window' theme="card" onClick={(e) => { e.stopPropagation() }}>
+          <Field className='modal_window' theme="card" onClick={(e) => { e.stopPropagation() }}>
             {
-            isActive ? children : children
+              children
             }
-        </Field>
-        <button type='button' className='modal__closeButton' onClick={toggleIsActive}>закрыть</button>
+          </Field>
+          <button type='button' className='modal__closeButton' onClick={toggleIsActive}>закрыть</button>
         </div>
       </div>
-    : null
+      : null
   )
 }

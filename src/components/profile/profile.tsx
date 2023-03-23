@@ -13,6 +13,7 @@ import { useValidationFieldForm } from '../../hooks/useValidationFieldFormReturn
 import { ValidationMessage } from '../validationMessage/validationMessage';
 import { child } from 'firebase/database';
 import { DateMaskField } from '../dateMaskField/dateMaskField';
+import { FiArrowRight } from 'react-icons/fi';
 
 interface NameModelContentProps {
   firstName: string | undefined,
@@ -70,12 +71,12 @@ interface DateBirthdayModelContentProps {
   onSubmit: (date: Date | null) => void,
   [key: string]: any
 };
-const DateBirthdayModelContent = ({onSubmit, ...props }: DateBirthdayModelContentProps) => {
+const DateBirthdayModelContent = ({ onSubmit, ...props }: DateBirthdayModelContentProps) => {
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
   const dateValidation = useValidationFieldForm(currentDate, { required: "Введите свою дату рождения, это поле обязательно для заполнения" });
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSubmit(currentDate);
+    await onSubmit(currentDate);
   }
   return (
     <Form onSubmit={handleSubmit} {...props}>
@@ -87,6 +88,24 @@ const DateBirthdayModelContent = ({onSubmit, ...props }: DateBirthdayModelConten
         <ValidationMessage className="form__validationMessage" {...dateValidation} />
       </FormFieldset>
       <Button theme="withBorder" disabled={!dateValidation.isValid}>Сохранить</Button>
+    </Form>
+  )
+}
+interface LogAutModelContentProps {
+  onSubmit: () => void,
+  [key: string]: any
+};
+const LogAutModelContent = ({ onSubmit, ...props }: LogAutModelContentProps) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    await onSubmit();
+  }
+  return (
+    <Form onSubmit={handleSubmit} {...props}>
+      <FormFieldset>
+        Вы уверены, что хотите выйти из своего аккаунта?
+      </FormFieldset>
+      <Button theme="withBorder">Хочу выйти</Button>
     </Form>
   )
 }
@@ -134,10 +153,23 @@ const Prof = ({ auth, userInfo, FetchLogAut, FetchUserInfo, UpdateUserInfo }: Co
     }
     setModalContent(
       <DateBirthdayModelContent key={"DateBirthdayModelContent"}
-      onSubmit={handleSubmit}
+        onSubmit={handleSubmit}
       >
 
       </DateBirthdayModelContent>
+    );
+    setIsActiveModal(true);
+  };
+  const LogAutHendler = () => {
+    const handleSubmit = () => {
+      FetchLogAut();
+      setIsActiveModal(false);
+    }
+    setModalContent(
+      <LogAutModelContent key={"LogAutModelContent"}
+        onSubmit={handleSubmit}
+      >
+      </LogAutModelContent>
     );
     setIsActiveModal(true);
   };
@@ -203,20 +235,22 @@ const Prof = ({ auth, userInfo, FetchLogAut, FetchUserInfo, UpdateUserInfo }: Co
               <ToggleButton checked={userInfo?.isSubscription} onChange={chengeSubscriptionHendler}></ToggleButton>
             </FlexContainer>
           </FormFieldset>
+          <FlexContainer justifyContent="space-between">
+            <Button key={"buttonLogaut"}
+              type="button"
+              theme="withBorder"
+              onClick={() => LogAutHendler()}
+            >
+              <span></span>
+              выход
+              <FiArrowRight className="loginForm__buttonArrow"></FiArrowRight>
+            </Button>
+          </FlexContainer>
         </Form>
       </Field>
       <Modal isActive={isActiveModal} setIsActive={setIsActiveModal}>
         {ModalContent}
       </Modal>
-      {/* <Button key={"buttonLogaut"}
-        theme="withBorder"
-        type="submit"
-        onClick={FetchLogAut}
-      >
-        <span></span>
-        выход
-        <FiArrowRight className="loginForm__buttonArrow"></FiArrowRight>
-      </Button> */}
     </div>
   )
 }

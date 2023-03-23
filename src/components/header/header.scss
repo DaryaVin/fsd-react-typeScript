@@ -1,0 +1,28 @@
+@import '../baseComponent/baseVariables&Mixins.scss';
+.header {
+  width: 100%;
+}
+.header__wrap {
+  max-width: 1400px;
+  min-width: $width_size_l + 60px;
+}
+.header__logo {
+
+}
+.header__navbar {
+
+}
+.header__authBlock {
+  height: 30px;
+  margin-left: 30px;
+
+}
+.header__authBlock_auth {
+padding-left: 30px;
+border-left: 1px solid $color1Opacity10;
+}
+
+.header__navbarItem.active,
+.header__authBlock.active {
+  font-weight: bold;
+}

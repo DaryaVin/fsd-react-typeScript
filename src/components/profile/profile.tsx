@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import "./profile.scss";
-import { FiArrowRight } from 'react-icons/fi';
 import { connect, ConnectedProps } from 'react-redux';
 import { Button } from '../button/button';
 import { FetchLogAut, FetchUserInfo, UpdateUserInfo } from "../../store/actions/authActions";
@@ -151,7 +150,6 @@ const Prof = ({ auth, userInfo, FetchLogAut, FetchUserInfo, UpdateUserInfo }: Co
 
   return (
     <div className='profile'>
-      Profile
       <Field theme={"card"}>
         <Form>
           <h1>Личная карточка</h1>

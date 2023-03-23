@@ -43,12 +43,11 @@ export const Head = ({ auth, userInfo }: ConnectorProps) => {
             tagForWrap='ul'
             justifyContent="space-around"
             columnGap={30}
+            flexWrap="wrap"
           >
             {
               navLinks.map((item, index) => <NavLink key={index} to={item.path} end={item.end} className={"header__navbarItem"}>{item.title}</NavLink>)
             }
-            {/* <NavLink to={"/"} end className={"header__navbarItem"}>Главная</NavLink>
-            <NavLink to={"/search-rooms"} className={"header__navbarItem"}>Выбор номера</NavLink> */}
           </FlexContainer>
           {
             auth && userInfo
@@ -59,15 +58,22 @@ export const Head = ({ auth, userInfo }: ConnectorProps) => {
                 {userInfo.lastName} {userInfo.firstName}
               </NavLink>
               : <FlexContainer key={"header__authBlock"}
-                tagForWrap='span'
+                tagForWrap='ul'
+                justifyContent="space-between"
+                alignItems='center'
                 className="header__authBlock"
+                columnGap={20}
               >
-                <Button theme="withBorder">
-                  <NavLink to="/login">войти</NavLink>
-                </Button>
-                <Button theme="fillBcg">
-                  <NavLink to="/login">Зарегистрироваться</NavLink>
-                </Button>
+                <li>
+                  <Button theme="withBorder">
+                    <NavLink to="/login">войти</NavLink>
+                  </Button>
+                </li>
+                <li>
+                  <Button theme="fillBcg">
+                    <NavLink to="/login">Зарегистрироваться</NavLink>
+                  </Button>
+                </li>
               </FlexContainer>
           }
         </FlexContainer>

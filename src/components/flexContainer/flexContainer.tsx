@@ -4,7 +4,7 @@ import "./flexContainer.scss";
 
 enum justifyContentClass {
   "start" = "JCStart",
-  "end" = ".JCEnd",
+  "end" = "JCEnd",
   "center" = "JCCenter",
   "stretch" = "JCStretch",
   "space-between" = "JCSpaceBetween",

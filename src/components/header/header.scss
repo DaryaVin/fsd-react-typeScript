@@ -1,29 +1,234 @@
 @import '../baseComponent/baseVariables&Mixins.scss';
-.header {
+
+.header {}
+
+.header__flowOccupyingPart {
   width: 100%;
+  height: 70px;
+
+  @media (max-width: 767px) {
+    height: 50px;
+  }
 }
-.header__wrap {
-  max-width: 1400px;
+
+.header__fixedPart {
+  position: fixed;
   min-width: $width_size_l + 60px;
+  width: 100%;
+  height: 70px;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  background-color: $colorBcg;
+  box-sizing: border-box;
+
+  @media (max-width: 767px) {
+    height: 50px;
+  }
 }
+
+.header__wrap {
+  width: 100%;
+  max-width: $max_width;
+  // min-width: $width_size_l + 60px;
+  display: grid;
+  grid-template-columns: 105px 1fr;
+  align-items: center;
+  column-gap: 1rem;
+  padding: 0 1rem;
+
+  @media (max-width: 767px) {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
 .header__logo {
+  min-width: 105px;
+  width: 105px;
+  height: 40px;
 
+  svg {
+    width: 100%;
+    height: 100%;
+  }
 }
+
 .header__navbar {
+  min-width: none;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  background-color: $colorBcg;
 
+  @media (max-width: 767px) {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: absolute;
+    top: 50px;
+    gap: 1rem;
+    left: 0;
+    right: 0;
+    overflow: auto;
+    max-height: calc(100vh - 50px);
+    transform: translateX(100%);
+    transition: all 0.5s;
+    scroll-behavior: smooth;
+
+    &::-webkit-scrollbar {
+      height: 5px;
+      cursor: pointer;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: $color1Opacity05;
+      border-radius: 20px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $color1Opacity10;
+      border-radius: 20px;
+    }
+
+    &.show {
+      left: 0;
+      right: 0;
+      transform: translateX(0);
+    }
+  }
 }
+
+.header__navbarScroll {
+  overflow: auto;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    height: 5px;
+    cursor: pointer;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $color1Opacity05;
+    border-radius: 20px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $color1Opacity10;
+    border-radius: 20px;
+  }
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    overflow: visible;
+  }
+}
+
+.header__navbarList {
+  list-style-type: none;
+  height: 100%;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    align-items: end;
+    row-gap: 1rem;
+  }
+}
+
+.header__navbarItem {
+  height: 100%;
+}
+
+.header__navbarLink {
+  height: 100%;
+}
+
 .header__authBlock {
-  height: 30px;
+  min-height: 30px;
   margin-left: 30px;
   list-style: none;
 
-}
-.header__authBlock_auth {
-padding-left: 30px;
-border-left: 1px solid $color1Opacity10;
+  @media (max-width: 767px) {
+    margin-left: 0;
+    // flex-direction: column;
+  }
 }
 
-.header__navbarItem.active,
+.header__authBlock_auth {
+  padding-left: 1rem;
+  border-left: 1px solid $color1Opacity10;
+
+  @media (max-width: 767px) {
+    // text-align: right;
+    border-left: 0;
+    border-top: 1px solid $color1Opacity10;
+    padding-left: 0;
+    padding-top: 1rem;
+  }
+}
+
+.header__navbarLink.active,
 .header__authBlock.active {
   font-weight: bold;
+}
+
+.header__burger {
+  display: none;
+  font-size: 0;
+  background-color: transparent;
+  border: 0;
+  width: 30px;
+  height: 30px;
+  position: relative;
+
+  @media (max-width: 767px) {
+    display: block;
+  }
+
+  &::after,
+  &::before,
+  span {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 0.3rem;
+    left: 0;
+    right: 0;
+    background-color: $color1Opacity50;
+    transform-origin: center;
+    transition: all 0.5s;
+  }
+
+  span {
+    transform: scale(1) translate(0, -50%);
+  }
+
+  &::before {
+    top: 0;
+  }
+
+  &::after {
+    bottom: 0;
+  }
+
+  &.show {
+    span {
+      transform: scale(0) translate(0, -50%);
+    }
+
+    &::before {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    &::after {
+      bottom: 50%;
+      left: 50%;
+      transform: translate(-50%, 50%) rotate(-45deg);
+    }
+  }
 }

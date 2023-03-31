@@ -1,37 +1,5 @@
 @import '../baseComponent/baseVariables&Mixins.scss';
-.JIStart,
-.JIEnd,
-.JICenter,
-.JIAuto,
-.JIBaseline,
-.JIStretch,
-.JCStart,
-.JCEnd,
-.JCSpaceBetween,
-.JCSpaceAround,
-.JCSpaceEvenly,
-.JCCenter,
-.JCStretch,
-.AIStart,
-.AIEnd,
-.AICenter,
-.AIAuto,
-.AIBaseline,
-.AIStretch,
-.ACStart,
-.ACEnd,
-.ACSpaceBetween,
-.ACSpaceAround,
-.ACSpaceEvenly,
-.ACStratch,
-.ACCenter,
-.FDRow,
-.FDColomn,
-.FDRowReverse,
-.FDColomnReverse,
-.FWWrap,
-.FWNoWrap,
-.FWWrapReverse {
+.flexConteiner {
   display: flex;
 }
 
@@ -91,6 +59,24 @@
 }
 .AIStretch {
   align-items: stretch;
+}
+.ASStart {
+  align-self: start;
+}
+.ASEnd {
+   align-self: end;
+}
+.ASCenter {
+  align-self: center;
+}
+.ASAuto {
+  align-self: auto;
+}
+.ASBaseline {
+  align-self: baseline;
+}
+.ASStretch {
+  align-self: stretch;
 }
 .ACStart {
   align-content: start;

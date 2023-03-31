@@ -27,6 +27,14 @@ enum alignItemsClass {
   "stretch" = "AIStretch",
   "auto" = "AIAuto",
 }
+enum alignSelfClass {
+  "start" = "ASStart",
+  "end" = "ASEnd",
+  "center" = "ASCenter",
+  "baseline" = "ASBaseline",
+  "stretch" = "ASStretch",
+  "auto" = "ASAuto",
+}
 enum alignContentClass {
   "start" = "ACStart",
   "end" = ".ACEnd",
@@ -53,6 +61,7 @@ export interface FlexContainerProps {
   justifyItems?: "start" | "end" | "center" | "baseline" | "stretch" | "auto",
   justifyContent?: "start" | "end" | "center" | "stretch" | "space-between" | "space-around" | "space-evenly",
   alignItems?: "start" | "end" | "center" | "baseline" | "stretch" | "auto",
+  alignSelf?: "start" | "end" | "center" | "baseline" | "stretch" | "auto",
   alignContent?: "start" | "end" | "center" | "stretch" | "space-between" | "space-around" | "space-evenly",
   flexDirection?: "row" | "colomn" | "row-reverse" | "colomn-reverse",
   flexWrap?: "wrap" | "nowrap" | "wrap-reverse",
@@ -66,6 +75,7 @@ export const FlexContainer = ({
   justifyContent,
   justifyItems,
   alignItems,
+  alignSelf,
   alignContent,
   flexDirection,
   flexWrap,
@@ -74,11 +84,12 @@ export const FlexContainer = ({
   tagForWrap = "div",
   ...props
 }: FlexContainerProps) => {
-  let newClassName = "";
+  let newClassName = "flexConteiner";
   if (justifyContent) newClassName += " " + justifyContentClass[justifyContent];
   if (justifyItems) newClassName += " " + justifyItemsClass[justifyItems];
   if (alignContent) newClassName += " " + alignContentClass[alignContent];
   if (alignItems) newClassName += " " + alignItemsClass[alignItems];
+  if (alignSelf) newClassName += " " + alignSelfClass[alignSelf];
   if (flexDirection) newClassName += " " + flexDirectionClass[flexDirection];
   if (flexWrap) newClassName += " " + flexWrapClass[flexWrap];
   if (props.className) newClassName += " " + props.className;

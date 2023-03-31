@@ -64,5 +64,13 @@ export const routes: routesType[] = [
         Component: () => (<Navigate to="/"></Navigate>),
       }
     ]
-  }
+  },
+  {
+    path: "vk",
+    Component: () => {window.location.href = 'https://www.vk.com/'; return <></>}
+  },
+  {
+    path: "instagram",
+    Component: () => {window.location.href = 'https://www.instagram.com/'; return <></>}
+  },
 ]

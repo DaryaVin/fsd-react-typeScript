@@ -12,7 +12,6 @@ const AppRout = ({ auth, CheckAuth, FetchUserInfo }: ConnectorProps) => {
   });
   useEffect(() => {
     FetchUserInfo(auth?.uid);
-    console.log(auth);
   }, [auth]);
   return (
     <Routes>
@@ -24,7 +23,7 @@ const mapStateToProps = (state: RootState) => {
   return ({
     auth: state.auth?.auth,
   })
-}
+};
 const mapDispatchToProps = {
   CheckAuth,
   FetchUserInfo,

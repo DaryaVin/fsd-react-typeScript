@@ -58,12 +58,7 @@ export const Head = ({ auth, userInfo }: ConnectorProps) => {
                 {
                   navLinks.map((item, index) =>
                     <li key={index} className={"header__navbarItem"}>
-                      <FlexContainer
-                        justifyContent="space-between"
-                        alignItems='center'
-                      >
-                        <NavLink to={item.path} end={item.end} className={"header__navbarLink"}>{item.title}</NavLink>
-                      </FlexContainer>
+                      <NavLink to={item.path} end={item.end} className={"header__navbarLink"}>{item.title}</NavLink>
                     </li>
                   )
                 }
@@ -76,10 +71,10 @@ export const Head = ({ auth, userInfo }: ConnectorProps) => {
                   className="header__authBlock header__authBlock_auth"
                 >
                   {
-                  userInfo.lastName || userInfo.firstName
-                  ? userInfo.lastName + " " + userInfo.firstName
-                  : "Не известный"
-                }
+                    userInfo.lastName || userInfo.firstName
+                      ? userInfo.lastName + " " + userInfo.firstName
+                      : "Не известный"
+                  }
                 </NavLink>
                 : <FlexContainer key={"header__authBlock"}
                   tagForWrap='ul'
@@ -88,14 +83,14 @@ export const Head = ({ auth, userInfo }: ConnectorProps) => {
                   className="header__authBlock"
                   columnGap={20}
                 >
-                  <li>
+                  <li key={"login"}>
                     <Button theme="withBorder">
                       <NavLink to="/login">войти</NavLink>
                     </Button>
                   </li>
                   <li>
-                    <Button theme="fillBcg">
-                      <NavLink to="/login">Зарегистрироваться</NavLink>
+                    <Button key={"/registration"} theme="fillBcg">
+                      <NavLink to="/registration">Зарегистрироваться</NavLink>
                     </Button>
                   </li>
                 </FlexContainer>

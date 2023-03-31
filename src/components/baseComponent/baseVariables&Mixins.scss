@@ -42,7 +42,8 @@ $width_size_l: 320px;
   #{$property}: linear-gradient(180deg, $color1 0%, $color2 100%);
 }
 
-@mixin linearGradientForSVG($color1, $color2, $offset1, $offset2) {
+@mixin linearGradientForSVG($color1, $color2, $offset1: 0, $offset2: 100%) {
+
     stop:first-child {
       offset: $offset1;
       stop-color: $color1;
@@ -90,7 +91,8 @@ $width_size_l: 320px;
   border: 1px solid $color1Opacity25;
   border-radius: 4px;
   padding: 12px 15px;
-  width: $width;
+  // width: $width;
+  max-width: $width;
   outline: none;
   @include baseText;
   line-height: 18px;

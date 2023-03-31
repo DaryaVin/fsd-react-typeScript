@@ -3,7 +3,7 @@
 .textField  {
   display: inline-flex;
   position: relative;
-  width: $width;
+  max-width: $width;
   @include field;
   &.textField_disabled {
     background-color: $color1Opacity05;

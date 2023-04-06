@@ -1,0 +1,53 @@
+@import '../baseComponent/baseVariables&Mixins.scss';
+
+.roomCard {
+  // border: 0;
+  display: inline-flex;
+  flex-direction: column;
+  width: $width_size_m;
+  position: relative;
+  padding: 150px 0 0;
+  // overflow: hidden;
+}
+.roomCard__carousel {
+position: absolute;
+top: 0; left: 0; right: 0;
+.carousel__wrap {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+}
+.roomCard__info {
+padding: 20px;
+}
+.roomCard__infoItem {
+  min-height: 35px;
+  display: flex;
+  align-items: center;
+}
+.roomCard__infoItem_upperBlock {
+
+}
+.roomCard__infoItem_upperBlock,
+.roomCard__infoItem_bottomBlock  {
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+.roomCard__infoItem_bottomBlock {
+  border-top: 1px solid $color1Opacity10;
+}
+.roomCard__infoItem_rightBlock {
+  justify-content: end;
+  color: $color1Opacity50;
+}
+.roomCard__infoItem_leftBlock {
+
+}
+.roomCard__highlightedInfo {
+  font-weight: bold;
+}
+.roomCard__isLux {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: $color2;
+}

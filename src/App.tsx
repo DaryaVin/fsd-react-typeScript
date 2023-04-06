@@ -8,9 +8,12 @@ import { AppRouter } from './components/appRouter/appRouter';
 function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter>
+      {/* <BrowserRouter>
         <AppRouter></AppRouter>
-      </BrowserRouter>
+      </BrowserRouter> */}
+      <React.StrictMode>
+        <AppRouter/>
+      </React.StrictMode>
     </Provider>
   );
 }

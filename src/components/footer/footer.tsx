@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaArrowRight, FaInstagram, FaVk } from 'react-icons/fa';
+import { FaInstagram, FaVk } from 'react-icons/fa';
 import { FiArrowRight } from 'react-icons/fi';
 import { NavLink } from 'react-router-dom';
 import { Field } from '../field/field';

@@ -20,6 +20,7 @@
   justify-content: space-between;
   width: 100%;
   max-width: $max_width;
+  min-width: $width_size_l + 40px;
   @media (max-width: 767px) {
     justify-content: center;
     max-width: 560px;

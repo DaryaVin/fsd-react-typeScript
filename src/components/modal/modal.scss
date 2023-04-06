@@ -37,6 +37,7 @@
 
 .modal_content {
   position: relative;
+  min-width: $width_size_l;
   transform: scale(0.5);
       opacity: 0.5;
   // transform: scale(0.5);

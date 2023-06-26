@@ -1,0 +1,18 @@
+@import "../baseComponent/baseVariables&Mixins.scss";
+
+.inputLengthControl {
+  .lengthControlComponent {
+    padding: 0;
+    background-color: transparent;
+    @include h3;
+    font-weight: normal;
+    color: $color1Opacity50;
+    border: none;
+    outline: none;
+    width: auto;
+    &:focus {
+      border-width: 1px;
+      border-color: $color1;
+    }
+  }
+}

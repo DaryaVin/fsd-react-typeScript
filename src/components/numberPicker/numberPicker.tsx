@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./numberPicker.scss";
 
 interface NumberPickerProps {
-  state: number | null,
-  setState: React.Dispatch<React.SetStateAction<number>>,
+  state: number | null | undefined,
+  setState: (val: number) => void,
   minValue?: number,
   maxValue?: number,
   step?: number,
@@ -12,8 +12,8 @@ interface NumberPickerProps {
 export const NumberPicker = (props: NumberPickerProps) => {
   const defaultValue = props.defaultValue !== undefined ? props.defaultValue : 0;
   const step = props.step ? props.step : 1;
-  const [min, max] = props.minValue !== undefined && props.maxValue !== undefined && props.minValue > props.maxValue 
-                      ? [props.maxValue, props.minValue] 
+  const [min, max] = props.minValue !== undefined && props.maxValue !== undefined && props.minValue > props.maxValue
+                      ? [props.maxValue, props.minValue]
                       : [props.minValue, props.maxValue];
   const onChangeValue = (val: number) => {
     if ( (min !== undefined && max !== undefined && val >= min && val <= max)
@@ -23,7 +23,7 @@ export const NumberPicker = (props: NumberPickerProps) => {
     ) {
       props.setState(val);
     } else {
-      if (min !== undefined && val < min) { 
+      if (min !== undefined && val < min) {
         props.setState(min);
       }
       if (max !== undefined && val > max) {
@@ -31,7 +31,7 @@ export const NumberPicker = (props: NumberPickerProps) => {
       }
     }
   }
-  let [state, setState] = useState<string>(props.state!== null ? props.state.toString() : "");
+  let [state, setState] = useState<string>(props.state!== null && props.state!== undefined ? props.state.toString() : "");
 
   const onChengeInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.currentTarget.value;
@@ -46,39 +46,39 @@ export const NumberPicker = (props: NumberPickerProps) => {
     } else {
       onChangeValue(+value - remainder);
     }
-    setState(props.state!== null ? props.state.toString() : "");
+    setState(props.state!== null && props.state!== undefined ? props.state.toString() : "");
   }
   useEffect(() => {
-    setState(props.state!== null ? props.state.toString() : "");
+    setState(props.state!== null && props.state!== undefined ? props.state.toString() : "");
   }, [props.state])
   return (
     <>
     <div className="numberPicker">
-      <button 
-        className="numberPicker__button numberPicker__minusButton" 
-        type="button" 
-        onClick={() => onChangeValue(props.state !== null ?  props.state - step : defaultValue)} 
-        disabled={(min !== undefined && props.state !== null && (props.state <= min)) ? true : false }
+      <button
+        className="numberPicker__button numberPicker__minusButton"
+        type="button"
+        onClick={() => onChangeValue(props.state !== null && props.state!== undefined ?  props.state - step : defaultValue)}
+        disabled={(min !== undefined && props.state !== null && props.state!== undefined && (props.state <= min)) ? true : false }
       >
         -
       </button>
-      <input 
-        type={"number"} 
+      <input
+        type={"number"}
         onChange={onChengeInputValue}
         onBlur={onBlurInputValue}
         onKeyDown={(e) => {if (e.code === "Enter") onBlurInputValue(e)}}
-        value={state} 
+        value={state}
         className={"numberPicker__number"}
         min={min}
         max={max}
         step={step}
 
       />
-      <button 
-        className="numberPicker__button numberPicker__plusButton" 
-        type="button" 
-        onClick={() => onChangeValue(props.state !== null ?  props.state + step : defaultValue)}
-        disabled={(max !== undefined && props.state !== null && (props.state >= max)) ? true : false }
+      <button
+        className="numberPicker__button numberPicker__plusButton"
+        type="button"
+        onClick={() => onChangeValue(props.state !== null && props.state!== undefined ?  props.state + step : defaultValue)}
+        disabled={(max !== undefined && props.state !== null && props.state!== undefined && (props.state >= max)) ? true : false }
       >
         +
       </button>

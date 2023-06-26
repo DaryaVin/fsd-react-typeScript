@@ -1,0 +1,43 @@
+@import "../baseComponent/baseVariables&Mixins.scss";
+
+.filterRoomsForm {
+  width: $width_size_l;
+
+}
+.filterRoomsForm__item_withMarrginTop20 {
+  margin-top: 20px;
+}
+.filterRoomsForm__stayDates {
+
+}
+.filterRoomsForm__stayDateButtonBlock {
+
+}
+
+.filterRoomsForm__stayDateConteiner {
+
+}
+
+.filterRoomsForm__dateBlock {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+}
+.filterRoomsForm__priceRange {
+
+}
+.filterRoomsForm__priceRangeInput {
+  color: $color1Opacity50;
+  display: inline-flex;
+}
+.filterRoomsForm__priceRangeInputItem {
+
+}
+.filterRoomsForm__priceRangeInputMin {
+  text-align: right;
+}
+.filterRoomsForm__priceRangeInputMax {
+  text-align: left;
+}
+.filterRoomsForm__priceRangeSlider {
+}

@@ -1,30 +1,17 @@
 import React from 'react';
 import "./roomCard.scss";
 import { Carousel } from '../carousel/carousel';
-import { WrapElementContentType } from '../createWrapElement/createWrapElement';
 import { RateBox } from '../rateBox/rateBox';
 import { Field } from '../field/field';
 import { correctDeclensionWord } from '../correctDeclensionWord/correctDeclensionWord';
-import { Navigate, redirect, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { RoomItem } from '../../types/rooms';
 
-interface ReviewProps {
-  id: string,
-  authorName: string,
-  dateToCreating: Date,
-  content: string,
-  listWhoLikedThisReview: string[] | null,
-  appraisal: 1 | 2 | 3 | 4 | 5,
-}
-
-interface RoomCardProps {
-  imgs?: WrapElementContentType,
-  id: number,
-  price: number,
-  reviews: ReviewProps[],
-  isLux?: boolean
-}
-export const RoomCard = ({ imgs, id, reviews, price, isLux }: RoomCardProps) => {
-  const rating = reviews.reduce((sum, current) => sum + current.appraisal, 0) / reviews.length;
+export const RoomCard = ({id, photos, name, reviews, price, isLux }: RoomItem) => {
+  const rating = reviews
+  ? reviews.reduce((sum, current) => sum + current.appraisal, 0) / reviews.length
+  : 0;
+  const reviewsLength = reviews ? reviews.length : 0;
   const navigate = useNavigate();
   const onClickRoomCard = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
     if (!(e.target as Element).classList.contains("carousel__button")
@@ -39,7 +26,7 @@ export const RoomCard = ({ imgs, id, reviews, price, isLux }: RoomCardProps) => 
         height={150}
         width={270}
       >
-        {imgs}
+        {photos}
       </Carousel>
       <div key={"roomCard__info"}
         className="roomCard__info"
@@ -52,7 +39,11 @@ export const RoomCard = ({ imgs, id, reviews, price, isLux }: RoomCardProps) => 
             className="roomCard__header roomCard__infoItem roomCard__infoItem_leftBlock"
           >
             <h2>
-              №{id}
+              {
+                name
+                ? name
+                : "№" + id
+              }
               {
                 isLux && <span className='roomCard__isLux'>&nbsp; люкс</span>
               }
@@ -75,14 +66,14 @@ export const RoomCard = ({ imgs, id, reviews, price, isLux }: RoomCardProps) => 
           <div key={"bottom-right-block"}
             className="roomCard__infoItem roomCard__infoItem_rightBlock"
           >
-            <span className='roomCard__highlightedInfo'>{reviews.length}</span>&nbsp;
+            <span className='roomCard__highlightedInfo'>{reviewsLength}</span>&nbsp;
             {correctDeclensionWord({
               options: {
                 1: "Отзыв",
                 2: "Отзыва",
                 5: "Отзывов",
               },
-              value: reviews.length
+              value: reviewsLength
             })}
           </div>
         </div>

@@ -2,19 +2,22 @@ import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndP
 import { child, get, onValue, ref, set, update } from "firebase/database";
 import { Dispatch } from "redux";
 import { authFirebase, bdFirebase } from "../../firebase";
+import { authAPI } from "../../interfaces/authAPI";
 import { AuthAction, AuthActionType, sexType, userInfo } from "../../types/auth";
 
 export const CheckAuth = () => {
 	return async (dispatch: Dispatch<AuthAction>) => {
 		try {
 			dispatch({ type: AuthActionType.FETCH_AUTH });
-			await onAuthStateChanged(authFirebase, (user) => {
-				if (!user) {
-					dispatch({ type: AuthActionType.FETCH_AUTH__SUCCESS, payload: null });
-				} else {
-					dispatch({ type: AuthActionType.FETCH_AUTH__SUCCESS, payload: user });
-				}
-			});
+			const user = await authAPI.CheckAuth();
+			dispatch({ type: AuthActionType.FETCH_AUTH__SUCCESS, payload: user});
+			// await onAuthStateChanged(authFirebase, (user) => {
+			// 	if (!user) {
+			// 		dispatch({ type: AuthActionType.FETCH_AUTH__SUCCESS, payload: null });
+			// 	} else {
+			// 		dispatch({ type: AuthActionType.FETCH_AUTH__SUCCESS, payload: user });
+			// 	}
+			// });
 		} catch (e) {
 			const error = JSON.parse(JSON.stringify(e));
 			dispatch({ type: AuthActionType.FETCH_AUTH__ERROR, payload: error.code });
@@ -25,7 +28,8 @@ export const FetchRegistration = (userInfo: userInfo) => {
 	return async (dispatch: Dispatch<AuthAction>) => {
 		try {
 			dispatch({ type: AuthActionType.FETCH_AUTH });
-			const { user } = await createUserWithEmailAndPassword(authFirebase, userInfo.email, userInfo.password);
+			// const { user } = await createUserWithEmailAndPassword(authFirebase, userInfo.email, userInfo.password);
+			const user = await authAPI.FetchRegistration(userInfo.email, userInfo.password);
 
 			let newUserInfo: Partial<userInfo> = Object.assign(userInfo);
 			delete newUserInfo.password;
@@ -44,7 +48,8 @@ export const FetchLogin = (email: string, password: string) => {
 	return async (dispatch: Dispatch<AuthAction>) => {
 		try {
 			dispatch({ type: AuthActionType.FETCH_AUTH });
-			const { user } = await signInWithEmailAndPassword(authFirebase, email, password);
+			// const { user } = await signInWithEmailAndPassword(authFirebase, email, password);
+			const user = await authAPI.FetchLogin(email, password);
 			console.log(user);
 			dispatch({ type: AuthActionType.FETCH_AUTH__SUCCESS, payload: user });
 			dispatch({ type: AuthActionType.CHANGE_PASSWORD, payload: "" });
@@ -58,7 +63,8 @@ export const FetchLogAut = () => {
 	return async (dispatch: Dispatch<AuthAction>) => {
 		try {
 			dispatch({ type: AuthActionType.FETCH_AUTH });
-			await signOut(authFirebase);
+			// await signOut(authFirebase);
+			await authAPI.FetchLogAut();
 			await FetchUserInfo()(dispatch);
 			dispatch({ type: AuthActionType.FETCH_AUTH__SUCCESS, payload: null });
 
@@ -72,7 +78,8 @@ export const FetchNewUserInfo = (userId: string, userInfo: Partial<userInfo>) =>
 	return async (dispatch: Dispatch<AuthAction>) => {
 		try {
 			dispatch({ type: AuthActionType.FETCH_USER_INFO });
-			await set(ref(bdFirebase, 'users/' + userId), { ...userInfo, dateBirthday: userInfo.dateBirthday?.toString() });
+			await authAPI.FetchNewUserInfo(userId, userInfo);
+			// await set(ref(bdFirebase, 'users/' + userId), { ...userInfo, dateBirthday: userInfo.dateBirthday?.toString() });
 
 			dispatch({ type: AuthActionType.FETCH_USER_INFO__SUCCESS, payload: userInfo });
 
@@ -87,9 +94,10 @@ export const FetchUserInfo = (userId?: string) => {
 		try {
 			if (userId) {
 				dispatch({ type: AuthActionType.FETCH_USER_INFO });
-				const dbRef = await ref(bdFirebase);
-				const userInfo = await get(child(dbRef, `users/${userId}`));
-				const newUserInfo = { ...userInfo.val(), dateBirthday: new Date(userInfo.val().dateBirthday) };
+				// const dbRef = await ref(bdFirebase);
+				// const userInfo = await get(child(dbRef, `users/${userId}`));
+				// const newUserInfo = { ...userInfo.val(), dateBirthday: new Date(userInfo.val().dateBirthday) };
+				const newUserInfo = await authAPI.FetchUserInfo(userId);
 				dispatch({ type: AuthActionType.FETCH_USER_INFO__SUCCESS, payload: newUserInfo });
 			} else {
 				dispatch({ type: AuthActionType.FETCH_USER_INFO__SUCCESS, payload: null });
@@ -105,10 +113,11 @@ export const UpdateUserInfo = (userId: string, userInfo: userInfo) => {
 		try {
 			if (userId) {
 				dispatch({ type: AuthActionType.FETCH_USER_INFO });
-				const dbRef = await ref(bdFirebase);
-				let newUserInfo: Partial<userInfo> = Object.assign(userInfo);
-				delete newUserInfo.password;
-				await update(dbRef, { [`users/${userId}`]: { ...newUserInfo } });
+				// const dbRef = await ref(bdFirebase);
+				// let newUserInfo: Partial<userInfo> = Object.assign(userInfo);
+				// delete newUserInfo.password;
+				// await update(dbRef, { [`users/${userId}`]: { ...newUserInfo } });
+				await authAPI.UpdateUserInfo(userId, userInfo);
 				dispatch({ type: AuthActionType.FETCH_USER_INFO__SUCCESS, payload: userInfo });
 			} else {
 				dispatch({ type: AuthActionType.FETCH_USER_INFO__SUCCESS, payload: null });

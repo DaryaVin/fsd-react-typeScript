@@ -14,6 +14,7 @@ import { ValidationMessage } from '../validationMessage/validationMessage';
 import { child } from 'firebase/database';
 import { DateMaskField } from '../dateMaskField/dateMaskField';
 import { FiArrowRight } from 'react-icons/fi';
+import { Label } from '../label/label';
 
 interface NameModelContentProps {
   firstName: string | undefined,
@@ -187,49 +188,53 @@ const Prof = ({ auth, userInfo, FetchLogAut, FetchUserInfo, UpdateUserInfo }: Co
           <h1>Личная карточка</h1>
           <h2 key={"PersonInfoHeader"}>Персональные данные</h2>
           <FormFieldset key={"PersonInfo"}>
-            <label key={"labelName"}>Фамилия и Имя:</label>
-            <FlexContainer key="Name" justifyContent="space-between">
-              <span>
-                {userInfo?.lastName + " " + userInfo?.firstName}
-              </span>
-              <Button type="button" onClick={() => { chengeNameHendler() }}>Изменить</Button>
-            </FlexContainer>
-            <label key={"labelSex"}>Пол:</label>
-            <FlexContainer key={"Sex"} justifyContent="space-between">
-              <span>
-                {
-                  userInfo?.sex === "male"
-                    ? "Мужчина"
-                    : "Женщина"
-                }
-              </span>
-              <Button type="button" onClick={() => { chengeSexHendler() }}>Изменить</Button>
-            </FlexContainer>
-            <label key={"labelDateBirthday"}>Дата рождения:</label>
-            <FlexContainer key={"DateBirthday"} justifyContent="space-between">
-              <span>
-                {
-                  userInfo && userInfo.dateBirthday
-                    ? userInfo.dateBirthday.toLocaleString('default', { day: "numeric", month: 'long', year: "numeric" })
-                    : "Не известна"
-                }
-              </span>
-              <Button type="button" onClick={() => { chengeDateBirthdayHendler() }}>Изменить</Button>
-            </FlexContainer>
+            <Label label='Фамилия и Имя:' key={"labelName"}>
+              <FlexContainer key="Name" justifyContent="space-between">
+                <span>
+                  {userInfo?.lastName + " " + userInfo?.firstName}
+                </span>
+                <Button type="button" onClick={() => { chengeNameHendler() }}>Изменить</Button>
+              </FlexContainer>
+            </Label>
+            <Label label='Пол:' key={"labelSex"}>
+              <FlexContainer key={"Sex"} justifyContent="space-between">
+                <span>
+                  {
+                    userInfo?.sex === "male"
+                      ? "Мужчина"
+                      : "Женщина"
+                  }
+                </span>
+                <Button type="button" onClick={() => { chengeSexHendler() }}>Изменить</Button>
+              </FlexContainer>
+            </Label>
+            <Label label='Дата рождения:' key={"labelDateBirthday"}>
+              <FlexContainer key={"DateBirthday"} justifyContent="space-between">
+                <span>
+                  {
+                    userInfo && userInfo.dateBirthday
+                      ? userInfo.dateBirthday.toLocaleString('default', { day: "numeric", month: 'long', year: "numeric" })
+                      : "Не известна"
+                  }
+                </span>
+                <Button type="button" onClick={() => { chengeDateBirthdayHendler() }}>Изменить</Button>
+              </FlexContainer>
+            </Label>
           </FormFieldset>
           <h2 key={"ServisInfoHeader"}>Сервисные данные</h2>
           <FormFieldset key={"ServisInfo"}>
-            <label key={"labelEmail"}>Email:</label>
-            <FlexContainer key={"Email"} justifyContent="space-between">
-              <span>
-                {userInfo?.email || "Email не указан"}
-              </span>
-              {
-                auth?.emailVerified
-                  ? "Почта подтверждена"
-                  : <Button>Подтвердить</Button>
-              }
-            </FlexContainer>
+            <Label label='Email:' key={"labelEmail"}>
+              <FlexContainer key={"Email"} justifyContent="space-between">
+                <span>
+                  {userInfo?.email || "Email не указан"}
+                </span>
+                {
+                  auth?.emailVerified
+                    ? "Почта подтверждена"
+                    : <Button>Подтвердить</Button>
+                }
+              </FlexContainer>
+            </Label>
             <FlexContainer key={"Subscription"} justifyContent="space-between">
               <label key={"labelSubscription"}>Подписка на спецпредложения:</label>
               <ToggleButton checked={userInfo?.isSubscription} onChange={chengeSubscriptionHendler}></ToggleButton>

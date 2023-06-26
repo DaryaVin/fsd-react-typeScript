@@ -1,0 +1,11 @@
+@import "../baseComponent/baseVariables&Mixins.scss";
+.label {
+
+}
+.label__text {
+  @include h3;
+  text-align: center;
+  &.label_for_field {
+    padding-bottom: 5px;
+  }
+}

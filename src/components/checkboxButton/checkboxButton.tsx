@@ -21,13 +21,13 @@ export const CheckboxButton = ({label, children, explanation, theme, className, 
         </div>
       </div>
       <div className={"checkboxButton__label"}>
-        {label + " "} 
+        {label && (label + " ")}
         {children}
         {
-          theme === "withExplanation" 
+          theme === "withExplanation"
           && (<p className="checkboxButton__explanation">{explanation}</p>)
         }
-        
+
       </div>
     </label>
   )

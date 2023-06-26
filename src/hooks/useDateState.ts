@@ -80,7 +80,7 @@ const getElementsBetweenDates = (minDate: Date, maxDate: Date) => {
 }
 
 export const useDateState = (
-  state: Date | null,
+  state: Date | null | undefined,
   setState: (date: Date | null) => void,
   minDate?: Date | null,
   maxDate?: Date | null,
@@ -101,6 +101,7 @@ export const useDateState = (
     onChangeYear: (value: string) => string,
   }
 } => {
+  if (state=== undefined) setState(null);
   let [stateDay, setStateDay] = useState<string>(state ? prependZerosFunc(state.getDate().toString(), 2) : "");
   let [stateMonth, setStateMonth] = useState<string>(state ? prependZerosFunc((state.getMonth() + 1).toString(), 2) : "");
   let [stateYear, setStateYear] = useState<string>(state ? prependZerosFunc(state.getFullYear().toString(), 4) : "");

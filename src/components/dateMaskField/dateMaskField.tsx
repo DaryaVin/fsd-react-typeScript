@@ -58,8 +58,8 @@ const DateMaskFieldWrap: React.FC<dateMaskFieldWrapProps> = (props: dateMaskFiel
   )
 }
 
-interface DateMaskFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  state: Date | null,
+interface DateMaskFieldProps extends React.HTMLAttributes<HTMLDivElement> {
+  state: Date | null | undefined,
   setState: (date: Date | null) => void,
   minDate?: Date | null,
   maxDate?: Date | null,
@@ -79,9 +79,10 @@ export const DateMaskField = ({ minDate, maxDate, state, setState, className, ..
   }
 
   return (
-    <div className={"dateMaskField " + (!(stateDate.day.stateDay || stateDate.month.stateMonth || stateDate.year.stateYear) ? "empty " : "") + (className || "")} onClick={onClickDateMaskField}>
+    <div {...props} className={"dateMaskField " + (!(stateDate.day.stateDay || stateDate.month.stateMonth || stateDate.year.stateYear) ? "empty " : "") + (className || "")} onClick={onClickDateMaskField}>
       <FlexContainer justifyContent="start">
         <DateMaskFieldWrap
+          key={"day"}
           state={stateDate.day.stateDay}
           setState={stateDate.day.setStateDay}
           maxLength={2}
@@ -90,6 +91,7 @@ export const DateMaskField = ({ minDate, maxDate, state, setState, className, ..
           change={stateDate.day.onChangeDay}>
         </DateMaskFieldWrap>.
         <DateMaskFieldWrap
+          key={"month"}
           state={stateDate.month.stateMonth}
           setState={stateDate.month.setStateMonth}
           maxLength={2}
@@ -98,6 +100,7 @@ export const DateMaskField = ({ minDate, maxDate, state, setState, className, ..
           change={stateDate.month.onChangeMonth}>
         </DateMaskFieldWrap>.
         <DateMaskFieldWrap
+          key={"year"}
           state={stateDate.year.stateYear}
           setState={stateDate.year.setStateYear}
           maxLength={4}

@@ -2,11 +2,11 @@ import React from "react";
 import { CreateWrapElement } from "../createWrapElement/createWrapElement";
 import "./lengthControlComponent.scss";
 
-interface LengthControlComponentProps {
+interface LengthControlComponentProps extends React.HTMLAttributes<HTMLDivElement>{
   children: JSX.Element,
 }
-export const LengthControlComponent = (props: LengthControlComponentProps) => {
-  const children = props.children;
+export const LengthControlComponent = ({children, className, ...props}: LengthControlComponentProps) => {
+  const newClassName = "lengthControlComponent" + (className ? " " + className :"");
   const DefinitionValueFunc = (children: JSX.Element): string => {
     let val = "";
     if (children.type === "input" || children.props.value) {
@@ -30,14 +30,14 @@ export const LengthControlComponent = (props: LengthControlComponentProps) => {
   let lengthDefinitionElementValue = DefinitionValueFunc(children);
   return (
     <>
-      <span className="lengthControlComponent">
+      <div className={newClassName} {...props} >
         <span className="lengthControlComponent__lengthDefinitionElement">
           {lengthDefinitionElementValue}
         </span>
         <CreateWrapElement tagForWrap="input" className="lengthControlComponent__mainElement">
           {children}
         </CreateWrapElement>
-      </span>
+      </div>
     </>
   )
 }

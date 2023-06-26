@@ -9,9 +9,9 @@
   gap: 10px;
   border: 0;
 }
-.form__label {
+legend {
   @include h3;
-  &:not(legend) {
-    margin-bottom: -10px;
-  }
+  // &:not(legend) {
+  //   margin-bottom: -10px;
+  // }
 }

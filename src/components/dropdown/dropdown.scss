@@ -14,7 +14,7 @@
       @include field;
       border-radius: 0 0 4px 4px;
       border-top-width: 0;
-      padding: 7px 7px 2px 15px;
+      // padding: 7px 7px 2px 15px;
       border-color: $color1Opacity50;
       background: $colorBcg;
       box-shadow: 0px 10px 20px $color1Opacity05;
@@ -37,8 +37,13 @@
       }
     }
   }
+  .dropdown__wrap {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
   .dropdown__dropButton {
-    // position: relative;
+    position: relative;
     width: 18px;
     height: 18px;
     background-color: inherit;

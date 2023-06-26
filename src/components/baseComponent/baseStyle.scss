@@ -32,13 +32,13 @@ a {
   font-style: inherit;
   font-weight: inherit;
 }
-.label {
-  @include h3;
-  color: $color1;
-  &.label_for_field {
-    padding-bottom: 5px;
-  }
-}
+// .label {
+//   @include h3;
+//   color: $color1;
+//   &.label_for_field {
+//     padding-bottom: 5px;
+//   }
+// }
 
 // --------------------- Position and size styles ---------------------- //
 .startContener {

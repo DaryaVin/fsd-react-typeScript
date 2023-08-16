@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import "./filterRoomsForm.scss";
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../../store/reducers/rootReducer';
@@ -26,14 +26,16 @@ import { correctDeclensionWord } from '../correctDeclensionWord/correctDeclensio
 import { RangeSlider } from '../rangeSlider/rangeSlider';
 import { InputLengthControl } from '../inputLengthControl/inputLengthControl';
 import { CheckboxButton } from '../checkboxButton/checkboxButton';
+import { useLoaderData } from 'react-router-dom';
+import { designations } from '../../types/filterRooms';
 
 type FilterRoomsForm = {
-
+  designations: designations,
 } & ConnectorProps & React.FormHTMLAttributes<HTMLFormElement>;
 const Filter = ({
-  setting,
   designations,
-  rooms,
+  setting,
+  isLoading,
   ChangeStayDates,
   ChangeNumberOfGuests,
   ChangePriceRange,
@@ -46,13 +48,12 @@ const Filter = ({
   FetchDesignations,
   ...props
 }: FilterRoomsForm) => {
-  const minPrice = 100;
-  const maxPrice = 99999;
-  const unitPrice = "₽";
-  const nowDate = new Date();
-  const throughYearDate = new Date(nowDate.getFullYear() + 1, nowDate.getMonth(), nowDate.getDate());
-  const [stateStartDate, setStateStartDate] = useState<Date | null>(setting && setting.stayDates.start !== null ? setting.stayDates.start : nowDate);
-  const [stateEndDate, setStateEndDate] = useState<Date | null>(setting && setting.stayDates.end !== null ? setting.stayDates.end : throughYearDate);
+  const minPrice = designations?.minPrice ? designations.minPrice : 0;
+  const maxPrice = designations?.maxPrice ? designations.maxPrice : 99999;
+  const minDate: Date = designations?.minDate ? designations.minDate : new Date();
+  const maxDate: Date = designations?.maxDate ? designations.maxDate : new Date(minDate.getFullYear() + 1, minDate.getMonth(), minDate.getDate());
+  const [stateStartDate, setStateStartDate] = useState<Date | null>(setting && setting.stayDates.start !== null ? setting.stayDates.start : minDate);
+  const [stateEndDate, setStateEndDate] = useState<Date | null>(setting && setting.stayDates.end !== null ? setting.stayDates.end : maxDate);
   useEffect(() => {
     if (stateStartDate !== null
       && stateEndDate !== null
@@ -65,9 +66,10 @@ const Filter = ({
     ChangeStayDates({ end, start });
 
   }, [stateStartDate, stateEndDate]);
-  useEffect(() => {
-    FetchDesignations();
-  }, [])
+
+  // useLayoutEffect(() => {
+  //   FetchDesignations();
+  // }, [])
   const getCorrectFormatDate = (date: Date | null | undefined) => {
     if (date !== null && date !== undefined) {
       const correctFormat = date.toLocaleDateString("ru", { day: "numeric", month: "short" });
@@ -136,6 +138,11 @@ const Filter = ({
     return arr.length !== 0 ? arr.join(", ") : "Какие удобства в номере";
   }
 
+  if (isLoading) {
+    return (
+      <span>Идет загрузка</span>
+    )
+  }
   return (
     <Form {...props} className={'filterRoomsForm ' + (props.className || "")} >
       <FormFieldset key={"stayDates"}>
@@ -145,9 +152,9 @@ const Filter = ({
           theme="field"
           buttonBlock={<div className='filterRoomsForm__stayDateButtonBlock'>
             {
-              getCorrectFormatDate(setting?.stayDates.start)
+              getCorrectFormatDate(stateStartDate)
               + " - "
-              + getCorrectFormatDate(setting?.stayDates.end)
+              + getCorrectFormatDate(stateEndDate)
             }
           </div>}
           contenerBlock={<FlexContainer
@@ -165,8 +172,8 @@ const Filter = ({
                     <DateMaskField
                       state={stateStartDate}
                       setState={setStateStartDate}
-                      minDate={nowDate}
-                      maxDate={throughYearDate}
+                      minDate={minDate}
+                      maxDate={maxDate}
                     />
                   </Field>
                 </Label>
@@ -180,17 +187,16 @@ const Filter = ({
                     <DateMaskField
                       state={stateEndDate}
                       setState={setStateEndDate}
-                      minDate={nowDate}
-                      maxDate={throughYearDate}
+                      minDate={minDate}
+                      maxDate={maxDate}
                     />
                   </Field>
                 </Label>
               </FlexContainer>
             </div>
-            <CalendarCard
-              key={"calendar"}
-              minDate={nowDate}
-              maxDate={throughYearDate}
+            <CalendarCard key={"calendar"}
+              minDate={minDate}
+              maxDate={maxDate}
               state={stateStartDate}
               state2={stateEndDate}
               setState={setStateStartDate}
@@ -198,41 +204,39 @@ const Filter = ({
             />
           </FlexContainer>}
         />
-
       </FormFieldset>
       <FormFieldset key={"guests"}>
         <legend key={"legend"}>гости</legend>
-        <Dropdown
+        <Dropdown key={"dropdown"}
           className={"filterRoomsForm__guests"}
           theme="field"
           buttonBlock={<div className='filterRoomsForm__guestsButtonBlock'>
-            <div>
-              {
-                setting && setting.numberOfGuests.adults + setting.numberOfGuests.children !== 0
-                  ? setting.numberOfGuests.adults + setting.numberOfGuests.children + " " + correctDeclensionWord({
-                    options: {
-                      1: "гость",
-                      2: "гостя",
-                      5: "гостей",
-                    },
-                    value: setting.numberOfGuests.adults + setting.numberOfGuests.children
-                  })
-                  + (
-                    setting.numberOfGuests.babies
-                      ? ", "
-                      + setting.numberOfGuests.babies + " " + correctDeclensionWord({
-                        options: {
-                          1: "младенец",
-                          2: "младенца",
-                          5: "младенцев",
-                        },
-                        value: setting.numberOfGuests.babies
-                      })
-                      : ""
-                  )
-                  : "Сколько гостей"
-              }
-            </div>
+            {
+              setting
+                && (setting.numberOfGuests.adults + setting.numberOfGuests.children) !== 0
+                ? setting.numberOfGuests.adults + setting.numberOfGuests.children + " " + correctDeclensionWord({
+                  options: {
+                    1: "гость",
+                    2: "гостя",
+                    5: "гостей",
+                  },
+                  value: setting.numberOfGuests.adults + setting.numberOfGuests.children
+                })
+                + (
+                  setting.numberOfGuests.babies
+                    ? ", "
+                    + setting.numberOfGuests.babies + " " + correctDeclensionWord({
+                      options: {
+                        1: "младенец",
+                        2: "младенца",
+                        5: "младенцев",
+                      },
+                      value: setting.numberOfGuests.babies
+                    })
+                    : ""
+                )
+                : "Сколько гостей"
+            }
           </div>}
           contenerBlock={<FlexContainer
             className='filterRoomsForm__guestsConteiner'
@@ -284,30 +288,38 @@ const Filter = ({
       <FormFieldset key={"priceRange"}
         className={"filterRoomsForm__priceRange"}
       >
-        <FlexContainer
+        <FlexContainer key={"upperBlock"}
           justifyContent="space-between"
           alignItems="center"
         >
           <legend key={"legend"}>диапазон цены</legend>
-          <FlexContainer
+          <FlexContainer key={"priceRangeInput"}
             className={'filterRoomsForm__priceRangeInput'}
             justifyContent="end"
           >
-            <InputLengthControl
+            <InputLengthControl key={"priceRangeInputMin"}
               className='filterRoomsForm__priceRangeInputItem filterRoomsForm__priceRangeInputMin'
               value={setting?.priceRange?.min}
               onChangeValue={(val) => ChangePriceRange({ max: setting?.priceRange?.max ? setting.priceRange.max : maxPrice, min: val })}
             />
-            {unitPrice}&nbsp;-&nbsp;
-            <InputLengthControl
+            {
+              designations?.unitPrice
+                ? designations.unitPrice
+                : "pуб."
+            }&nbsp;-&nbsp;
+            <InputLengthControl key={"priceRangeInputMax"}
               className='filterRoomsForm__priceRangeInputItem filterRoomsForm__priceRangeInputMax'
               value={setting?.priceRange?.max}
               onChangeValue={(val) => ChangePriceRange({ min: setting?.priceRange?.min ? setting.priceRange.min : minPrice, max: val })}
             />
-            {unitPrice}
+            {
+              designations?.unitPrice
+                ? designations.unitPrice
+                : "pуб."
+            }
           </FlexContainer>
         </FlexContainer>
-        <RangeSlider
+        <RangeSlider key={"priceRangeSlider"}
           className={"filterRoomsForm__priceRangeSlider filterRoomsForm__item_withMarrginTop20"}
           value={[setting?.priceRange?.min, setting?.priceRange?.max]}
           onChangeValue={onChengeRangePriceSlider}
@@ -315,7 +327,7 @@ const Filter = ({
           minValue={minPrice}
           initialValue={[minPrice, maxPrice]}
         />
-        <FlexContainer
+        <FlexContainer key={"downBlock"}
           justifyContent="center"
         >
           Стоимость за сутки пребывания в номере
@@ -323,8 +335,8 @@ const Filter = ({
       </FormFieldset>
       <FormFieldset key={"roomRules"}
       >
-        <legend>Правила прибывания в номере</legend>
-        <FlexContainer
+        <legend key={"legend"}>Правила прибывания в номере</legend>
+        <FlexContainer key={"roomRules"}
           className={"filterRoomsForm__roomRules filterRoomsForm__item_withMarrginTop20"}
           flexDirection="colomn"
           rowGap={12}
@@ -333,9 +345,12 @@ const Filter = ({
             designations
               ? designations.rules.map((item) => {
                 return <CheckboxButton
+                  key={item.id}
                   checked={setting?.roomRules?.includes(item.id)}
                   onChange={(e) => onChecked(item.id, setting?.roomRules ? setting.roomRules : [], ChangeRoomRules)}
-                >{item.name}</CheckboxButton>
+                >
+                  {item.name}
+                </CheckboxButton>
               })
               : ""
           }
@@ -343,8 +358,8 @@ const Filter = ({
       </FormFieldset>
       <FormFieldset key={"facilitiesInRoom"}
       >
-        <legend>доступность</legend>
-        <FlexContainer
+        <legend key={"legend"}>доступность</legend>
+        <FlexContainer key={"facilitiesInRoom"}
           className={"filterRoomsForm__facilitiesInRoom filterRoomsForm__item_withMarrginTop20"}
           flexDirection="colomn"
           rowGap={12}
@@ -353,6 +368,7 @@ const Filter = ({
             designations
               ? designations.facility.map((item) => {
                 return <CheckboxButton
+                  key={item.id}
                   theme="withExplanation"
                   checked={setting?.facilitiesInRoom?.includes(item.id)}
                   onChange={(e) => onChecked(item.id, setting?.facilitiesInRoom ? setting.facilitiesInRoom : [], ChangeFacilities)}
@@ -366,18 +382,16 @@ const Filter = ({
       </FormFieldset>
       <FormFieldset key={"mainEquipmentInRoom"}>
         <legend key={"legend"}>удобства номера</legend>
-        <Dropdown
+        <Dropdown key={"mainEquipmentInRoom"}
           className={"filterRoomsForm__mainEquipment"}
           theme="field"
           buttonBlock={<div className='filterRoomsForm__mainEquipmentButtonBlock'>
-            <div>
               {
 
                 setting
                   ? getMainEquipmentText(setting?.beds, setting?.bedrooms, setting?.bathrooms)
                   : "Какие удобства в номере"
               }
-            </div>
           </div>}
           contenerBlock={<FlexContainer
             className='filterRoomsForm__guestsConteiner'
@@ -428,8 +442,8 @@ const Filter = ({
       </FormFieldset>
       <FormFieldset key={"equipmentInRoom"}
       >
-        <legend>дополнительные удобства</legend>
-        <FlexContainer
+        <legend key={"legend"}>дополнительные удобства</legend>
+        <FlexContainer key={"equipmentInRoom"}
           className={"filterRoomsForm__equipmentInRoom filterRoomsForm__item_withMarrginTop20"}
           flexDirection="colomn"
           rowGap={12}
@@ -438,6 +452,7 @@ const Filter = ({
             designations
               ? designations.equipment.map((item) => {
                 return <CheckboxButton
+                  key={item.id}
                   checked={setting?.equipmentInRoom?.includes(item.id)}
                   onChange={(e) => onChecked(item.id, setting?.equipmentInRoom ? setting.equipmentInRoom : [], ChangeEquipment)}
                   label={item.name}
@@ -454,8 +469,8 @@ const Filter = ({
 const mapStateToProps = (state: RootState) => {
   return ({
     setting: state.filterRooms?.settings,
-    designations: state.filterRooms?.designations,
-    rooms: state.room?.rooms,
+    // designations: state.filterRooms?.designations,
+    isLoading: state.filterRooms?.isLoading
   })
 }
 const mapDispatchToProps = {

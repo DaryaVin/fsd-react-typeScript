@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./dateMaskField.scss";
-import { useDateState } from '../../hooks/useDateState';
+import { fullDateState, useDateState } from '../../hooks/useDateState';
 import { emulateTab } from "emulate-tab";
 import { LengthControlComponent } from "../lengthControlComponent/lengthControlComponent";
 import { FlexContainer } from "../flexContainer/flexContainer";
@@ -68,7 +68,7 @@ interface DateMaskFieldProps extends React.HTMLAttributes<HTMLDivElement> {
 export const DateMaskField = ({ minDate, maxDate, state, setState, className, ...props }: DateMaskFieldProps) => {
   if (minDate) minDate.setHours(0, 0, 0, 0);
   if (maxDate) maxDate.setHours(23, 59, 59, 999);
-
+  // let [stateDate, setStateDate] = useState<fullDateState>(useDateState(state, setState, minDate, maxDate));
   const stateDate = useDateState(state, setState, minDate, maxDate);
 
   const onClickDateMaskField = (e: React.MouseEvent<HTMLElement>) => {
@@ -77,36 +77,42 @@ export const DateMaskField = ({ minDate, maxDate, state, setState, className, ..
       el.getElementsByTagName("input")[0].focus();
     }
   }
+  // console.log("stateDate", stateDate);
 
   return (
-    <div {...props} className={"dateMaskField " + (!(stateDate.day.stateDay || stateDate.month.stateMonth || stateDate.year.stateYear) ? "empty " : "") + (className || "")} onClick={onClickDateMaskField}>
+    <div
+    {...props}
+    // onBlurCapture={(e) => { props.onBlur && props.onBlur(e) }}
+    className={"dateMaskField " + (!(stateDate.day.state || stateDate.month.state || stateDate.year.state) ? "empty " : "") + (className || "")}
+    onClick={onClickDateMaskField}
+    >
       <FlexContainer justifyContent="start">
         <DateMaskFieldWrap
           key={"day"}
-          state={stateDate.day.stateDay}
-          setState={stateDate.day.setStateDay}
+          state={stateDate.day.state}
+          setState={stateDate.day.setState}
           maxLength={2}
           placeholder="ДД"
           isTab
-          change={stateDate.day.onChangeDay}>
+          change={stateDate.day.onChange}>
         </DateMaskFieldWrap>.
         <DateMaskFieldWrap
           key={"month"}
-          state={stateDate.month.stateMonth}
-          setState={stateDate.month.setStateMonth}
+          state={stateDate.month.state}
+          setState={stateDate.month.setState}
           maxLength={2}
           placeholder="ММ"
           isTab
-          change={stateDate.month.onChangeMonth}>
+          change={stateDate.month.onChange}>
         </DateMaskFieldWrap>.
         <DateMaskFieldWrap
           key={"year"}
-          state={stateDate.year.stateYear}
-          setState={stateDate.year.setStateYear}
+          state={stateDate.year.state}
+          setState={stateDate.year.setState}
           maxLength={4}
           placeholder="ГГГГ"
           isTab={false}
-          change={stateDate.year.onChangeYear}>
+          change={stateDate.year.onChange}>
         </DateMaskFieldWrap>
       </FlexContainer>
     </div>

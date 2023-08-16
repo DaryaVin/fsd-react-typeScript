@@ -79,34 +79,29 @@ const getElementsBetweenDates = (minDate: Date, maxDate: Date) => {
   }
 }
 
+interface stateDatePart {
+  state: string,
+  setState: (v: string) => void,
+  onChange: (v: string) => string,
+}
+export interface fullDateState {
+  day: stateDatePart,
+  month: stateDatePart,
+  year: stateDatePart,
+}
+
 export const useDateState = (
   state: Date | null | undefined,
   setState: (date: Date | null) => void,
   minDate?: Date | null,
   maxDate?: Date | null,
-  ): {
-  day: {
-    stateDay: string,
-    setStateDay: (value: string) => void,
-    onChangeDay: (value: string) => string,
-  },
-  month: {
-    stateMonth: string,
-    setStateMonth: (value: string) => void,
-    onChangeMonth: (value: string) => string,
-  },
-  year: {
-    stateYear: string,
-    setStateYear: (value: string) => void,
-    onChangeYear: (value: string) => string,
-  }
-} => {
-  if (state=== undefined) setState(null);
+): fullDateState => {
+  if (state === undefined) setState(null);
   let [stateDay, setStateDay] = useState<string>(state ? prependZerosFunc(state.getDate().toString(), 2) : "");
   let [stateMonth, setStateMonth] = useState<string>(state ? prependZerosFunc((state.getMonth() + 1).toString(), 2) : "");
   let [stateYear, setStateYear] = useState<string>(state ? prependZerosFunc(state.getFullYear().toString(), 4) : "");
 
-  let onChangeDay= (value: string) => { return value };
+  let onChangeDay = (value: string) => { return value };
   let onChangeMonth = (value: string) => { return value };
   let onChangeYear = (value: string) => { return value };
 
@@ -191,19 +186,19 @@ export const useDateState = (
 
   return {
     day: {
-      stateDay,
-      setStateDay,
-      onChangeDay,
+      state: stateDay,
+      setState: setStateDay,
+      onChange: onChangeDay,
     },
     month: {
-      stateMonth,
-      setStateMonth,
-      onChangeMonth,
+      state: stateMonth,
+      setState: setStateMonth,
+      onChange: onChangeMonth,
     },
     year: {
-      stateYear,
-      setStateYear,
-      onChangeYear,
+      state: stateYear,
+      setState: setStateYear,
+      onChange: onChangeYear,
     }
   }
 }

@@ -1,47 +1,125 @@
 @import "../baseComponent/baseVariables&Mixins.scss";
 
 .carousel {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: inline-flex;
+  justify-content: end;
+  overflow: hidden;
+
   &:hover .carousel__button,
-  &:focus-within .carousel__button
-  {
-		opacity: 1;
-	}
+  &:focus-within .carousel__button {
+    opacity: 1;
+  }
+  &.carousel_theme_big {
+    .carousel__wrap {
+      width: 1/3*100%;
+    }
+
+    .carousel__contentContener {
+      flex-direction: column;
+    }
+
+    .carousel__contentItem {
+      min-height: 50%;
+      height: 50%;
+      max-height: 50%;
+    }
+
+    &.carousel_bigWithOneItem {
+      .carousel__wrap {
+        width: 100%;
+        height: 100%;
+      }
+
+      .carousel__contentItem {
+        min-height: 100%;
+        max-height: 100%;
+      }
+    }
+
+    &.carousel_bigWithTwoItem {
+      .carousel__wrap {
+        width: 100%;
+        height: 100%;
+      }
+
+      .carousel__contentContener {
+        flex-direction: row;
+
+      }
+
+      .carousel__contentItem {
+        min-height: 100%;
+        max-height: 100%;
+        min-width: 50%;
+        max-width: 50%;
+        width: 50%;
+      }
+    }
+
+    .carousel__button {
+      left: 0;
+      right: 0;
+      height: 44px;
+      width: 100%;
+
+      &::before {
+        left: 50%;
+        margin-left: -6px;
+      }
+      &.carousel__buttonPrev {
+        background: linear-gradient(180deg, $color1Opacity50 0%, transparent 100%);
+        top: 0;
+        bottom: auto;
+        &::before {
+          transform: rotate(135deg);
+        }
+      }
+
+      &.carousel__buttonNext {
+        background: linear-gradient(180deg, transparent 0%, $color1Opacity50 100%);
+        bottom: 0;
+        top: auto;
+        &::before {
+            transform: rotate(-45deg);
+          }
+      }
+    }
+  }
 }
+
 .carousel__wrap {
   display: flex;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
   width: 100%;
   height: 100%;
   position: relative;
-  overflow: hidden;
 }
+
 .carousel__contentContener {
   height: 100%;
+  position: static;
   width: 100%;
   display: flex;
   flex-direction: row;
-  // flex-basis: 100%;
-  transition: translate;
-  transition-property: transform;
-  transition-duration: 300ms;
-  transition-timing-function: ease-in-out;
+  flex-basis: 100%;
 }
+
 .carousel__contentItem {
   min-width: 100%;
   max-width: 100%;
   height: 100%;
+  min-height: 100%;
   object-fit: cover;
   display: flex;
   justify-content: center;
   align-items: center;
-  &:nth-child(2n +1) {
-    @include linearGradient("background", $color2, $color2Gradiend);
-  }
-  &:nth-child(2n) {
-    @include linearGradient("background", $color3, $color3Gradiend);
-  }
+  @include linearGradient("background", $color1Opacity25, $color1Opacity05);
 }
+
 .carousel__button {
   position: absolute;
   cursor: pointer;
@@ -50,14 +128,14 @@
   bottom: 0;
   border: 0;
   background: none;
-  // z-index: 1;
   width: 44px;
   display: flex;
   justify-content: center;
   align-items: center;
   color: $colorBcg;
   transition: all .3s;
-	opacity: 0;
+  opacity: 0;
+
   &::before {
     content: "";
     position: absolute;
@@ -69,28 +147,36 @@
     border-left: 2px solid $colorBcg;
     transform-origin: 50% 50%;
   }
+
   &.carousel__buttonPrev {
-    background:  linear-gradient(90deg, $color1Opacity50 0%, transparent 100%);
+    background: linear-gradient(90deg, $color1Opacity50 0%, transparent 100%);
     left: 0;
+
     &::before {
       transform: rotate(45deg);
     }
   }
+
   &.carousel__buttonNext {
+    background: linear-gradient(90deg, transparent 0%, $color1Opacity50 100%);
+
     right: 0;
-    background:  linear-gradient(90deg, transparent 0%, $color1Opacity50 100%);
+
     &::before {
+
       transform: rotate(-135deg);
     }
   }
 }
+
 .carousel__dotsList {
   position: absolute;
-  bottom: 15px; right: 15px;
+  bottom: 15px;
+  right: 15px;
   display: flex;
   max-width: $width_size_m - 30px;
-  // z-index: 2;
 }
+
 .carousel__dotsItem {
   width: 7.5px;
   height: 7.5px;
@@ -99,9 +185,11 @@
   border-radius: 50%;
   list-style: none;
   cursor: pointer;
+
   &:not(:last-child) {
     margin-right: 3px;
   }
+
   &.carousel__dotsItem_current {
     background: $colorBcg;
   }

@@ -9,7 +9,7 @@ import { Registration } from "./components/registration/registration";
 import { RequireAuth, RequireUnauth } from "./components/requireAuth/requireAuth";
 import { roomLoader } from "./components/roomPage/roomPage";
 import { RoutingErrorPage } from "./components/routingErrorPage/routingErrorPage";
-import { SearchRooms } from "./components/searchRooms/searchRooms";
+import { searchRoomLoader, SearchRooms } from "./components/searchRooms/searchRooms";
 import { VerificationEmail } from "./components/verificationEmail/verificationEmail";
 import { RoomPage } from "./components/roomPage/roomPage";
 
@@ -105,6 +105,7 @@ export const router = createBrowserRouter([
       {
         path: "search-rooms",
         element: <SearchRooms/>,
+        loader: searchRoomLoader,
       },
       {
         path: "roomPage/:id",

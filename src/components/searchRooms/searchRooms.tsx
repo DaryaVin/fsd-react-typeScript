@@ -1,36 +1,28 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import { RoomCard } from '../roomCard/roomCard'
+import { ref, set } from 'firebase/database';
+import React, { useEffect } from 'react';
+import { bdFirebase } from '../../firebase';
+import { RoomItem } from '../../types/rooms';
+import { FilterRoomsForm } from '../filterRoomsForm/filterRoomsForm';
+import { Pagination } from '../pagination/pagination';
+import { RoomCard } from '../roomCard/roomCard';
+import { RoomCardsList } from '../roomCardsList/roomCardsList';
+import { FilterRoomsAPI } from '../../interfaces/FilterRoomsAPI';
+import { useLoaderData } from 'react-router-dom';
+import { designations } from '../../types/filterRooms';
+
+export async function searchRoomLoader({ params }: any) {
+  const loaderData = JSON.parse(JSON.stringify(params));
+  const designations: designations = await FilterRoomsAPI.FetchDesignations();
+  return designations;
+}
 
 export const SearchRooms = () => {
-  const reviews: {
-    id: string,
-    authorName: string,
-    dateToCreating: Date,
-    content: string,
-    listWhoLikedThisReview: string[] | null,
-    appraisal:  1 | 2 | 3 | 4 | 5 ,
-  }[] = [
-    {
-      id: "review1",
-      authorName: "Иван",
-      dateToCreating: new Date(),
-      content: "номер говно",
-      listWhoLikedThisReview: ["1"],
-      appraisal: 1,
-    },
-    {
-      id: "review2",
-      authorName: "Иван",
-      dateToCreating: new Date(),
-      content: "номер говно",
-      listWhoLikedThisReview: null,
-      appraisal: 2,
-    },
-  ]
+  const designations = useLoaderData() as designations;
+
   return (
     <div className='searchRooms'>
-      <RoomCard isLux id={1} price={10000} reviews={reviews} />
+      <FilterRoomsForm key={"FilterRoomsForm"} className="" designations={designations}></FilterRoomsForm>
+      <RoomCardsList key={"RoomCardsList"} className=''/>
     </div>
   )
 }

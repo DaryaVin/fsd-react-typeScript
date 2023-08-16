@@ -72,7 +72,7 @@ const RegForm = ({
   return (
     <Field theme="card" className="loginForm">
       <Form onSubmit={handleSubmit}>
-        <h1>Регистрация аккаунта</h1>
+        <h1 key={'header'}>Регистрация аккаунта</h1>
         <AuthValidation></AuthValidation>
         <FormFieldset key={"personInfo"}>
           <Field key={"firstName"}>

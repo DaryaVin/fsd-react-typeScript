@@ -9,6 +9,7 @@ export interface userInfo {
   sex?: sexType | null,
   dateBirthday?: Date | null,
   isSubscription?: boolean,
+  personalDiscount?: number,
 }
 export interface AuthState {
   userInfo: userInfo,

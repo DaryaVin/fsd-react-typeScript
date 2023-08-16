@@ -2,6 +2,9 @@ import { FilterRoomsAction, FilterRoomsActionType, FilterRoomsState } from "../.
 
 const initialState: FilterRoomsState = {
   designations: {
+    serviceFee: 0,
+    minPrice: 0,
+    maxPrice: 0,
     rules: [],
     facility: [],
       equipment: [],

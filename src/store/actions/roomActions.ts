@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import axios from "axios";
 import { child, get, ref, set } from "firebase/database";
 import { Dispatch } from "redux";
@@ -27,6 +28,10 @@ export const ChangeCurrentPage = (currentPage: number) => {
 		payload: currentPage,
 	}
  }
+
+//  export const FetchRoomItem = async (roomId: string) => {
+//     return await RoomsAPI.FetchRoomItem(roomId);
+//   }
 
 // export const fetchRooms = ()=> {
 //     return async (dispatch: Dispatch<RoomAction>) => {

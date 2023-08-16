@@ -14,7 +14,13 @@ interface equipmentInRoomItem {
   id: string,
   name: string,
 }
-interface designations {
+export interface designations {
+  unitPrice?: string,
+  serviceFee: number,
+  minPrice: number,
+  maxPrice: number,
+  minDate?: Date,
+  maxDate?: Date,
   rules: roomRuleItem[],
   facility: facilityRoomItem[],
   equipment: equipmentInRoomItem[],

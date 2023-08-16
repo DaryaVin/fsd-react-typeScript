@@ -65,5 +65,21 @@ export const RoomsAPI = {
       totalCount: roomsItems.length,
       newCurrentPage,
     };
-  }
+  },
+  FetchRoomItem: async (roomId: string) => {
+    const dbRef = await ref(bdFirebase);
+    const roomItem: RoomItem = await get(child(dbRef, `rooms/` + roomId)).then((item) => {
+      const roomItem: RoomItem = JSON.parse(JSON.stringify(item));
+      return {
+          ...roomItem,
+          roomConditions: {
+            ...roomItem.roomConditions,
+            roomRules: roomItem.roomConditions.roomRules ? Object.values(roomItem.roomConditions.roomRules) : roomItem.roomConditions.roomRules,
+            facilitiesInRoom: roomItem.roomConditions.facilitiesInRoom ? Object.values(roomItem.roomConditions.facilitiesInRoom) : roomItem.roomConditions.facilitiesInRoom,
+            equipmentInRoom: roomItem.roomConditions.equipmentInRoom ? Object.values(roomItem.roomConditions.equipmentInRoom) : roomItem.roomConditions.equipmentInRoom,
+          }
+        }
+      })
+    return roomItem;
+   }
 }

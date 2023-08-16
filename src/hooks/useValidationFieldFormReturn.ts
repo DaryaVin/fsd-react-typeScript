@@ -41,8 +41,15 @@ export const useValidationFieldForm = (
     minLength: undefined,
     isEmail: undefined,
   };
+  let firstValueIsDirty: boolean = false;
+  if (Array.isArray(value)) {
+    firstValueIsDirty = value.reduce((sum, item) => {return sum && !!item}, true);
+    console.log("firstValueIsDirty", );
 
-  let [isDirty, setIsDirty] = useState<boolean>(!value ? false : true);
+  } else {
+    firstValueIsDirty = !!value;
+  }
+  let [isDirty, setIsDirty] = useState<boolean>(firstValueIsDirty);
   let [isRequired, setIsRequired] = useState<boolean>(true);
   let [isMinLength, setIsMinLength] = useState<boolean>(true);
   let [isValidEmail, setIsValidEmail] = useState<boolean>(true);
@@ -58,48 +65,97 @@ export const useValidationFieldForm = (
       minLength?: string,
       isEmail?: string
     } = message;
-    if (required) {
-      if (value === "" || value === undefined || value === null) {
-        mess.required = typeof (required) === "string" && required !== "" ? required : "Это поле должно быть заполнено";
-        setIsRequired(false);
-      } else {
-        mess.required = "";
-        setIsRequired(true);
-      }
-    }
-    if (minLength) {
-      if (typeof value === "string" || typeof value === "number") {
-        const min = typeof minLength === "number" ? minLength : minLength.min;
-        const length = typeof value === "string" ? value.length : value?.toString().length;
-        if (length < min) {
-          setIsMinLength(false);
-          mess.minLength = typeof minLength !== "number" && minLength.message ? minLength.message : "Минимальная допустимая длина этого поля " + min + " символов";
+    let requiredStatus = true;
+    let minLengthStatus = true;
+    let validEmailStatus = true;
+    const validityСheckItem = (item: any) => {
+      if (required) {
+        // console.log("validityСheckItem", item);
+        if (item === "" || item === undefined || item === null) {
+          mess.required = typeof (required) === "string" && required !== "" ? required : "Это поле должно быть заполнено";
+          requiredStatus = false;
+          // setIsRequired(false);
         } else {
-          setIsMinLength(true);
-          mess.minLength = "";
+          // if () {
+          //   mess.required = "";
+          // }
+
+          // setIsRequired(true);
         }
-      } else {
-        setIsMinLength(false);
-        mess.minLength = "Ошибка кода! Поле получает данные неожиданного формата"
       }
-    }
-    if (isEmail) {
-      if (typeof value === "string") {
-        const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
-        if (!EMAIL_REGEXP.test(value)) {
-          setIsValidEmail(false);
-          mess.isEmail = typeof isEmail === "string" ? isEmail : "В этом поле должен быть введен Email. Например abc@email.ru";
+      if (minLength) {
+        if (typeof item === "string" || typeof item === "number") {
+          const min = typeof minLength === "number" ? minLength : minLength.min;
+          const length = typeof item === "string" ? item.length : item?.toString().length;
+          if (length < min) {
+            minLengthStatus = false;
+            // setIsMinLength(false);
+            mess.minLength = typeof minLength !== "number" && minLength.message ? minLength.message : "Минимальная допустимая длина этого поля " + min + " символов";
+          } else {
+            // setIsMinLength(true);
+            // mess.minLength = "";
+          }
         } else {
-          setIsValidEmail(true);
-          mess.isEmail = "";
+          // setIsMinLength(false);
+          minLengthStatus = false;
+          mess.minLength = "Ошибка кода! Поле получает данные неожиданного формата"
         }
-      } else {
-        setIsValidEmail(false);
-        mess.isEmail = "Ошибка кода! Поле получает данные неожиданного формата"
       }
+      if (isEmail) {
+        if (typeof item === "string") {
+          const EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
+          if (!EMAIL_REGEXP.test(item)) {
+            validEmailStatus = false;
+            // setIsValidEmail(false);
+            mess.isEmail = typeof isEmail === "string" ? isEmail : "В этом поле должен быть введен Email. Например abc@email.ru";
+          } else {
+            // setIsValidEmail(true);
+            // mess.isEmail = "";
+          }
+        } else {
+          validEmailStatus = false;
+          // setIsValidEmail(false);
+          mess.isEmail = "Ошибка кода! Поле получает данные неожиданного формата"
+        }
+      }
+      // return {
+      //   required: requiredStatus,
+      //   minLength: minLengthStatus,
+      //   validEmail: validEmailStatus,
+      // }
+      // if (requiredStatus) mess.required = "";
+      // if (minLengthStatus) mess.minLength = "";
+      // if (validEmailStatus) mess.isEmail = "";
     }
+    if (Array.isArray(value)) {
+      // let requiredStatus = true;
+      // let minLengthStatus = true;
+      // let validEmailStatus = true;
+      for (let index = 0; index < value.length; index++) {
+        validityСheckItem(value[index]);
+        // const status = validityСheckItem(value[index]);
+        // requiredStatus = requiredStatus && status.required;
+        // minLengthStatus = minLengthStatus && status.minLength;
+        // validEmailStatus = validEmailStatus && status.validEmail;
+        if (!(requiredStatus && minLengthStatus && validEmailStatus)) break;
+      }
+
+      // value.forEach((item) => {
+      //   if (isRequired && isMinLength && isValidEmail) validityСheckItem(item);
+      //  })
+    } else {
+      validityСheckItem(value);
+    }
+    if (requiredStatus) mess.required = "";
+    if (minLengthStatus) mess.minLength = "";
+    if (validEmailStatus) mess.isEmail = "";
+    setIsRequired(requiredStatus);
+    setIsMinLength(minLengthStatus);
+    setIsValidEmail(validEmailStatus);
     setMessage(mess);
-  }, [value]);
+    console.log("isDirty", isDirty);
+
+  }, Array.isArray(value) ? [...value] : value);
   return {
     isDirty,
     setIsDirty,

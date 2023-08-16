@@ -2,28 +2,28 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import CalendarReact, { CalendarTileProperties, OnChangeDateRangeCallback, ViewCallback, ViewCallbackProperties } from "react-calendar";
 import "./calendarCard.scss";
 
-interface CalendarCardProps {
+interface CalendarCardProps extends  React.HTMLAttributes<HTMLDivElement>{
   state: Date | null ,
   state2?: Date | null,
   setState: React.Dispatch<React.SetStateAction< Date | null >>,
   setState2?: React.Dispatch<React.SetStateAction< Date | null >>,
-  minDate?: Date | null, 
+  minDate?: Date | null,
   maxDate?: Date | null,
 }
-export const CalendarCard = (props: CalendarCardProps) => {
-  let minDate = props.minDate? props.minDate : undefined;
-  let maxDate = props.maxDate? props.maxDate : undefined;
-  if (minDate) minDate.setHours(0, 0, 0, 0);
-  if (maxDate) maxDate.setHours(23, 59, 59, 999);
+export const CalendarCard = ({state, setState, state2, setState2, minDate, maxDate, className,  ...props}: CalendarCardProps) => {
+  let newMinDate = minDate? minDate : undefined;
+  let newMaxDate = maxDate? maxDate : undefined;
+  if (newMinDate) newMinDate.setHours(0, 0, 0, 0);
+  if (newMaxDate) newMaxDate.setHours(23, 59, 59, 999);
 
-  let value: Date | null| [Date | null, Date | null] = props.state2 ? [props.state, props.state2] : props.state;
+  let value: Date | null| [Date | null, Date | null] = state2 ? [state, state2] : state;
 
   const onChange: OnChangeDateRangeCallback = (values: [Date] | [Date, Date], e: ChangeEvent<HTMLInputElement>) => {
-    props.setState(values[0]);
-    if (!Array.isArray(values)) props.setState(values);
-    if (values[1] && props.setState2) {
-      props.setState(values[0]);
-      props.setState2(values[1]);
+    // setState(values[0]);
+    if (!Array.isArray(values)) setState(values);
+    if (values[1] && setState2) {
+      setState(values[0]);
+      setState2(values[1]);
     }
   }
 
@@ -32,18 +32,18 @@ export const CalendarCard = (props: CalendarCardProps) => {
   }
 
   let [activeStartDateState, setActiveStartDateState] = useState<Date | undefined>(undefined);
-  
-  const onActiveStartDateChange:ViewCallback  = (props: ViewCallbackProperties) => {
-    switch (props.action) {
+
+  const onActiveStartDateChange:ViewCallback  = ({action}: ViewCallbackProperties) => {
+    switch (action) {
       case "prev": {
-        setActiveStartDateState(activeStartDateState instanceof Date ? 
+        setActiveStartDateState(activeStartDateState instanceof Date ?
           new Date(activeStartDateState.getFullYear(), activeStartDateState.getMonth() - 1 )
           : undefined
         );
         break;
       }
       case "next": {
-        setActiveStartDateState(activeStartDateState instanceof Date ? 
+        setActiveStartDateState(activeStartDateState instanceof Date ?
           new Date(activeStartDateState.getFullYear(), activeStartDateState.getMonth() + 1 )
           : undefined
         );
@@ -53,26 +53,26 @@ export const CalendarCard = (props: CalendarCardProps) => {
     }
   }
 
-  const tileDisabledFunc = (props: CalendarTileProperties): boolean => {
-    if ( maxDate && props.date > maxDate) return true; 
-    if ( minDate && props.date < minDate) return true;
+  const tileDisabledFunc = ({date}: CalendarTileProperties): boolean => {
+    if ( newMaxDate && date > newMaxDate) return true;
+    if ( newMinDate && date < newMinDate) return true;
     return false;
   }
 
   useEffect(()=> {
-    setActiveStartDateState(() => props.state instanceof Date 
-      ? new Date(props.state.getFullYear(), props.state.getMonth())
+    setActiveStartDateState(() => state instanceof Date
+      ? new Date(state.getFullYear(), state.getMonth())
       : undefined
     );
-  }, [props.state]);
+  }, [state]);
   return (
     <>
-      <div className={"calendarCard"}>
+      <div {...props} className={"calendarCard" + (className ? " " + className : "")}>
         <CalendarReact
           value={value}
           onChange={onChange}
-          minDate={minDate}
-          maxDate={maxDate}
+          minDate={newMinDate}
+          maxDate={newMaxDate}
           tileDisabled={tileDisabledFunc}
           className={"calendarCard__calendar"}
           locale="ru-Ru"
@@ -84,7 +84,7 @@ export const CalendarCard = (props: CalendarCardProps) => {
           onActiveStartDateChange={onActiveStartDateChange}
           view="month"
           formatMonthYear={formatMonthYearFunc}
-          selectRange={props.state2 ? true: false}
+          selectRange={setState2 ? true: false}
         />
       </div>
     </>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { CreateWrapElement, KEYWORD_CREATEWRAPELEMENT, WrapElementContentType } from "../createWrapElement/createWrapElement";
 import "./dropdown.scss";
 
@@ -9,29 +9,53 @@ interface DropdownProps {
   hasDropButton?: boolean,
   theme?: "field",
 }
+export const dropButton = (<button type="button" className="dropdown__dropButton ">Кнопка выподающего элемента</button>);
 export const Dropdown = ({ buttonBlock, contenerBlock, className, hasDropButton, theme }: DropdownProps) => {
   let [show, setShow] = useState<boolean>(false);
+  let [newButtonBlock, setNewButtonBlock] = useState<WrapElementContentType>(buttonBlock);
 
-  const dropButton = (<button type="button" className="dropdown__dropButton ">Кнопка выподающего элемента</button>);
-  let newButtonBlock: any;
-  if (Array.isArray(buttonBlock)) {
-    newButtonBlock = buttonBlock.map((item, index) => {
-      return <CreateWrapElement
-        key={index}
-        className="dropdown__wrap"
-        childrenContent={[KEYWORD_CREATEWRAPELEMENT, dropButton]}
-      >
-        {item}
-      </CreateWrapElement>
-    })
-  } else {
-    newButtonBlock = <CreateWrapElement
-      className="dropdown__wrap"
-      childrenContent={[KEYWORD_CREATEWRAPELEMENT, dropButton]}
-    >
-      {buttonBlock}
-    </CreateWrapElement>
+  const buttonBlockRef = useRef<HTMLDivElement>(null);
+
+  const createNewButtonBlock = () => {
+    let childrenContent: WrapElementContentType[] | undefined = [KEYWORD_CREATEWRAPELEMENT, dropButton];
+    if (buttonBlockRef.current?.getElementsByClassName("dropdown__dropButton").length) {
+      childrenContent = undefined;
+    }
+    if (childrenContent) {
+      if (Array.isArray(buttonBlock)) {
+        setNewButtonBlock(buttonBlock.map((item, index) => {
+          return <CreateWrapElement
+            key={index}
+            className={(childrenContent ? " dropdown_wrap" : "")}
+            childrenContent={childrenContent}
+          >
+            {item}
+          </CreateWrapElement>
+        }))
+      } else {
+        setNewButtonBlock(<CreateWrapElement
+          className={(childrenContent ? " dropdown_wrap" : "")}
+          childrenContent={childrenContent}
+        >
+          {buttonBlock}
+        </CreateWrapElement>)
+      }
+    }
   }
+
+  useLayoutEffect(() => { createNewButtonBlock() }, []);
+  useLayoutEffect(() => {
+    setNewButtonBlock(buttonBlock);
+  }, [buttonBlock]);
+  useLayoutEffect(() => {
+    createNewButtonBlock();
+    if (buttonBlockRef.current && buttonBlockRef.current.getElementsByClassName("dropdown__dropButton").length) {
+      Array.from(buttonBlockRef.current.getElementsByClassName("dropdown__dropButton")).map((element) => {
+        element.parentElement?.classList.add("dropdown__wrap")
+      })
+    }
+  }, [newButtonBlock]);
+
 
   const onClickButtonBlock = (e: React.MouseEvent) => {
     const buttonBlock = e.currentTarget;
@@ -68,10 +92,17 @@ export const Dropdown = ({ buttonBlock, contenerBlock, className, hasDropButton,
     >
       <div
         className={"dropdown__buttonBlock" + (show ? " dropdown__buttonBlock_version_show" : "")}
+        ref={buttonBlockRef}
         key={"dropdown__buttonBlock"}
         onClick={onClickButtonBlock}
       >
-        {newButtonBlock}
+        {
+          Array.isArray(newButtonBlock)
+            ? newButtonBlock.map((item) => {
+              return item
+            })
+            : newButtonBlock
+        }
       </div>
       <div
         className={"dropdown__contenerBlock" + (show ? " show" : "")}

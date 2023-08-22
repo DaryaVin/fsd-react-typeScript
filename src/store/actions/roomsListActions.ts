@@ -1,30 +1,26 @@
-import { async } from "@firebase/util";
-import axios from "axios";
-import { child, get, ref, set } from "firebase/database";
 import { Dispatch } from "redux";
-import { bdFirebase } from "../../firebase";
 import { RoomsAPI } from "../../interfaces/roomsAPI";
 import { settings } from "../../types/filterRooms";
-import { RoomAction, RoomActionType, RoomItem } from "../../types/rooms";
+import { RoomListAction, RoomListActionType } from "../../types/rooms";
 
 export const FetchRooms = (filterSettings: settings, pageSize: number, currentPage: number) => {
-    return async (dispatch: Dispatch<RoomAction>) => {
+    return async (dispatch: Dispatch<RoomListAction>) => {
         try {
-            dispatch({ type: RoomActionType.FETCH_ROOMS });
+            dispatch({ type: RoomListActionType.FETCH_ROOMS });
             const payload = await RoomsAPI.FetchRooms(filterSettings, pageSize, currentPage);
 
-            dispatch({ type: RoomActionType.FETCH_ROOMS__SUCCESS, payload});
+            dispatch({ type: RoomListActionType.FETCH_ROOMS__SUCCESS, payload});
 
         } catch (e) {
             const error = JSON.parse(JSON.stringify(e));
-            dispatch({ type: RoomActionType.FETCH_ROOMS__ERROR, payload: error.code });
+            dispatch({ type: RoomListActionType.FETCH_ROOMS__ERROR, payload: error.code });
         }
     }
 }
 
 export const ChangeCurrentPage = (currentPage: number) => {
     return {
-		type: RoomActionType.CHANGE_CURRENTPAGE,
+		type: RoomListActionType.CHANGE_CURRENTPAGE,
 		payload: currentPage,
 	}
  }

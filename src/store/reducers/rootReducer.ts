@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
 import { authReducer } from "./authReducer";
 import { filterRoomsReducer } from "./fileterRoomsReducer";
-import { roomReducer } from "./roomReducer";
+import { roomListReducer } from "./roomListReducer";
 
 export const rootReducer = combineReducers(
     {
-        room: roomReducer,
+        roomsList: roomListReducer,
         auth: authReducer,
         filterRooms: filterRoomsReducer,
     }

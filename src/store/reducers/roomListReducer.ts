@@ -1,6 +1,6 @@
-import { RoomAction, RoomActionType, RoomState } from "../../types/rooms";
+import { RoomListAction, RoomListActionType, RoomListState } from "../../types/rooms";
 
-const initialState: RoomState = {
+const initialState: RoomListState = {
     totalCount: 0,
     pageSize: 12,
     currentPage: 1,
@@ -9,24 +9,24 @@ const initialState: RoomState = {
     error: null,
 };
 
-export const roomReducer = (state: RoomState = initialState, action: RoomAction): RoomState | undefined => {
+export const roomListReducer = (state: RoomListState = initialState, action: RoomListAction): RoomListState | undefined => {
     switch (action.type) {
-        case RoomActionType.FETCH_ROOMS: {
+        case RoomListActionType.FETCH_ROOMS: {
             return {...state, isLoading: true, error: null};
         }
-        case RoomActionType.FETCH_ROOMS__SUCCESS: {
+        case RoomListActionType.FETCH_ROOMS__SUCCESS: {
             return {...state, isLoading: false, rooms: action.payload.rooms, totalCount: action.payload.totalCount, currentPage: action.payload.newCurrentPage};
         }
-        case RoomActionType.FETCH_ROOMS__ERROR: {
+        case RoomListActionType.FETCH_ROOMS__ERROR: {
             return {...state, isLoading: false, error: action.payload};
         }
-        case RoomActionType.CHANGE_CURRENTPAGE: {
+        case RoomListActionType.CHANGE_CURRENTPAGE: {
             return {...state, currentPage: action.payload}
         }
-        case RoomActionType.CHANGE_PAGESIZE: {
+        case RoomListActionType.CHANGE_PAGESIZE: {
             return {...state, pageSize: action.payload}
         }
-        case RoomActionType.CHANGE_TOTALCOUNT: {
+        case RoomListActionType.CHANGE_TOTALCOUNT: {
             return {...state, currentPage: action.payload}
 
         }

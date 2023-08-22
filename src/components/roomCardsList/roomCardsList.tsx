@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { FetchRooms, ChangeCurrentPage} from "../../store/actions/roomActions";
+import { FetchRooms, ChangeCurrentPage} from "../../store/actions/roomsListActions";
 import { RootState } from '../../store/reducers/rootReducer';
 import { Pagination } from '../pagination/pagination';
 import { RoomCard } from '../roomCard/roomCard';
@@ -45,7 +45,7 @@ const CardsList = ({
 const mapStateToProps = (state: RootState) => {
   return ({
     filterSettings: state.filterRooms?.settings,
-    roomsState: state.room,
+    roomsState: state.roomsList,
   })
 }
 const mapDispatchToProps = {

@@ -2,7 +2,9 @@ import { roomConditions } from "./filterRooms";
 
 export interface ReviewItem {
 	id: string,
-	authorName: string,
+	authorId: string,
+	authorName?: string,
+	authorPhotoURL?: string,
 	dateToCreating: Date,
 	content: string,
 	listWhoLikedThisReview: string[] | null,
@@ -17,16 +19,20 @@ export interface RoomItem {
 	photos?: string[],
 	roomConditions: roomConditions,
 };
-export interface RoomState {
+export interface RoomListState {
 	rooms: RoomItem[];
 	totalCount: number,
 	pageSize: number,
 	currentPage: number,
-	isLoading: boolean;
-	error: null | string;
+	isLoading: boolean,
+	error: null | string,
 };
-
-export enum RoomActionType {
+export interface RoomState {
+	roomItem: RoomItem | null,
+	isLoading: boolean,
+	error: null | string,
+};
+export enum RoomListActionType {
 	FETCH_ROOMS = "FETCH_ROOMS",
 	FETCH_ROOMS__SUCCESS = "FETCH_ROOMS__SUCCESS",
 	FETCH_ROOMS__ERROR = "FETCH_ROOMS__ERROR",
@@ -36,10 +42,10 @@ export enum RoomActionType {
 }
 
 interface FetchRoomsAction {
-	type: RoomActionType.FETCH_ROOMS;
+	type: RoomListActionType.FETCH_ROOMS;
 }
 interface FetchRoomsSuccessAction {
-	type: RoomActionType.FETCH_ROOMS__SUCCESS;
+	type: RoomListActionType.FETCH_ROOMS__SUCCESS;
 	payload: {
 		rooms:RoomItem[],
 		totalCount: number,
@@ -47,22 +53,22 @@ interface FetchRoomsSuccessAction {
 	};
 }
 interface FetchRoomsErrorAction {
-	type: RoomActionType.FETCH_ROOMS__ERROR;
+	type: RoomListActionType.FETCH_ROOMS__ERROR;
 	payload: string;
 }
 interface ChangeTotalCountAction {
-	type: RoomActionType.CHANGE_TOTALCOUNT;
+	type: RoomListActionType.CHANGE_TOTALCOUNT;
 	payload: number;
 }
 interface ChangeCurrentPageAction {
-	type: RoomActionType.CHANGE_CURRENTPAGE;
+	type: RoomListActionType.CHANGE_CURRENTPAGE;
 	payload: number;
 }
 interface ChangePageSizeAction {
-	type: RoomActionType.CHANGE_PAGESIZE;
+	type: RoomListActionType.CHANGE_PAGESIZE;
 	payload: number;
 }
-export type RoomAction =
+export type RoomListAction =
 	FetchRoomsAction
 	| FetchRoomsSuccessAction
 	| FetchRoomsErrorAction

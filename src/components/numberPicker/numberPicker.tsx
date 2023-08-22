@@ -1,88 +1,89 @@
 import React, { useEffect, useState } from "react";
 import "./numberPicker.scss";
 
-interface NumberPickerProps {
+type NumberPickerProps = {
   state: number | null | undefined,
   setState: (val: number) => void,
   minValue?: number,
   maxValue?: number,
   step?: number,
   defaultValue?: number,
-}
-export const NumberPicker = (props: NumberPickerProps) => {
-  const defaultValue = props.defaultValue !== undefined ? props.defaultValue : 0;
-  const step = props.step ? props.step : 1;
-  const [min, max] = props.minValue !== undefined && props.maxValue !== undefined && props.minValue > props.maxValue
-                      ? [props.maxValue, props.minValue]
-                      : [props.minValue, props.maxValue];
+} & React.HTMLAttributes<HTMLDivElement>;
+export const NumberPicker = ({ state, setState, minValue, maxValue, step = 1, defaultValue = 0, ...props }: NumberPickerProps) => {
+  // const defaultValue = defaultValue !== undefined ? defaultValue : 0;
+  // const step = step ? step : 1;
+  const [min, max] = minValue !== undefined && maxValue !== undefined && minValue > maxValue
+    ? [maxValue, minValue]
+    : [minValue, maxValue];
   const onChangeValue = (val: number) => {
-    if ( (min !== undefined && max !== undefined && val >= min && val <= max)
+    if ((min !== undefined && max !== undefined && val >= min && val <= max)
       || (min !== undefined && max === undefined && val >= min)
       || (min === undefined && max !== undefined && val <= max)
       || (min === undefined && max === undefined)
     ) {
-      props.setState(val);
+      setState(val);
     } else {
       if (min !== undefined && val < min) {
-        props.setState(min);
+        setState(min);
       }
       if (max !== undefined && val > max) {
-        props.setState(max);
+        setState(max);
       }
     }
   }
-  let [state, setState] = useState<string>(props.state!== null && props.state!== undefined ? props.state.toString() : "");
+  let [number, setNumber] = useState<string>(state !== null && state !== undefined ? state.toString() : "");
 
   const onChengeInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.currentTarget.value;
-      setState(value);
+    setNumber(value);
+    
   }
   const onBlurInputValue = (e: React.FocusEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>) => {
     let value = e.currentTarget.value;
     const remainder = +value % step;
-    if (isNaN(+value)) props.setState(defaultValue);
+    if (isNaN(+value)) setState(defaultValue);
     if (remainder === 0) {
       onChangeValue(+value);
     } else {
       onChangeValue(+value - remainder);
     }
-    setState(props.state!== null && props.state!== undefined ? props.state.toString() : "");
+    setNumber(state !== null && state !== undefined ? state.toString() : "");
   }
   useEffect(() => {
-    setState(props.state!== null && props.state!== undefined ? props.state.toString() : "");
-  }, [props.state])
+    setNumber(state !== null && state !== undefined ? state.toString() : "");
+  }, [state])
   return (
     <>
-    <div className="numberPicker">
-      <button
-        className="numberPicker__button numberPicker__minusButton"
-        type="button"
-        onClick={() => onChangeValue(props.state !== null && props.state!== undefined ?  props.state - step : defaultValue)}
-        disabled={(min !== undefined && props.state !== null && props.state!== undefined && (props.state <= min)) ? true : false }
-      >
-        -
-      </button>
-      <input
-        type={"number"}
-        onChange={onChengeInputValue}
-        onBlur={onBlurInputValue}
-        onKeyDown={(e) => {if (e.code === "Enter") onBlurInputValue(e)}}
-        value={state}
-        className={"numberPicker__number"}
-        min={min}
-        max={max}
-        step={step}
+      <div {...props} className={"numberPicker" + (props.className ? " " + props.className : "")}>
+        <button
+          className="numberPicker__button numberPicker__minusButton"
+          type="button"
+          onClick={() => onChangeValue(state !== null && state !== undefined ? state - step : defaultValue)}
+          disabled={(min !== undefined && state !== null && state !== undefined && (state <= min)) ? true : false}
+        >
+          -
+        </button>
+        <input
+          type={"number"}
+          onChange={onChengeInputValue}
+          onBlur={onBlurInputValue}
+          onKeyDown={(e) => { if (e.code === "Enter") onBlurInputValue(e) }}
+          value={number}
+          className={"numberPicker__number"}
+          min={min}
+          max={max}
+          step={step}
 
-      />
-      <button
-        className="numberPicker__button numberPicker__plusButton"
-        type="button"
-        onClick={() => onChangeValue(props.state !== null && props.state!== undefined ?  props.state + step : defaultValue)}
-        disabled={(max !== undefined && props.state !== null && props.state!== undefined && (props.state >= max)) ? true : false }
-      >
-        +
-      </button>
-    </div>
+        />
+        <button
+          className="numberPicker__button numberPicker__plusButton"
+          type="button"
+          onClick={() => onChangeValue(state !== null && state !== undefined ? state + step : defaultValue)}
+          disabled={(max !== undefined && state !== null && state !== undefined && (state >= max)) ? true : false}
+        >
+          +
+        </button>
+      </div>
     </>
   )
 }

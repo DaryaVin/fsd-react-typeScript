@@ -9,17 +9,28 @@ export interface useValidationFieldFormProps {
       message?: string,
     },
     isEmail?: boolean | string,
+    isAboveMinimum?: number | {
+      min: number,
+      message?: string,
+    },
+    isBelowMaximum?: number | {
+      max: number,
+      message?: string,
+    },
   }
+}
+interface validatorMessage {
+  required?: string,
+  minLength?: string,
+  isEmail?: string,
+  isAboveMinimum?: string,
+  isBelowMaximum?: string,
 }
 export interface useValidationFieldFormReturn {
   isDirty: boolean,
   setIsDirty: React.Dispatch<React.SetStateAction<boolean>>,
   isValid: boolean,
-  message: {
-    required?: string,
-    minLength?: string,
-    isEmail?: string
-  }
+  message: validatorMessage
 }
 export const useValidationFieldForm = (
   value: any,
@@ -30,44 +41,53 @@ export const useValidationFieldForm = (
       message?: string,
     },
     isEmail?: boolean | string,
+    isAboveMinimum?: number | {
+      min: number,
+      message?: string,
+    },
+    isBelowMaximum?: number | {
+      max: number,
+      message?: string,
+    },
   }
 ): useValidationFieldFormReturn => {
   const {
     required,
     minLength,
-    isEmail
+    isEmail,
+    isAboveMinimum,
+    isBelowMaximum,
   } = valudations ? valudations : {
     required: undefined,
     minLength: undefined,
     isEmail: undefined,
+    isAboveMinimum: undefined,
+    isBelowMaximum: undefined,
   };
+
   let firstValueIsDirty: boolean = false;
   if (Array.isArray(value)) {
-    firstValueIsDirty = value.reduce((sum, item) => {return sum && !!item}, true);
-    console.log("firstValueIsDirty", );
+    firstValueIsDirty = value.reduce((sum, item) => { return sum && !!item }, true);
 
   } else {
     firstValueIsDirty = !!value;
   }
+
   let [isDirty, setIsDirty] = useState<boolean>(firstValueIsDirty);
   let [isRequired, setIsRequired] = useState<boolean>(true);
   let [isMinLength, setIsMinLength] = useState<boolean>(true);
   let [isValidEmail, setIsValidEmail] = useState<boolean>(true);
-  const [message, setMessage] = useState<{
-    required?: string,
-    minLength?: string,
-    isEmail?: string
-  }>({});
+  let [isAboveMinimumState, setIsAboveMinimumState] = useState<boolean>(true);
+  let [isBelowMaximumState, setIsBelowMaximumState] = useState<boolean>(true);
+  const [message, setMessage] = useState<validatorMessage>({});
 
   useEffect(() => {
-    let mess: {
-      required?: string,
-      minLength?: string,
-      isEmail?: string
-    } = message;
+    let mess: validatorMessage = message;
     let requiredStatus = true;
     let minLengthStatus = true;
     let validEmailStatus = true;
+    let isAboveMinimumStatus = true;
+    let isBelowMaximumStatus = true;
     const validityСheckItem = (item: any) => {
       if (required) {
         // console.log("validityСheckItem", item);
@@ -118,48 +138,70 @@ export const useValidationFieldForm = (
           mess.isEmail = "Ошибка кода! Поле получает данные неожиданного формата"
         }
       }
-      // return {
-      //   required: requiredStatus,
-      //   minLength: minLengthStatus,
-      //   validEmail: validEmailStatus,
-      // }
-      // if (requiredStatus) mess.required = "";
-      // if (minLengthStatus) mess.minLength = "";
-      // if (validEmailStatus) mess.isEmail = "";
+      if (isAboveMinimum) {
+        
+        if (typeof item === "number") {
+          const min = typeof isAboveMinimum === "number" ? isAboveMinimum : isAboveMinimum.min;
+          if (item < min) {
+            isAboveMinimumStatus = false;
+            mess.isAboveMinimum = typeof isAboveMinimum !== "number" && isAboveMinimum.message
+              ? isAboveMinimum.message
+              : "Данное поле должно быть не меньше " + min;
+          }
+        } else {
+          isAboveMinimumStatus = false;
+          mess.isAboveMinimum = "Ошибка кода! Поле получает данные неожиданного формата";
+        }
+      }
+      if (isBelowMaximum) {
+        if (typeof item === "number") {
+          const max = typeof isBelowMaximum === "number" ? isBelowMaximum : isBelowMaximum.max;
+          if (item > max) {
+            isBelowMaximumStatus = false;
+            mess.isBelowMaximum = typeof isBelowMaximum !== "number" && isBelowMaximum.message
+              ? isBelowMaximum.message
+              : "Данное поле должно быть не больше " + max;
+          }
+        } else {
+          isAboveMinimumStatus = false;
+          mess.isAboveMinimum = "Ошибка кода! Поле получает данные неожиданного формата";
+        }
+      }
     }
     if (Array.isArray(value)) {
-      // let requiredStatus = true;
-      // let minLengthStatus = true;
-      // let validEmailStatus = true;
       for (let index = 0; index < value.length; index++) {
         validityСheckItem(value[index]);
-        // const status = validityСheckItem(value[index]);
-        // requiredStatus = requiredStatus && status.required;
-        // minLengthStatus = minLengthStatus && status.minLength;
-        // validEmailStatus = validEmailStatus && status.validEmail;
-        if (!(requiredStatus && minLengthStatus && validEmailStatus)) break;
+        if (!(
+          requiredStatus 
+          && minLengthStatus 
+          && validEmailStatus
+          && isAboveMinimumStatus
+          && isBelowMaximumStatus
+          )) break;
       }
-
-      // value.forEach((item) => {
-      //   if (isRequired && isMinLength && isValidEmail) validityСheckItem(item);
-      //  })
     } else {
       validityСheckItem(value);
     }
     if (requiredStatus) mess.required = "";
     if (minLengthStatus) mess.minLength = "";
     if (validEmailStatus) mess.isEmail = "";
+    if (isAboveMinimumStatus) mess.isAboveMinimum = "";
+    if (isBelowMaximumStatus) mess.isBelowMaximum = "";
+
     setIsRequired(requiredStatus);
     setIsMinLength(minLengthStatus);
     setIsValidEmail(validEmailStatus);
-    setMessage(mess);
-    console.log("isDirty", isDirty);
+    setIsAboveMinimumState(isAboveMinimumStatus);
+    setIsBelowMaximumState(isBelowMaximumStatus);
 
-  }, Array.isArray(value) ? [...value] : value);
+    setMessage(mess);
+
+  }, Array.isArray(value) ? [...value] : [value]);
+
   return {
     isDirty,
     setIsDirty,
-    isValid: isRequired && isMinLength && isValidEmail,
+    isValid: isRequired && isMinLength && isValidEmail && isAboveMinimumState && isBelowMaximumState,
     message
   }
 }

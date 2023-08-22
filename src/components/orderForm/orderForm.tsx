@@ -30,16 +30,14 @@ const Order = ({ settings, userInfo, roomItem, designations, ...props }: OrderFo
     name,
     price,
     isLux,
-    reviews,
-    photos,
     roomConditions
   }: RoomItem = roomItem;
   const unitPrice = designations.unitPrice ? designations.unitPrice : "pуб.";
   const [startDateSate, setStartDateSate] = useState<Date | null>(settings?.stayDates.start || null);
   const [endDateSate, setEndDateSate] = useState<Date | null>(settings?.stayDates.end || null);
   const stayDatesValidator = useValidationFieldForm([startDateSate, endDateSate], {
-    required:"Отметьте даты прибывания в данном номере"
-  })
+    required: "Отметьте даты прибывания в данном номере",
+  });
   const [numberOfGuestsState, setNumberOfGuestsState] = useState<{
     adults: number;
     children: number;
@@ -49,6 +47,17 @@ const Order = ({ settings, userInfo, roomItem, designations, ...props }: OrderFo
     children: 0,
     babies: 0
   });
+  const numberOfGuestsValidator = useValidationFieldForm(numberOfGuestsState.adults + numberOfGuestsState.children, {
+    isAboveMinimum:{
+      min: 1,
+      message: "В номере должен проживать хотя бы один гость, не считая младенцев"
+    },
+    isBelowMaximum: {
+      max: roomConditions.beds,
+      message: "В номере не может проживать гостей больше, чем количество спальных мест в номере"
+    }
+  })
+
   useEffect(() => {
     if (startDateSate !== null
       && endDateSate !== null
@@ -61,6 +70,7 @@ const Order = ({ settings, userInfo, roomItem, designations, ...props }: OrderFo
   const numberOfDaysBetweenDates = (date1: Date, date2: Date) => {
     return Math.ceil(Math.abs(date2.getTime() - date1.getTime()) / (1000 * 3600 * 24) + 1)
   }
+
   return (
     <Form
     {...props}
@@ -99,8 +109,7 @@ const Order = ({ settings, userInfo, roomItem, designations, ...props }: OrderFo
                   <DateMaskField
                     state={startDateSate}
                     setState={setStartDateSate}
-                    onBlur={() => { stayDatesValidator.setIsDirty(true); console.log("DateMaskField onBlur startDateSate", stayDatesValidator);
-                    }}
+                    onBlur={() => { stayDatesValidator.setIsDirty(true);}}
                   />
                   {dropButton}
                 </Field>
@@ -116,8 +125,7 @@ const Order = ({ settings, userInfo, roomItem, designations, ...props }: OrderFo
                   <DateMaskField
                     state={endDateSate}
                     setState={setEndDateSate}
-                    onBlur={() =>{ stayDatesValidator.setIsDirty(true); console.log("DateMaskField onBlur endDateSate", stayDatesValidator);
-                    }}
+                    onBlur={() =>{ stayDatesValidator.setIsDirty(true);}}
                   />
                   {dropButton}
                 </Field>
@@ -176,6 +184,8 @@ const Order = ({ settings, userInfo, roomItem, designations, ...props }: OrderFo
             className='filterRoomsForm__guestsConteiner'
             flexDirection="colomn"
             rowGap={7}
+            onBlurCapture={() => { numberOfGuestsValidator.setIsDirty(true);}}
+            onMouseLeave={() => { numberOfGuestsValidator.setIsDirty(true);}} 
           >
             <FlexContainer key={"adults"}
               justifyContent="space-between"
@@ -187,6 +197,7 @@ const Order = ({ settings, userInfo, roomItem, designations, ...props }: OrderFo
                   state={numberOfGuestsState.adults}
                   setState={(val) => setNumberOfGuestsState({ ...numberOfGuestsState, adults: val })}
                   minValue={0}
+                  maxValue={roomConditions.beds}
                 />
               </Label>
             </FlexContainer>
@@ -200,6 +211,7 @@ const Order = ({ settings, userInfo, roomItem, designations, ...props }: OrderFo
                   state={numberOfGuestsState.children}
                   setState={(val) => setNumberOfGuestsState({ ...numberOfGuestsState, children: val })}
                   minValue={0}
+                  maxValue={roomConditions.beds}
                 />
               </Label>
             </FlexContainer>
@@ -218,6 +230,7 @@ const Order = ({ settings, userInfo, roomItem, designations, ...props }: OrderFo
             </FlexContainer>
           </FlexContainer>}
         />
+        <ValidationMessage key={"validator"} {...numberOfGuestsValidator} />
       </FormFieldset>
       {
         startDateSate && endDateSate
@@ -326,6 +339,7 @@ const Order = ({ settings, userInfo, roomItem, designations, ...props }: OrderFo
               theme="fillBcg"
               className="orderForm__submitButton"
               type="submit"
+              disabled={!(stayDatesValidator.isValid && numberOfGuestsValidator.isValid)}
             >
               <span></span>
               Забронировать

@@ -19,6 +19,7 @@ export const RoomCard = ({id, photos, name, reviews, price, isLux }: RoomItem) =
         navigate(`/roomPage/${id}`);
     }
   }
+  
   return (
     <Field theme="card" className='roomCard block_size_m' onClick={(e) => onClickRoomCard(e)}>
       <Carousel key={"roomCard__carousel"}
@@ -26,7 +27,13 @@ export const RoomCard = ({id, photos, name, reviews, price, isLux }: RoomItem) =
         height={150}
         width={270}
       >
-        {photos}
+        {
+          photos
+          ? photos.map((url) => { 
+            return <img key={url} src={url} alt={"Фото номера " + name}/>
+           })
+          : ""
+        }
       </Carousel>
       <div key={"roomCard__info"}
         className="roomCard__info"

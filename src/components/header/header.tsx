@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "./header.scss";
 import { connect, ConnectedProps } from 'react-redux';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { RootState } from '../../store/reducers/rootReducer';
 import { Button } from '../button/button';
 import { FlexContainer } from '../flexContainer/flexContainer';

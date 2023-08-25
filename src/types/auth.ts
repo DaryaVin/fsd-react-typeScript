@@ -8,6 +8,7 @@ export interface userInfo {
   lastName?: string,
   sex?: sexType | null,
   dateBirthday?: Date | null,
+  userPhotoURL?: string,
   isSubscription?: boolean,
   personalDiscount?: number,
 }

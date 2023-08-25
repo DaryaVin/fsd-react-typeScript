@@ -1,13 +1,15 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { child, get, ref, set, update } from "firebase/database";
 import { authFirebase, bdFirebase } from "../firebase";
 import { userInfo } from "../types/auth";
 export const authAPI = {
+  SetAuthWatcher: (callback: (u: User | null) => void) => {
+    authFirebase.onAuthStateChanged((u) => {
+      callback(u);
+    })
+  },
   CheckAuth: async () => {
-    let user = null;
-    await onAuthStateChanged(authFirebase, (u) => {
-      user = u;
-    });
+    const user: User | null = await authFirebase.currentUser;
     return user;
   },
   FetchLogin: async (email: string, password: string) => {

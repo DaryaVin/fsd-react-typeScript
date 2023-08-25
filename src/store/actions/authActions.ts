@@ -5,6 +5,23 @@ import { authFirebase, bdFirebase } from "../../firebase";
 import { authAPI } from "../../interfaces/authAPI";
 import { AuthAction, AuthActionType, sexType, userInfo } from "../../types/auth";
 
+export const SetAuthWatcher = () => { 
+	return async (dispatch:Dispatch<AuthAction>) => { 
+		try {
+			const callback = (user: User | null) => { 
+				dispatch({ type: AuthActionType.FETCH_AUTH__SUCCESS, payload: user});
+				if (user) {
+					FetchUserInfo(user.uid)(dispatch);
+				}
+			 }
+			 authAPI.SetAuthWatcher(callback);
+		} catch (e) {
+			const error = JSON.parse(JSON.stringify(e));
+			dispatch({ type: AuthActionType.FETCH_AUTH__ERROR, payload: error.code });
+		}
+	 }
+ }
+
 export const CheckAuth = () => {
 	return async (dispatch: Dispatch<AuthAction>) => {
 		try {

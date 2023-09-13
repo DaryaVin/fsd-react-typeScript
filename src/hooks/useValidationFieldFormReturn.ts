@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { on } from "stream";
 
 export interface useValidationFieldFormProps {
   value: any,
@@ -17,6 +18,8 @@ export interface useValidationFieldFormProps {
       max: number,
       message?: string,
     },
+    onlyRussianAndEnglishLetters?: boolean | string,
+    isPhone?: boolean | string,
   }
 }
 interface validatorMessage {
@@ -25,6 +28,8 @@ interface validatorMessage {
   isEmail?: string,
   isAboveMinimum?: string,
   isBelowMaximum?: string,
+  onlyRussianAndEnglishLetters?: string,
+  isPhone?: string,
 }
 export interface useValidationFieldFormReturn {
   isDirty: boolean,
@@ -49,6 +54,8 @@ export const useValidationFieldForm = (
       max: number,
       message?: string,
     },
+    onlyRussianAndEnglishLetters?: boolean | string,
+    isPhone?: boolean | string,
   }
 ): useValidationFieldFormReturn => {
   const {
@@ -57,12 +64,16 @@ export const useValidationFieldForm = (
     isEmail,
     isAboveMinimum,
     isBelowMaximum,
+    onlyRussianAndEnglishLetters,
+    isPhone,
   } = valudations ? valudations : {
     required: undefined,
     minLength: undefined,
     isEmail: undefined,
     isAboveMinimum: undefined,
     isBelowMaximum: undefined,
+    onlyRussianAndEnglishLetters: undefined,
+    isPhone: undefined,
   };
 
   let firstValueIsDirty: boolean = false;
@@ -77,8 +88,10 @@ export const useValidationFieldForm = (
   let [isRequired, setIsRequired] = useState<boolean>(true);
   let [isMinLength, setIsMinLength] = useState<boolean>(true);
   let [isValidEmail, setIsValidEmail] = useState<boolean>(true);
+  let [isValidPhone, setIsValidPhone] = useState<boolean>(true);
   let [isAboveMinimumState, setIsAboveMinimumState] = useState<boolean>(true);
   let [isBelowMaximumState, setIsBelowMaximumState] = useState<boolean>(true);
+  let [onlyRussianAndEnglishLettersState, setOnlyRussianAndEnglishLettersState] = useState<boolean>(true);
   const [message, setMessage] = useState<validatorMessage>({});
 
   useEffect(() => {
@@ -86,8 +99,10 @@ export const useValidationFieldForm = (
     let requiredStatus = true;
     let minLengthStatus = true;
     let validEmailStatus = true;
+    let validPhoneStatus = true;
     let isAboveMinimumStatus = true;
     let isBelowMaximumStatus = true;
+    let onlyRussianAndEnglishLettersStatus = true;
     const validityСheckItem = (item: any) => {
       if (required) {
         // console.log("validityСheckItem", item);
@@ -138,8 +153,20 @@ export const useValidationFieldForm = (
           mess.isEmail = "Ошибка кода! Поле получает данные неожиданного формата"
         }
       }
+      if (isPhone) {
+        if (typeof item === "string") {
+          const PHONE_REGEXP = /^[\+]?[0-9]{1}[-\s\.]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{2}[-\s\.]?[0-9]{2}$/iu;
+          if (!PHONE_REGEXP.test(item)) {
+            validPhoneStatus = false;
+            mess.isPhone = typeof isPhone === "string" ? isPhone : "В этом поле должен быть введен телефон. Например +7 000 000 00 00";
+          }
+        } else {
+          validPhoneStatus = false;
+          mess.isPhone = "Ошибка кода! Поле получает данные неожиданного формата"
+        }
+      }
       if (isAboveMinimum) {
-        
+
         if (typeof item === "number") {
           const min = typeof isAboveMinimum === "number" ? isAboveMinimum : isAboveMinimum.min;
           if (item < min) {
@@ -167,17 +194,33 @@ export const useValidationFieldForm = (
           mess.isAboveMinimum = "Ошибка кода! Поле получает данные неожиданного формата";
         }
       }
+      if (onlyRussianAndEnglishLetters) {
+        if (typeof item === "string") {
+          const RUS_ENG_REGEX = /^([а-яё\s]+|[a-z\s]+)$/iu;
+          if (!RUS_ENG_REGEX.test(item)) {
+            onlyRussianAndEnglishLettersStatus = false;
+            mess.onlyRussianAndEnglishLetters = typeof onlyRussianAndEnglishLetters === "string"
+              ? onlyRussianAndEnglishLetters
+              : "В этом поле можно вводить или только русские буквы, или только английские";
+          }
+        } else {
+          onlyRussianAndEnglishLettersStatus = false;
+          mess.onlyRussianAndEnglishLetters = "Ошибка кода! Поле получает данные неожиданного формата";
+        }
+      }
     }
     if (Array.isArray(value)) {
       for (let index = 0; index < value.length; index++) {
         validityСheckItem(value[index]);
         if (!(
-          requiredStatus 
-          && minLengthStatus 
+          requiredStatus
+          && minLengthStatus
           && validEmailStatus
+          && validPhoneStatus
           && isAboveMinimumStatus
           && isBelowMaximumStatus
-          )) break;
+          && onlyRussianAndEnglishLettersStatus
+        )) break;
       }
     } else {
       validityСheckItem(value);
@@ -185,14 +228,18 @@ export const useValidationFieldForm = (
     if (requiredStatus) mess.required = "";
     if (minLengthStatus) mess.minLength = "";
     if (validEmailStatus) mess.isEmail = "";
+    if (validPhoneStatus) mess.isPhone = "";
     if (isAboveMinimumStatus) mess.isAboveMinimum = "";
     if (isBelowMaximumStatus) mess.isBelowMaximum = "";
+    if (onlyRussianAndEnglishLettersStatus) mess.onlyRussianAndEnglishLetters = "";
 
     setIsRequired(requiredStatus);
     setIsMinLength(minLengthStatus);
     setIsValidEmail(validEmailStatus);
     setIsAboveMinimumState(isAboveMinimumStatus);
     setIsBelowMaximumState(isBelowMaximumStatus);
+    setOnlyRussianAndEnglishLettersState(onlyRussianAndEnglishLettersStatus);
+    setIsValidPhone(validPhoneStatus);
 
     setMessage(mess);
 
@@ -201,7 +248,13 @@ export const useValidationFieldForm = (
   return {
     isDirty,
     setIsDirty,
-    isValid: isRequired && isMinLength && isValidEmail && isAboveMinimumState && isBelowMaximumState,
+    isValid: isRequired
+      && isMinLength
+      && isValidEmail
+      && isValidPhone
+      && isAboveMinimumState
+      && isBelowMaximumState
+      && onlyRussianAndEnglishLettersState,
     message
   }
 }

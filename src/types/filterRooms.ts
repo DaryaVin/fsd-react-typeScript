@@ -14,6 +14,11 @@ interface equipmentInRoomItem {
   id: string,
   name: string,
 }
+export interface numberOfGuests {
+  adults: number,
+  children: number,
+  babies: number,
+}
 export interface designations {
   unitPrice?: string,
   serviceFee: number,
@@ -34,16 +39,12 @@ export interface roomConditions {
   facilitiesInRoom?: string[],
   equipmentInRoom?: string[],
 }
-export interface settings extends roomConditions{
+export interface settings extends roomConditions {
   stayDates: {
     start: Date | null,
     end: Date | null,
   },
-  numberOfGuests: {
-    adults: number,
-    children: number,
-    babies: number,
-  },
+  numberOfGuests: numberOfGuests,
   priceRange: {
     min: number,
     max: number,
@@ -136,15 +137,15 @@ interface ChangeEquipment {
 
 
 export type FilterRoomsAction = FetchDesignationsAction
-| FetchDesignationsSuccessAction
-| FetchDesignationsErrorAction
-| ChangeStayDates
-| ChangeNumberOfGuests
-| ChangePriceRange
-| ChangeSleepingArea
-| ChangeBeds
-| ChangeBedrooms
-| ChangeBathrooms
-| ChangeRoomRules
-| ChangeEquipment
-| ChangeFacilities;
+  | FetchDesignationsSuccessAction
+  | FetchDesignationsErrorAction
+  | ChangeStayDates
+  | ChangeNumberOfGuests
+  | ChangePriceRange
+  | ChangeSleepingArea
+  | ChangeBeds
+  | ChangeBedrooms
+  | ChangeBathrooms
+  | ChangeRoomRules
+  | ChangeEquipment
+  | ChangeFacilities;

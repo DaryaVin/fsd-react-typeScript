@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import { child, get, ref, set, update } from "firebase/database";
 import { bdFirebase } from "../../firebase";
-import { FilterRoomsAction, FilterRoomsActionType } from "../../types/filterRooms";
+import { FilterRoomsAction, FilterRoomsActionType, numberOfGuests } from "../../types/filterRooms";
 import { FilterRoomsAPI } from "../../interfaces/FilterRoomsAPI";
 
 export const FetchDesignations = () => {
@@ -44,11 +44,7 @@ export function ChangeStayDates(payload: {
   }
 }
 
-export function ChangeNumberOfGuests(payload: {
-  adults: number,
-  children: number,
-  babies: number,
-}) {
+export function ChangeNumberOfGuests(payload: numberOfGuests) {
   return async (dispatch: Dispatch<FilterRoomsAction>) => {
     try {
       let newPayload = {

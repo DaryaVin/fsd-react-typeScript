@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import "./modal.scss";
 import { Field } from '../field/field';
-import { CreateWrapElement, KEYWORD_CREATEWRAPELEMENT } from '../createWrapElement/createWrapElement';
 
 interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
   children: JSX.Element,

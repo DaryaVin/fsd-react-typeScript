@@ -5,8 +5,8 @@ import "./calendarCard.scss";
 interface CalendarCardProps extends  React.HTMLAttributes<HTMLDivElement>{
   state: Date | null ,
   state2?: Date | null,
-  setState: React.Dispatch<React.SetStateAction< Date | null >>,
-  setState2?: React.Dispatch<React.SetStateAction< Date | null >>,
+  setState: (v: Date | null) => void,
+  setState2?: (v: Date | null) => void,
   minDate?: Date | null,
   maxDate?: Date | null,
 }

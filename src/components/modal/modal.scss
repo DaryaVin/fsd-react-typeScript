@@ -43,6 +43,30 @@
   // transform: scale(0.5);
   transition: 0.5s all;
 }
+.modal_window {
+  min-width: $width_size_l;
+  max-height: calc(100vh - 2rem - 70px);
+  overflow: auto;
+  // overscroll-behavior: contain;
+  // scroll-behavior: smooth;
+  &::-webkit-scrollbar {
+    width: 10px;
+    cursor: pointer;
+  }
+
+  &::-webkit-scrollbar-track {
+
+    background-color: $color1Opacity05;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $color1Opacity10;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+}
 
 .modal__closeButton {
   font-size: 0;

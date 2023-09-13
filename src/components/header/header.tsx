@@ -96,7 +96,7 @@ export const Head = ({ auth, userInfo }: ConnectorProps) => {
                 </FlexContainer>
             }
           </nav>
-          <button key={"header__burger"} type='button' className={"header__burger" + (showMenu ? " show" : "")} onClick={() => setshowMenu(!showMenu)}>
+          <button key={"header__burger"} type='button' className={"header__burger" + (showMenu ? " header__burger_show" : "")} onClick={() => setshowMenu(!showMenu)}>
             Навигация
             <span></span>
           </button>

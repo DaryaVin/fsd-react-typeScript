@@ -211,9 +211,9 @@
 
   &::after {
     bottom: 0;
-  }
+  } 
 
-  &.show {
+  &.header__burger_show {
     span {
       transform: scale(0) translate(0, -50%);
     }

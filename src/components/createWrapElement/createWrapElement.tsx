@@ -16,7 +16,7 @@ export const CreateWrapElement = ({ children, className = "", tagForWrap = "div"
     element: WrapElementContentType,
   ): WrapElementContentType[] | undefined => {
     const newElement = Array.isArray(element) ? element : [element];
-    const newArrElement = arrElements;
+    const newArrElement = Array.isArray(arrElements) ? [...arrElements] : arrElements;
     newArrElement && newArrElement.forEach((item, index) => {
       if (item === keyword) {
         newArrElement.splice(index, 1, ...newElement);

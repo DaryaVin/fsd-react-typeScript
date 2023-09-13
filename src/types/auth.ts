@@ -3,6 +3,7 @@ import { User } from "firebase/auth";
 export type sexType = "male" | "female";
 export interface userInfo {
   email: string ,
+  phone?: number,
   password: string,
   firstName?: string,
   lastName?: string,

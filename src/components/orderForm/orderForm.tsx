@@ -19,220 +19,13 @@ import { useValidationFieldForm } from '../../hooks/useValidationFieldFormReturn
 import { ValidationMessage } from '../validationMessage/validationMessage';
 import { bookingItem, guestInfo } from '../../types/booking';
 import { Modal } from '../modal/modal';
-import { userInfo } from '../../types/auth';
 import { BulletList } from '../bulletList/bulletList';
 import { WrapElementContentType } from '../createWrapElement/createWrapElement';
 import ReactInputMask from 'react-input-mask';
 import { bookingAPI } from '../../interfaces/bookingAPI';
-
-const numberOfDaysBetweenDates = (date1: Date, date2: Date) => {
-  return Math.ceil(Math.abs(date2.getTime() - date1.getTime()) / (1000 * 3600 * 24) + 1)
-}
-
-
-interface GuestInfoFormProps extends React.FieldsetHTMLAttributes<HTMLFieldSetElement> {
-  guest: guestInfo,
-  onChangeValueBookingForm: (newValue: Partial<guestInfo>) => void,
-  setValid: (v: boolean) => void,
-}
-const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
-  guest,
-  onChangeValueBookingForm,
-  setValid,
-  ...props
-}) => {
-  const firstNameValidator = useValidationFieldForm(guest.firstName, {
-    required: "Поле имени обязательно к заполнению",
-    onlyRussianAndEnglishLetters: true,
-  })
-  const lastNameValidator = useValidationFieldForm(guest.lastName, {
-    required: "Поле фамилии обязательно к заполнению",
-    onlyRussianAndEnglishLetters: true,
-  })
-  const patronymicValidator = useValidationFieldForm(guest.patronymic, {
-    required: guest.patronymic === null ? false : "Поле отчества должно быть или удалено, или заполнено",
-    onlyRussianAndEnglishLetters: guest.patronymic === null ? false : true,
-  })
-  useEffect(() => {
-    setValid(firstNameValidator.isValid && lastNameValidator.isValid && patronymicValidator.isValid)
-  }, [firstNameValidator.isValid, lastNameValidator.isValid, patronymicValidator.isValid]);
-
-  return (
-    <FormFieldset {...props} className={"guestInfoForm" + (props.className ? " " + props.className : "")}>
-      <legend key={"ageStatus"}>
-        {
-          guest.ageStatus === "adults"
-            ? "Взрослый"
-            : guest.ageStatus === "children"
-              ? "Ребенок"
-              : "Младенец"
-        }
-      </legend>
-      <Field key={"lastName"}>
-        <input
-          value={guest.lastName}
-          placeholder='Фамилия'
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangeValueBookingForm({ lastName: e.target.value })}
-          onBlur={() => lastNameValidator.setIsDirty(true)}
-        />
-      </Field>
-      <ValidationMessage key={"lastNameValidator"} {...lastNameValidator} />
-      <Field key={"firstName"}>
-        <input
-          value={guest.firstName}
-          placeholder='Имя'
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangeValueBookingForm({ firstName: e.target.value })}
-          onBlur={() => firstNameValidator.setIsDirty(true)}
-        />
-      </Field>
-      <ValidationMessage key="firstNameValidator" {...firstNameValidator} />
-      {
-        guest.patronymic !== null
-          ? <>
-            <Field key={"patronymic"}>
-              <input key={"input"}
-                value={guest.patronymic}
-                placeholder='Отчество'
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangeValueBookingForm({ patronymic: e.target.value })}
-                onBlur={() => patronymicValidator.setIsDirty(true)}
-              />
-              <button key={"delButton"}
-                type="button"
-                className=''
-                onClick={() => onChangeValueBookingForm({ patronymic: null })}
-              >
-                Удалить отчество
-              </button>
-            </Field>
-            <ValidationMessage key={"patronymicValidator"} {...patronymicValidator} />
-          </>
-          : <Button key={"addPatronymicButton"}
-            type="button"
-            onClick={() => onChangeValueBookingForm({ patronymic: "" })}
-          >
-            Добавить отчество
-          </Button>
-      }
-    </FormFieldset>
-  )
-}
-
-
-interface CostCalculationProps extends React.FieldsetHTMLAttributes<HTMLFieldSetElement> {
-  price: number,
-  unitPrice: string,
-  startDateSate: Date,
-  endDateSate: Date,
-  userInfo: userInfo | undefined,
-  designations: designations,
-}
-const CostCalculation = ({ price, unitPrice, startDateSate, endDateSate, userInfo, designations, ...props }: CostCalculationProps) => {
-  return (
-    <>
-      <FormFieldset {...props} key={"summaryInfo"}
-        className={"orderForm__summaryInfo"}
-      >
-        <FlexContainer key={"initialAmount"}
-          className={""}
-          justifyContent="space-between"
-        >
-          <div key={"calculation"}>
-            {
-              price.toLocaleString()
-              + unitPrice + " x "
-              + numberOfDaysBetweenDates(startDateSate, endDateSate)
-              + " "
-              + correctDeclensionWord({
-                options: {
-                  1: "сутки",
-                  2: "суток",
-                  5: "суток"
-                },
-                value: numberOfDaysBetweenDates(startDateSate, endDateSate)
-              })
-            }
-          </div>
-          <div key={"result"}>
-            {
-              (price * numberOfDaysBetweenDates(startDateSate, endDateSate)).toLocaleString() + "₽"
-            }
-          </div>
-        </FlexContainer>
-        <FlexContainer key={"personalDiscount"}
-          className={""}
-          justifyContent="space-between"
-        >
-          <div key={"calculation"}>
-            Персональная скидка:
-            {
-              userInfo && userInfo.personalDiscount
-                ? " " + userInfo.personalDiscount + "%"
-                : " 0%"
-            }
-          </div>
-          <div key={"result"}>
-            {
-              (
-                "- "
-                + Number(
-                  (
-                    (userInfo && userInfo.personalDiscount ? userInfo.personalDiscount : 0) / 100
-                    * price
-                    * numberOfDaysBetweenDates(startDateSate, endDateSate)
-                  )
-                    .toFixed(2)
-                ).toLocaleString()
-              ) + unitPrice
-            }
-          </div>
-        </FlexContainer>
-        <FlexContainer key={"serviceFee"}
-          className={""}
-          justifyContent="space-between"
-        >
-          <div key={"calculation"}>
-            Сервисный сбор за услуги
-          </div>
-          <div key={"result"}>
-            {
-              designations.serviceFee.toLocaleString() + unitPrice
-            }
-          </div>
-        </FlexContainer>
-      </FormFieldset>
-      <FormFieldset {...props} key={"totalAmound"}
-        className={"orderForm__totalAmound"}
-      >
-        <FlexContainer
-          justifyContent="space-between"
-        >
-          <h2>
-            <div key={"text"} >Итого</div>
-            <div key={"decor"} className='orderForm__dotDecor'></div>
-            <div key={"totalAmound"}>
-              {
-                Number(
-                  (
-                    price
-                    * numberOfDaysBetweenDates(startDateSate, endDateSate)
-                    * (1 - (userInfo && userInfo.personalDiscount ? userInfo.personalDiscount : 0) / 100)
-                    + designations.serviceFee
-                  )
-                    .toFixed(2)
-                ).toLocaleString()
-                + unitPrice
-              }
-            </div>
-          </h2>
-        </FlexContainer>
-      </FormFieldset>
-    </>
-  )
-}
-
-
-
-
+import { CostCalculation } from '../costCalculation/costCalculation';
+import { GuestFullNameForm } from '../guestFullNameForm/guestFullNameForm';
+import { numberOfDaysBetweenDates } from '../numberOfDaysBetweenDates/numberOfDaysBetweenDates';
 
 type OrderFormProps = {
   roomItem: RoomItem,
@@ -320,7 +113,7 @@ const Order = ({
           <h2 key={"header"}>Заполните информацию о гостях:</h2>,
           guestsInfo.map((guest, index) => {
             return (
-              <GuestInfoForm key={index}
+              <GuestFullNameForm key={index}
                 guest={guest}
                 onChangeValueBookingForm={onChangeValueGuestsInfoForm(index)}
                 setValid={changeValidGuestsInfoForm(index)}
@@ -375,11 +168,11 @@ const Order = ({
                 onChange={(e) => { setOrderPhone(e.target.value) }}
               /> */}
               <ReactInputMask
-              mask={"+9-999-999-99-99"}
-              placeholder='+_ ___ ___ __ __'
-              value={orderPhone}
-              onChange={(e) => { setOrderPhone(e.target.value) }}
-              onBlur={() => orderPhoneValidator.setIsDirty(true)}
+                mask={"+9-999-999-99-99"}
+                placeholder='+_ ___ ___ __ __'
+                value={orderPhone}
+                onChange={(e) => { setOrderPhone(e.target.value) }}
+                onBlur={() => orderPhoneValidator.setIsDirty(true)}
               />
             </Field>
             {
@@ -407,11 +200,11 @@ const Order = ({
             Назад
           </Button>,
           <h2 key={"header"}>Итоговая сводка бронирования:</h2>,
-            <FormFieldset key={"contactEmail"}>
-              <legend key={"header"}>Контактный  email:</legend>
-              <div key={"email"}>{orderEmail}</div>
-            </FormFieldset>,
-            orderPhone 
+          <FormFieldset key={"contactEmail"}>
+            <legend key={"header"}>Контактный  email:</legend>
+            <div key={"email"}>{orderEmail}</div>
+          </FormFieldset>,
+          orderPhone
             ? <FormFieldset key={"contactPhone"}>
               <legend key={"header"}>Контактный  телефон:</legend>
               <div key={"phone"}>{orderPhone}</div>
@@ -505,11 +298,11 @@ const Order = ({
                 }
               </div>
             </FlexContainer>
-            <BulletList>
+            <BulletList key={"guestList"}>
               {
                 guestsInfo.map((guest, index) => {
                   return (
-                    <span>
+                    <span key={index}>
                       {
                         (
                           guest.ageStatus === "adults"
@@ -543,8 +336,8 @@ const Order = ({
                   unitPrice={unitPrice}
                   startDateSate={startDateSate}
                   endDateSate={endDateSate}
-                  userInfo={userInfo}
-                  designations={designations}
+                  discount={userInfo?.personalDiscount}
+                  serviceFee={designations.serviceFee}
                 />
                 : ""
             }
@@ -574,9 +367,23 @@ const Order = ({
     return formContent
   }
   const onClickBookingButton = (isPaid: boolean) => {
+    const hashCode = (str: string, seed = 0) => {
+      let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+      for (let i = 0, ch; i < str.length; i++) {
+        ch = str.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+      }
+      h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+      h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+      h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+      h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+
+      return String(4294967296 * (2097151 & h2) + (h1 >>> 0));
+    };
     if (auth && startDateSate && endDateSate && userInfo?.email) {
       const bookingItem: bookingItem = {
-        id: new Date().getTime().toString() + auth?.uid + id,
+        id: hashCode(new Date().getTime().toString() + auth?.uid + id),
         userId: auth?.uid,
         roomId: String(id),
         arrivalDate: startDateSate,
@@ -587,10 +394,11 @@ const Order = ({
         discount: userInfo.personalDiscount,
         guestsInfo,
         isPaid,
+        priceAtTimeOfBooking: price,
+        unitPrice
       }
       if (orderPhone) bookingItem.phone = orderPhone;
       bookingAPI.CreateBooking(bookingItem);
-      
     }
 
   }
@@ -803,8 +611,8 @@ const Order = ({
             unitPrice={unitPrice}
             startDateSate={startDateSate}
             endDateSate={endDateSate}
-            userInfo={userInfo}
-            designations={designations}
+            discount={userInfo?.personalDiscount}
+            serviceFee={designations.serviceFee}
           />
           <FlexContainer key={"buttonSubmit"}
             justifyContent='space-between'

@@ -6,7 +6,7 @@ const initialState: BookingState = {
     error: null,
 };
 
-export const authReducer = (state: BookingState = initialState, action: BookingAction): BookingState | undefined => {
+export const bookingReducer = (state: BookingState = initialState, action: BookingAction): BookingState | undefined => {
     switch (action.type) {
         case BookingActionType.FETCH_BOOKING: {
             return { ...state, isLoading: true, error: null };
@@ -25,6 +25,11 @@ export const authReducer = (state: BookingState = initialState, action: BookingA
                     return booking
                 }
              })
+            return { ...state, bookings: newBookings }
+        }
+        case BookingActionType.DEL_BOOKING: {
+            const index = state.bookings.findIndex((booking) => booking.id === action.payload);
+            const newBookings = [...state.bookings].splice(index, 1);
             return { ...state, bookings: newBookings }
         }
         default: return state;

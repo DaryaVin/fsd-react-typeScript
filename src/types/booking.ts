@@ -9,6 +9,10 @@ export interface bookingItem {
     id: string,
     userId: string,
     roomId: string,
+    roomName?: string,
+    priceAtTimeOfBooking: number,
+    unitPrice?: string,
+    isLux?: boolean,
     arrivalDate: Date,
     departureDate: Date,
     issueDate: Date,
@@ -31,6 +35,7 @@ export enum BookingActionType {
     FETCH_BOOKING__SUCCESS = "FETCH_BOOKING_SUCCESS",
     FETCH_BOOKING__ERROR = "FETCH_BOOKING__ERROR",
     CHANGE_BOOKING = "CHANGE_BOOKING",
+    DEL_BOOKING = "DEL_BOOKING",
 }
 
 interface FetchBookingAction {
@@ -48,10 +53,15 @@ interface FetchBookingAction {
     type: BookingActionType.CHANGE_BOOKING;
     payload: bookingItem;
   }
+  interface DeleteBookingAction {
+    type: BookingActionType.DEL_BOOKING;
+    payload: string;
+  }
   
   export type BookingAction =
   FetchBookingAction
   | FetchBookingSuccessAction
   | FetchBookingErrorAction
-  | ChangeBookingAction;
+  | ChangeBookingAction
+  | DeleteBookingAction;
   

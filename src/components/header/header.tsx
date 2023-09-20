@@ -23,6 +23,10 @@ export const Head = ({ auth, userInfo }: ConnectorProps) => {
       path: "/search-rooms",
       title: "Выбор номера"
     },
+    {
+      path: "/orders",
+      title: "Мои заказы"
+    },
   ];
   const [showMenu, setshowMenu] = useState<boolean>(false);
   return (

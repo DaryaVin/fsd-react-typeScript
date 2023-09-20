@@ -8,7 +8,7 @@
 .bulletList__item {
   padding-left: 20px;
   position: relative;
-  width: 240px;
+  max-width: $width;
   margin-bottom: 10px;
   &::before {
     content: "";

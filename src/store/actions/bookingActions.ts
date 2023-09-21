@@ -2,6 +2,7 @@ import { Dispatch } from "redux";
 import { BookingAction, BookingActionType, bookingItem } from "../../types/booking";
 import { bookingAPI } from "../../interfaces/bookingAPI";
 import { RoomsAPI } from "../../interfaces/roomsAPI";
+import { ReviewItem } from "../../types/rooms";
 
 export const FetchBookingsAction = () => {
     return async (dispatch: Dispatch<BookingAction>) => {
@@ -46,7 +47,20 @@ export const ChangeBookingAction = (bookingItem: bookingItem) => {
             await bookingAPI.UpdateBooking(bookingItem);
             dispatch({ type: BookingActionType.CHANGE_BOOKING, payload:bookingItem });
         } catch (e) {
-
+            const error = JSON.parse(JSON.stringify(e));
+            console.log("ChangeBookingAction error", e);
+            dispatch({ type: BookingActionType.FETCH_BOOKING__ERROR, payload: error.code });
+        }
+    }
+ }
+ 
+export const RateBookingAction = (bookingItem: bookingItem, reviewItem: ReviewItem) => { 
+    return async (dispatch: Dispatch<BookingAction>) => {
+        try {
+            await bookingAPI.UpdateBooking(bookingItem);
+            await RoomsAPI.CreatedRoomReview(bookingItem.roomId, reviewItem);
+            dispatch({ type: BookingActionType.CHANGE_BOOKING, payload:bookingItem });
+        } catch (e) {
             const error = JSON.parse(JSON.stringify(e));
             console.log("ChangeBookingAction error", e);
             dispatch({ type: BookingActionType.FETCH_BOOKING__ERROR, payload: error.code });

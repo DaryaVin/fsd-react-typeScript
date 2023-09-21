@@ -395,7 +395,8 @@ const Order = ({
         guestsInfo,
         isPaid,
         priceAtTimeOfBooking: price,
-        unitPrice
+        unitPrice,
+        status: "booking",
       }
       if (orderPhone) bookingItem.phone = orderPhone;
       bookingAPI.CreateBooking(bookingItem);

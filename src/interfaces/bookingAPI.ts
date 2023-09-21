@@ -37,21 +37,45 @@ export const bookingAPI = {
         }).catch((error) => {
             console.error(error);
         });
-
-        return bookings as bookingItem[];
+        const nowDate = new Date();
+        for (let index = 0; index < bookings.length; index++) {
+            if (!bookings[index].isPaid
+                && nowDate.getTime() - bookings[index].issueDate.getTime() > 1000 * 3600 * 24
+            ) {
+                await remove(ref(bdFirebase, `bookings/${bookings[index].id}`));
+                bookings.splice(index, 1);
+            }        
+        }
+        const oldBokings: bookingItem[] = bookings.filter((item) => { return item.status !== "completed" && item.arrivalDate < nowDate });
+        const updates: {
+            [key: string]: bookingItem
+        } = {};
+        oldBokings.forEach((item) => {
+            updates["bookings/" + item.id] = {
+                ...item,
+                status: "completed",
+            }
+        })
+        await update(dbRef, updates);
+        const idOldBookings = oldBokings.map((item) => { return item.id });
+        return bookings.map((item) => {
+            return idOldBookings.includes(item.id) ? { ...item, status: "completed" } : item;
+        }) as bookingItem[];
     },
 
     UpdateBooking: async (bookingItem: bookingItem) => {
         const dbRef = await ref(bdFirebase);
-        const booking = {...bookingItem};
+        const booking = { ...bookingItem };
         delete booking.isLux;
         delete booking.roomName;
-        await update(dbRef, { [`bookings/${booking.id}`]: {
-            ...booking,
-            issueDate: booking.issueDate.toString(),
-            departureDate: booking.departureDate.toString(),
-            arrivalDate: booking.arrivalDate.toString(),
-        } });
+        await update(dbRef, {
+            [`bookings/${booking.id}`]: {
+                ...booking,
+                issueDate: booking.issueDate.toString(),
+                departureDate: booking.departureDate.toString(),
+                arrivalDate: booking.arrivalDate.toString(),
+            }
+        });
     },
 
     deleteBooking: async (bookingId: string) => {

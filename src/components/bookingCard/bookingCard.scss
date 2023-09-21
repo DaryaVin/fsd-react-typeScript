@@ -1,0 +1,27 @@
+@import "../baseComponent/baseVariables&Mixins.scss";
+
+.bookingCard {
+position: relative;
+display: inline-block;
+width: 100%;
+}
+.bookingCard__unavailable {
+  color: $color1Opacity50;
+  *:not(.bookingCard__activeElement):not(.bookingCard__statusElememt) {
+    color: inherit;
+  }
+}
+.bookingCard__statusElememt {
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: center;
+}
+.bookingCard__statusElememt_completed {
+  color: $color3
+}
+.bookingCard__statusElememt_cancelled {
+  color: $colorError;
+}
+.bookingCard__statusElememt_booking {
+  color: $color2;
+}

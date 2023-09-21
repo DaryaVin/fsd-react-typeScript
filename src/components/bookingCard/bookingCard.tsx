@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
-import { bookingItem } from '../../types/booking'
-import { Field } from '../field/field'
+import React, { useState } from 'react';
+import "./bookingCard.scss";
+import { bookingItem } from '../../types/booking';
+import { Field } from '../field/field';
 import { FlexContainer } from '../flexContainer/flexContainer';
 import { Button } from '../button/button';
 import { Form, FormFieldset } from '../form/form';
@@ -11,12 +12,13 @@ import { NavLink } from 'react-router-dom';
 import { Modal } from '../modal/modal';
 import { AddGuestForm, AddGuestFormProps } from '../addGuestForm/addGuestForm';
 import { ChangeGuestForm, ChangeGuestFormProps } from '../changeGuestForm/changeGuestForm';
-// import { DeleteGuestForm, DeleteGuestFormProps } from '../deleteGuestForm/deleteGuestForm';
 import { BookingCancellationConfirmationForm, BookingCancellationConfirmationFormProps } from '../bookingCancellationConfirmationForm/bookingCancellationConfirmationForm';
 import { PhoneChangeForm, PhoneChangeFormProps } from '../phoneChangeForm/phoneChangeForm';
 import { EmailChangeForm, EmailChangeFormProps } from '../emailChangeForm/emailChangeForm';
 import { DeleteGuestForm, DeleteGuestFormProps } from '../deleteGuestForm/deleteGuestForm';
 import { numberOfDaysBetweenDates } from '../numberOfDaysBetweenDates/numberOfDaysBetweenDates';
+import { RateBox } from '../rateBox/rateBox';
+import { RateForm, RateFormProps } from '../rateForm/rateForm';
 
 type ContentModalProps = {
   type: "emailChange",
@@ -27,13 +29,15 @@ type ContentModalProps = {
 } | {
   type: "delGuest",
   props: DeleteGuestFormProps;
-  // DeleteGuestFormProps,
 } | {
   type: "changeGuest",
   props: ChangeGuestFormProps,
 } | {
   type: "addGuest",
   props: AddGuestFormProps,
+} | {
+  type: "rate",
+  props: RateFormProps,
 } | {
   type: "сancellations",
   props: BookingCancellationConfirmationFormProps,
@@ -54,6 +58,9 @@ const AddContentModal = ({ type, props }: ContentModalProps) => {
     }
     case "addGuest": {
       return <AddGuestForm {...props} />
+    }
+    case "rate": {
+      return <RateForm {...props} />
     }
     case "сancellations": {
       return <BookingCancellationConfirmationForm {...props} />
@@ -81,6 +88,8 @@ export const BookingCard = ({ bookingItem, ...props }: BookingCardProps) => {
     guestsInfo,
     priceAtTimeOfBooking,
     unitPrice,
+    status,
+    rating,
   } = bookingItem;
   const monthName = [
     "января",
@@ -114,10 +123,49 @@ export const BookingCard = ({ bookingItem, ...props }: BookingCardProps) => {
       className={"bookingCard" + (props.className ? " " + props.className : "")}
     >
       <Field theme="card">
-        <Form>
+        <Form className={status !== "booking" ? "bookingCard__unavailable" : ""}>
+        {
+          status === "completed"
+          ? <div key={"status"}
+            className='bookingCard__statusElememt bookingCard__statusElememt_completed'
+          >
+            Заказ выполнен
+          </div>
+
+          : status === "cancelled"
+            ? <div key={"status"} 
+            className='bookingCard__statusElememt bookingCard__statusElememt_cancelled'
+            >
+              Заказ отменен
+              </div>
+          : status === "booking"
+            ? <div key={"status"} 
+            className='bookingCard__statusElememt bookingCard__statusElememt_booking'
+            >
+              {
+                isPaid
+                ? "Действующий заказ"
+                : <FlexContainer key={"status"} 
+                justifyContent='space-between'
+                alignItems='center'
+                >
+                  <div key={"status"} >
+                    Заказ не оплачен
+                  </div>
+                  <Button key={"button"}
+                  theme='fillBcg'
+                  >
+                    Оплатить
+                  </Button>
+                </FlexContainer>
+              }
+              
+              </div>
+            : ""
+        }
           <FlexContainer key={"header"}
             justifyContent='space-between'
-            alignItems="baseline"
+            alignItems='center'
           >
             <div key={"info"}>
               <h2 key={"issueDate"}>
@@ -141,22 +189,47 @@ export const BookingCard = ({ bookingItem, ...props }: BookingCardProps) => {
                 }
               </div>
             </div>
-            <Button key={"button"}
-              type="button"
-              theme="withBorder"
-              onClick={() => {
-                setIsActiveModal(true); setContentModal(
-                  <AddContentModal type="сancellations"
-                    props={{
-                      setActiveModal: setIsActiveModal,
-                      bookingId: id
-                    }}
-                  />
-                )
-              }}
-            >
-              Отменить
-            </Button>
+            {
+              status === "booking"
+                ? <Button key={"button"}
+                  type="button"
+                  theme="withBorder"
+                  onClick={() => {
+                    setIsActiveModal(true); setContentModal(
+                      <AddContentModal type="сancellations"
+                        props={{
+                          setActiveModal: setIsActiveModal,
+                          bookingId: id
+                        }}
+                      />
+                    )
+                  }}
+                >
+                  Отменить
+                </Button>
+                : status === "completed" && !rating
+                  ? <Button key={"button"}
+                    className='bookingCard__activeElement'
+                    type="button"
+                    theme='withBorder'
+                  onClick={() => {
+                    setIsActiveModal(true); setContentModal(
+                      <AddContentModal type="rate"
+                        props={{
+                          setActiveModal: setIsActiveModal,
+                          bookingId: id,
+                          roomId
+                        }}
+                      />
+                    )
+                  }}
+                  >
+                    Оценить
+                  </Button>
+                  : status === "completed" && rating
+                  ? <RateBox rating={rating}/>
+                  : ""
+            }
           </FlexContainer>
           <FormFieldset key={"roomInfo"}>
             <legend key={"header"}>Номер:</legend>
@@ -231,22 +304,27 @@ export const BookingCard = ({ bookingItem, ...props }: BookingCardProps) => {
                       <legend key={"header"}>Контактный  email:</legend>
                       <div key={"email"}>{emailForCommunication}</div>
                     </div>
-                    <Button key={"button"}
-                      type='button'
-                      onClick={() => {
-                        setIsActiveModal(true); setContentModal(
-                          <AddContentModal type='emailChange'
-                            props={{
-                              email: emailForCommunication,
-                              bookingId: id,
-                              setActiveModal: setIsActiveModal,
-                            }}
-                          />
-                        )
-                      }}
-                    >
-                      Изменить
-                    </Button>
+                    {
+                      status === "booking"
+                        ? <Button key={"button"}
+                          type='button'
+                          onClick={() => {
+                            setIsActiveModal(true); setContentModal(
+                              <AddContentModal type='emailChange'
+                                props={{
+                                  email: emailForCommunication,
+                                  bookingId: id,
+                                  setActiveModal: setIsActiveModal,
+                                }}
+                              />
+                            )
+                          }}
+                        >
+                          Изменить
+                        </Button>
+                        : ""
+                    }
+
                   </FlexContainer>
                 </FormFieldset>,
                 <FormFieldset key={"contactPhone"}>
@@ -258,22 +336,26 @@ export const BookingCard = ({ bookingItem, ...props }: BookingCardProps) => {
                       <legend key={"header"}>Контактный  телефон:</legend>
                       <div key={"phone"}>{phone ? phone : "Не указан"}</div>
                     </div>
-                    <Button key={"button"}
-                      type="button"
-                      onClick={() => {
-                        setIsActiveModal(true); setContentModal(
-                          <AddContentModal type="phoneChange"
-                            props={{
-                              phone: phone,
-                              bookingId: id,
-                              setActiveModal: setIsActiveModal,
-                            }}
-                          />
-                        )
-                      }}
-                    >
-                      {phone ? "Изменить" : "Указать"}
-                    </Button>
+                    {
+                      status === "booking"
+                        ? <Button key={"button"}
+                          type="button"
+                          onClick={() => {
+                            setIsActiveModal(true); setContentModal(
+                              <AddContentModal type="phoneChange"
+                                props={{
+                                  phone: phone,
+                                  bookingId: id,
+                                  setActiveModal: setIsActiveModal,
+                                }}
+                              />
+                            )
+                          }}
+                        >
+                          {phone ? "Изменить" : "Указать"}
+                        </Button>
+                        : ""
+                    }
                   </FlexContainer>
                 </FormFieldset>,
                 <FormFieldset key={"guests"}>
@@ -339,42 +421,19 @@ export const BookingCard = ({ bookingItem, ...props }: BookingCardProps) => {
                                 )
                               }
                             </span>
-                            <FlexContainer key={"buttons"}
-                              flexDirection='colomn'
-                            >
-                              <Button key={"buttonChange"}
-                                type="button"
-                                onClick={() => {
-                                  setIsActiveModal(true); setContentModal(
-                                    <AddContentModal type="changeGuest"
-                                      props={{
-                                        guest,
-                                        guestInddex: index,
-                                        bookingId: id,
-                                        setActiveModal: setIsActiveModal,
-                                      }}
-                                    />
-                                  )
-                                }}
-                              >
-                                Изменить
-                              </Button>
-                              {
-                                guest.ageStatus === "babies"
-                                || (
-                                  guestsInfo.length > 1
-                                    && guestsInfo.reduce((sum, item) => {
-                                      return item.ageStatus !== "babies" ? sum + 1 : sum
-                                    }, 0) > 1
-                                )
-                                  ? <Button key={"buttonDel"}
+                            {
+                              status === "booking"
+                                ? <FlexContainer key={"buttons"}
+                                  flexDirection='colomn'
+                                >
+                                  <Button key={"buttonChange"}
                                     type="button"
                                     onClick={() => {
                                       setIsActiveModal(true); setContentModal(
-                                        <AddContentModal type="delGuest"
+                                        <AddContentModal type="changeGuest"
                                           props={{
                                             guest,
-                                            guestIndex: index,
+                                            guestInddex: index,
                                             bookingId: id,
                                             setActiveModal: setIsActiveModal,
                                           }}
@@ -382,31 +441,62 @@ export const BookingCard = ({ bookingItem, ...props }: BookingCardProps) => {
                                       )
                                     }}
                                   >
-                                    Удалить
+                                    Изменить
                                   </Button>
-                                  : ""
-                              }
-                            </FlexContainer>
+                                  {
+                                    guest.ageStatus === "babies"
+                                      || (
+                                        guestsInfo.length > 1
+                                        && guestsInfo.reduce((sum, item) => {
+                                          return item.ageStatus !== "babies" ? sum + 1 : sum
+                                        }, 0) > 1
+                                      )
+                                      ? <Button key={"buttonDel"}
+                                        type="button"
+                                        onClick={() => {
+                                          setIsActiveModal(true); setContentModal(
+                                            <AddContentModal type="delGuest"
+                                              props={{
+                                                guest,
+                                                guestIndex: index,
+                                                bookingId: id,
+                                                setActiveModal: setIsActiveModal,
+                                              }}
+                                            />
+                                          )
+                                        }}
+                                      >
+                                        Удалить
+                                      </Button>
+                                      : ""
+                                  }
+                                </FlexContainer>
+                                : ""
+                            }
                           </FlexContainer>
                         )
                       })
                     }
                   </BulletList>
-                  <Button key={"buttonAdd"}
-                    type="button"
-                    onClick={() => {
-                      setIsActiveModal(true); setContentModal(
-                        <AddContentModal type="addGuest"
-                          props={{
-                            bookingId: id,
-                            setActiveModal: setIsActiveModal,
-                          }}
-                        />
-                      )
-                    }}
-                  >
-                    Добавить гостя
-                  </Button>
+                  {
+                    status === "booking"
+                      ? <Button key={"buttonAdd"}
+                        type="button"
+                        onClick={() => {
+                          setIsActiveModal(true); setContentModal(
+                            <AddContentModal type="addGuest"
+                              props={{
+                                bookingId: id,
+                                setActiveModal: setIsActiveModal,
+                              }}
+                            />
+                          )
+                        }}
+                      >
+                        Добавить гостя
+                      </Button>
+                      : ""
+                  }
                 </FormFieldset>,
                 <FormFieldset key={"finalPrice"}>
                   <legend key={"header"}>

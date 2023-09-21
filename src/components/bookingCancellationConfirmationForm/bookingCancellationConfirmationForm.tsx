@@ -1,7 +1,7 @@
 import React from 'react';
 import { ConnectedProps, connect } from 'react-redux';
 import { RootState } from '../../store/reducers/rootReducer';
-import {DeleteBookingAction} from "../../store/actions/bookingActions";
+import {ChangeBookingAction} from "../../store/actions/bookingActions";
 import { FormFieldset } from '../form/form';
 import { Button } from '../button/button';
 
@@ -9,7 +9,16 @@ export interface BookingCancellationConfirmationFormProps {
   bookingId: string,
   setActiveModal: (v: boolean) => void,
 }
-const ChangeForm = ({ bookingId, setActiveModal, DeleteBookingAction }: BookingCancellationConfirmationFormProps & ConnectorProps) => {
+const ChangeForm = ({ bookingState, bookingId, setActiveModal, ChangeBookingAction }: BookingCancellationConfirmationFormProps & ConnectorProps) => {
+  const onClick = () => {
+    if (bookingState) {
+      const booking = bookingState.bookings.find((item) => item.id === bookingId);
+      if (booking !== undefined) {
+        ChangeBookingAction({...booking, status: "cancelled"});
+      }
+      setActiveModal(false);
+    }
+  }
   return <>
     <FormFieldset key={"info"}>
       Вы уверены, что хотите отменить заказ №{bookingId}?
@@ -17,7 +26,7 @@ const ChangeForm = ({ bookingId, setActiveModal, DeleteBookingAction }: BookingC
     <Button key={"button"}
       type="button"
       theme='fillBcg'
-      onClick={() => { DeleteBookingAction(bookingId); setActiveModal(false); }}
+      onClick={onClick}
     >
       Уверен, отменить
     </Button>
@@ -30,7 +39,7 @@ const mapStateToProps = (state: RootState) => {
   })
 }
 const mapDispatchToProps = {
-  DeleteBookingAction,
+  ChangeBookingAction,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

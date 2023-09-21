@@ -1,8 +1,7 @@
-import { child, get, ref, update } from "firebase/database";
+import { child, get, ref, set, update } from "firebase/database";
 import { bdFirebase } from "../firebase";
 import { settings } from "../types/filterRooms";
 import { ReviewItem, RoomItem } from "../types/rooms";
-import { authAPI } from "./authAPI";
 
 export const RoomsAPI = {
   FetchRooms: async (filterSettings: settings, pageSize: number, currentPage: number) => {
@@ -116,7 +115,7 @@ export const RoomsAPI = {
       newListWhoLikedThisReview = [...listWhoLikedThisReview];
       newListWhoLikedThisReview.splice(index, 1);
       console.log("FetchLikeReviews newListWhoLikedThisReview", newListWhoLikedThisReview);
-      
+
       await update(dbRef, { [`rooms/${roomId}/reviews/${reviewId}/listWhoLikedThisReview`]: newListWhoLikedThisReview });
     } else {
       newListWhoLikedThisReview = [...listWhoLikedThisReview, userId];
@@ -124,5 +123,14 @@ export const RoomsAPI = {
       await update(dbRef, { [`rooms/${roomId}/reviews/${reviewId}/listWhoLikedThisReview`]: newListWhoLikedThisReview });
     }
     return newListWhoLikedThisReview;
-  }
+  },
+
+  CreatedRoomReview: async (roomId: string | number, reviewItem: ReviewItem) => {
+    await set(ref(bdFirebase, 'rooms/' + roomId + "/reviews/" + reviewItem.id),
+      {
+        ...reviewItem,
+        dateToCreating: reviewItem.dateToCreating.toString(),
+      }
+    );
+  },
 }

@@ -26,6 +26,7 @@ import { bookingAPI } from '../../interfaces/bookingAPI';
 import { CostCalculation } from '../costCalculation/costCalculation';
 import { GuestFullNameForm } from '../guestFullNameForm/guestFullNameForm';
 import { numberOfDaysBetweenDates } from '../numberOfDaysBetweenDates/numberOfDaysBetweenDates';
+import { redirect, useNavigate } from 'react-router-dom';
 
 type OrderFormProps = {
   roomItem: RoomItem,
@@ -41,6 +42,7 @@ const Order = ({
   roomItem,
   designations,
   ...props }: OrderFormProps) => {
+    const navigate = useNavigate();
   const {
     id,
     name,
@@ -60,6 +62,7 @@ const Order = ({
   const [orderEmail, setOrderEmail] = useState<string>(userInfo?.email ? userInfo.email : "");
   const [orderPhone, setOrderPhone] = useState<string>("");
   const [isActiveModal, setIsActiveModal] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const stayDatesValidator = useValidationFieldForm([startDateSate, endDateSate], {
     required: "Отметьте даты прибывания в данном номере",
@@ -349,6 +352,7 @@ const Order = ({
               type="button"
               theme="withBorder"
               onClick={() => onClickBookingButton(false)}
+              disabled={isLoading}
             >
               Забронировать
             </Button>
@@ -356,6 +360,7 @@ const Order = ({
               type='button'
               theme="fillBcg"
               onClick={() => onClickBookingButton(true)}
+              disabled={isLoading}
             >
               Оплатить
             </Button>
@@ -366,7 +371,7 @@ const Order = ({
     }
     return formContent
   }
-  const onClickBookingButton = (isPaid: boolean) => {
+  const onClickBookingButton = async (isPaid: boolean) => {
     const hashCode = (str: string, seed = 0) => {
       let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
       for (let i = 0, ch; i < str.length; i++) {
@@ -399,7 +404,14 @@ const Order = ({
         status: "booking",
       }
       if (orderPhone) bookingItem.phone = orderPhone;
-      bookingAPI.CreateBooking(bookingItem);
+      await setIsLoading(true);
+      try {
+        await bookingAPI.CreateBooking(bookingItem);        
+        navigate("/orders");
+      } catch (error) {
+        alert("Попытка бронирования провалена");
+      }
+      await setIsLoading(false);
     }
 
   }

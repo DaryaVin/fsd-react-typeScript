@@ -28,7 +28,6 @@ type OrdersPageProps = React.HTMLAttributes<HTMLDivElement> & {
 const Page = ({ bookingState, FetchBookingsAction, ...props }: OrdersPageProps) => {
   useLayoutEffect(() => {
     FetchBookingsAction();
-    console.log("OrdersPage useLayoutEffect");
   }, []);
 
   return (

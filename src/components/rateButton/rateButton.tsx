@@ -3,13 +3,13 @@ import "./rateButton.scss";
 import {FaRegStar, FaStar} from "react-icons/fa";
 
 
-interface RateButtonProps {
+interface RateButtonProps extends React.HTMLAttributes<HTMLUListElement> {
   state: 1 | 2 | 3 | 4 | 5 | null,
   setState: (raiting: 1 | 2 | 3 | 4 | 5 | null) => void;
   size?: number,
   className?: string,
 }
-export const RateButton = ({size = 24, state, setState, className}: RateButtonProps) => {
+export const RateButton = ({size = 24, state, setState, className, ...props}: RateButtonProps) => {
   let [hoverState, setHoverState] = useState<number | null>(null);
   
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,8 +18,7 @@ export const RateButton = ({size = 24, state, setState, className}: RateButtonPr
     if (isCrrectFormatValue) setState(value);
   }
   return (
-    <>
-      <ul className={className ? className +  " rateBox" : "rateBox"}>
+      <ul {...props} className={className ? className +  " rateBox" : "rateBox"} >
         {[...Array(5)].map((item, index) => {
           const value = index + 1;
           return (
@@ -68,6 +67,5 @@ export const RateButton = ({size = 24, state, setState, className}: RateButtonPr
           )
         })}
       </ul>
-    </>
   )
 }

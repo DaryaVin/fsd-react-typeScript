@@ -3,7 +3,7 @@ import "./loginForm.scss";
 import { Button } from "../button/button";
 import { Field } from "../field/field";
 import { FiArrowRight } from "react-icons/fi";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FlexContainer } from "../flexContainer/flexContainer";
 import { Form, FormFieldset } from "../form/form";
 import { connect, ConnectedProps } from "react-redux";
@@ -25,6 +25,8 @@ const LogForm = ({
   ChangeEmailAction,
   ChangePasswordAction,
  }: LoginFormProps) => {
+  const navigate = useNavigate();
+  const location = useLocation();
 
   let emailValidation = useValidationFieldForm(email, {
     required: "Поле Email обязательно к заполнению",
@@ -82,8 +84,11 @@ const LogForm = ({
         </Button>
         <FlexContainer tagForWrap="label" justifyContent="space-between" alignItems="center">
           Нет аккаунта на Toxin?
-          <Button theme="withBorder">
-            <NavLink to="/registration">создать</NavLink>
+          <Button theme="withBorder"
+          type='button'
+          onClick={() => { navigate("/registration", {state: location.state}) }}
+          >
+            создать
           </Button>
         </FlexContainer>
       </Form>

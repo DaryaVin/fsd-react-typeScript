@@ -12,6 +12,7 @@ const AppRout = ({ auth, CheckAuth, FetchUserInfo }: ConnectorProps) => {
   //   CheckAuth();
   // });
   useEffect(() => {
+    
     FetchUserInfo(auth?.uid);
   }, [auth]);
   return (

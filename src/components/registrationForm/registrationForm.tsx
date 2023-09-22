@@ -12,7 +12,7 @@ import {
   FetchNewUserInfo,
 } from "../../store/actions/authActions";
 import { FiArrowRight } from 'react-icons/fi';
-import { NavLink } from 'react-router-dom';
+import { Navigate, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../button/button';
 import { DateMaskField } from '../dateMaskField/dateMaskField';
 import { Field } from '../field/field';
@@ -42,6 +42,9 @@ const RegForm = ({
   FetchRegistration,
   FetchNewUserInfo,
 }: RegistrationFormProps) => {
+
+  const navigate = useNavigate();
+  const location = useLocation();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (onSubmit) {
@@ -183,8 +186,11 @@ const RegForm = ({
           alignItems="center"
         >
           Уже есть аккаунт на Toxin
-          <Button theme="withBorder">
-            <NavLink to="/login">войти</NavLink>
+          <Button theme="withBorder"
+          type='button'
+          onClick={() => { navigate("/login", {state: location.state}) }}
+          >
+           войти
           </Button>
         </FlexContainer>
       </Form>

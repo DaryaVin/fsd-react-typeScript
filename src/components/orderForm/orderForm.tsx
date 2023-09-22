@@ -26,7 +26,7 @@ import { bookingAPI } from '../../interfaces/bookingAPI';
 import { CostCalculation } from '../costCalculation/costCalculation';
 import { GuestFullNameForm } from '../guestFullNameForm/guestFullNameForm';
 import { numberOfDaysBetweenDates } from '../numberOfDaysBetweenDates/numberOfDaysBetweenDates';
-import { redirect, useNavigate } from 'react-router-dom';
+import { redirect, useLocation, useNavigate } from 'react-router-dom';
 
 type OrderFormProps = {
   roomItem: RoomItem,
@@ -43,6 +43,7 @@ const Order = ({
   designations,
   ...props }: OrderFormProps) => {
     const navigate = useNavigate();
+    const location = useLocation();
   const {
     id,
     name,
@@ -634,8 +635,13 @@ const Order = ({
               theme="fillBcg"
               className="orderForm__submitButton"
               type="button"
-              disabled={!(stayDatesValidator.isValid && numberOfGuestsValidator.isValid && auth)}
-              onClick={() => { setIsActiveModal(true) }}
+              disabled={!(stayDatesValidator.isValid && numberOfGuestsValidator.isValid)}
+              onClick={() => { if (auth) {
+                setIsActiveModal(true) 
+              } else {
+                navigate("/login", {state: {prevPathName: location.pathname}})
+              }
+            }}
             >
               <span></span>
               Забронировать

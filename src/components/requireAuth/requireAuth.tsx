@@ -10,14 +10,21 @@ type RequireAuthProps = {
 const Auth = ({ children, redirectPath, auth }: RequireAuthProps) => {
   const location = useLocation();
   if (!auth) {
-    return <Navigate to={redirectPath} state={{ from: { location } }}></Navigate>
+    return <Navigate
+      to={redirectPath}
+      state={{ prevPathName: location.pathname }}
+    />
   };
   return children;
 }
 const Unauth = ({ children, redirectPath, auth }: RequireAuthProps) => {
   const location = useLocation();
+  
   if (auth) {
-    return <Navigate to={redirectPath} state={{ from: { location } }}></Navigate>
+    return <Navigate
+      to={location.state ? location.state.prevPathName : redirectPath}
+      state={{ prevPathName: location.pathname }}
+    />
   };
   return children;
 }
@@ -31,4 +38,4 @@ const connector = connect(mapStateToProps);
 type ConnectorProps = ConnectedProps<typeof connector>;
 
 export const RequireAuth = connector(Auth);
-export const RequireUnauth =  connector(Unauth);
+export const RequireUnauth = connector(Unauth);

@@ -2,10 +2,30 @@ import { child, get, ref, set, update } from "firebase/database";
 import { bdFirebase } from "../firebase";
 import { settings } from "../types/filterRooms";
 import { ReviewItem, RoomItem } from "../types/rooms";
+import { bookingAPI } from "./bookingAPI";
+import { bookingItem } from "../types/booking";
 
 export const RoomsAPI = {
   FetchRooms: async (filterSettings: settings, pageSize: number, currentPage: number) => {
     const dbRef = await ref(bdFirebase);
+
+    const bookings: bookingItem[] = [];
+    await get(child(dbRef, `bookings`)).then((item) => {
+      const bookingItems: bookingItem[] = Object.values(JSON.parse(JSON.stringify(item)));
+      bookingItems.forEach((booking) => {
+        const bookingItem: bookingItem = JSON.parse(JSON.stringify(booking));
+        if (bookingItem.status === "booking") {
+          bookings.push({
+            ...bookingItem,
+            arrivalDate: new Date(bookingItem.arrivalDate),
+            departureDate: new Date(bookingItem.departureDate),
+          })
+        }
+      })
+    }).catch((error) => {
+      console.error(error);
+    });
+
     const rooms = await get(child(dbRef, `rooms`)).then((item) => {
       const rooms: any[] = Object.values(JSON.parse(JSON.stringify(item)));
       return rooms.map((roomItem) => {
@@ -31,6 +51,18 @@ export const RoomsAPI = {
         return room
       }).filter((room) => {
         let filterResult = true;
+        const bookingsThisRoom = bookings.filter((item) => item.roomId === room.id);
+        bookingsThisRoom.forEach((item) => { 
+          const {start, end} = filterSettings.stayDates;
+          const {arrivalDate, departureDate} = item;
+          if (
+            ( start && start >= arrivalDate && start <= departureDate)
+            || ( end && end >= arrivalDate && end <= departureDate)
+            || (end &&  start && start <= arrivalDate && end >= departureDate)
+          ) {
+            filterResult = false;
+          }
+         })
         if (filterSettings.beds > room.roomConditions.beds) filterResult = false;
         if (filterSettings.bedrooms > room.roomConditions.bedrooms) filterResult = false;
         if (filterSettings.bathrooms > room.roomConditions.bathrooms) filterResult = false;

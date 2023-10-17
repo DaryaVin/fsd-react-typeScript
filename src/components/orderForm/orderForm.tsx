@@ -26,11 +26,14 @@ import { bookingAPI } from '../../interfaces/bookingAPI';
 import { CostCalculation } from '../costCalculation/costCalculation';
 import { GuestFullNameForm } from '../guestFullNameForm/guestFullNameForm';
 import { numberOfDaysBetweenDates } from '../numberOfDaysBetweenDates/numberOfDaysBetweenDates';
-import { redirect, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { CalendarTileProperties } from 'react-calendar';
+import { BulletItem } from '../bulletItem/bulletItem';
 
 type OrderFormProps = {
   roomItem: RoomItem,
   designations: designations,
+  roomBookings: bookingItem[],
 } & ConnectorProps
   & React.FormHTMLAttributes<HTMLFormElement>
   ;
@@ -41,9 +44,10 @@ const Order = ({
   userInfo,
   roomItem,
   designations,
+  roomBookings,
   ...props }: OrderFormProps) => {
-    const navigate = useNavigate();
-    const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const {
     id,
     name,
@@ -64,6 +68,7 @@ const Order = ({
   const [orderPhone, setOrderPhone] = useState<string>("");
   const [isActiveModal, setIsActiveModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [dateSelectionError, setDateSelectionError] = useState<string>("");
 
   const stayDatesValidator = useValidationFieldForm([startDateSate, endDateSate], {
     required: "Отметьте даты прибывания в данном номере",
@@ -79,8 +84,36 @@ const Order = ({
     }
   })
 
+useEffect(() => {
+  if (dateSelectionError !== "" && startDateSate !== null && endDateSate !== null) setDateSelectionError("");
+
+  // return () => {
+    
+  // }
+}, [startDateSate, endDateSate])
 
 
+  const tileDisabled = (tile: CalendarTileProperties) => {
+    let isDisabel = false;
+    roomBookings.forEach((booking) => {
+      if (tile.date >= booking.arrivalDate && tile.date <= booking.departureDate) {
+        isDisabel = true;
+      }
+    })
+    return isDisabel;
+  }
+  const onChangeCalendarStayDate = (value: Date | [Date] | [Date, Date]) => {
+    if (Array.isArray(value) && value.length === 2) {
+      roomBookings.forEach((booking) => {
+        if (value[0] <= booking.arrivalDate && value[1] >= booking.departureDate) {
+          // console.log("onChangeCalendarStayDate roomBookings.forEach");
+          setStartDateSate(null);
+          setEndDateSate(null);
+          setDateSelectionError("В выбранном периоде находятся недоступные даты, пожалуйста, выберите другой период");
+        }
+      })
+    }
+  }
   const [isValidGuestsInfo, setIsValidGuestsInfo] = useState<boolean[]>(new Array(guestsInfo.length).fill(true));
   const orderEmailValidator = useValidationFieldForm(orderEmail, {
     required: "Email является обязательной информацией для оформления брони номера",
@@ -108,7 +141,6 @@ const Order = ({
 
     }
   }
-
   const moduleContent = () => {
     let formContent: WrapElementContentType[] = [];
     switch (modulePage) {
@@ -166,11 +198,6 @@ const Order = ({
               Телефон (необязательно):
             </legend>
             <Field>
-              {/* <input
-                type="tel"
-                value={orderPhone}
-                onChange={(e) => { setOrderPhone(e.target.value) }}
-              /> */}
               <ReactInputMask
                 mask={"+9-999-999-99-99"}
                 placeholder='+_ ___ ___ __ __'
@@ -306,7 +333,7 @@ const Order = ({
               {
                 guestsInfo.map((guest, index) => {
                   return (
-                    <span key={index}>
+                    <BulletItem key={index}>
                       {
                         (
                           guest.ageStatus === "adults"
@@ -323,7 +350,7 @@ const Order = ({
                             : ""
                         )
                       }
-                    </span>
+                    </BulletItem>
                   )
                 })
               }
@@ -407,7 +434,7 @@ const Order = ({
       if (orderPhone) bookingItem.phone = orderPhone;
       await setIsLoading(true);
       try {
-        await bookingAPI.CreateBooking(bookingItem);        
+        await bookingAPI.CreateBooking(bookingItem);
         navigate("/orders");
       } catch (error) {
         alert("Попытка бронирования провалена");
@@ -481,6 +508,7 @@ const Order = ({
         </div>
       </FlexContainer>
       <FormFieldset key={"stayDates"}>
+        <div key={"DateError"}>{dateSelectionError}</div>
         <Dropdown
           className='orderForm__stayDates'
           hasDropButton
@@ -495,6 +523,7 @@ const Order = ({
                     state={startDateSate}
                     setState={setStartDateSate}
                     onBlur={() => { stayDatesValidator.setIsDirty(true); }}
+                    isClear={!!dateSelectionError}
                   />
                   {dropButton}
                 </Field>
@@ -511,6 +540,7 @@ const Order = ({
                     state={endDateSate}
                     setState={setEndDateSate}
                     onBlur={() => { stayDatesValidator.setIsDirty(true); }}
+                    isClear={!!dateSelectionError}
                   />
                   {dropButton}
                 </Field>
@@ -525,11 +555,15 @@ const Order = ({
                 setState={setStartDateSate}
                 state2={endDateSate}
                 setState2={setEndDateSate}
+                onChangeValue={onChangeCalendarStayDate}
+                propsForCalendar={{
+                  tileDisabled: tileDisabled,
+                }}
               />
             </Field>
           }
         />
-        <ValidationMessage {...stayDatesValidator} />
+        <ValidationMessage key={"validator"} {...stayDatesValidator} />
       </FormFieldset>
       <FormFieldset key={"guests"}>
         <legend key={"legend"}>гости</legend>
@@ -636,12 +670,13 @@ const Order = ({
               className="orderForm__submitButton"
               type="button"
               disabled={!(stayDatesValidator.isValid && numberOfGuestsValidator.isValid)}
-              onClick={() => { if (auth) {
-                setIsActiveModal(true) 
-              } else {
-                navigate("/login", {state: {prevPathName: location.pathname}})
-              }
-            }}
+              onClick={() => {
+                if (auth) {
+                  setIsActiveModal(true)
+                } else {
+                  navigate("/login", { state: { prevPathName: location.pathname } })
+                }
+              }}
             >
               <span></span>
               Забронировать

@@ -30,6 +30,7 @@
 .footer__widgets {
   width: 100%;
   display: grid;
+  // justify-items: center;
   grid-template-columns: $width_size_m 1fr $width_size_m;
   align-items: flex-start;
   column-gap: 2rem;
@@ -62,6 +63,7 @@
 }
 .footer__navbar {
   min-width: 100px;
+  // max-width: 500px;
   overflow: auto;
   scroll-behavior: smooth;
   &::-webkit-scrollbar {

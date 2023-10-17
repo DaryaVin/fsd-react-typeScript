@@ -8,7 +8,7 @@ export const FetchBookingsAction = () => {
     return async (dispatch: Dispatch<BookingAction>) => {
         try {
             dispatch({ type: BookingActionType.FETCH_BOOKING });
-            const bookings: bookingItem[] = await bookingAPI.FetchBookings();
+            const bookings: bookingItem[] = await bookingAPI.FetchBookingsForUser();
             if (bookings) {
                 for (let index = 0; index < bookings.length; index++) {
                   let room = await RoomsAPI.FetchRoomItem(bookings[index].roomId);

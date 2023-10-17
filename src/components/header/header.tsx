@@ -7,25 +7,36 @@ import { Button } from '../button/button';
 import { FlexContainer } from '../flexContainer/flexContainer';
 import { Logo } from '../logo/logo';
 
+interface navLink {
+  path: string,
+  title: string,
+  end?: boolean,
+  requireAuth?: boolean,
+}
 export const Head = ({ auth, userInfo }: ConnectorProps) => {
   let location = useLocation();
 
   useEffect(() => {
     setshowMenu(false);
   }, [location]);
-  const navLinks = [
-    {
-      path: "/",
-      title: "Главная",
-      end: true
-    },
+  const navLinks: navLink[] = [
+    // {
+    //   path: "/",
+    //   title: "Главная",
+    //   end: true
+    // },
     {
       path: "/search-rooms",
       title: "Выбор номера"
     },
     {
       path: "/orders",
-      title: "Мои заказы"
+      title: "Мои заказы",
+      requireAuth: true,
+    },
+    {
+      path: "/about-us",
+      title: "О нас",
     },
   ];
   const [showMenu, setshowMenu] = useState<boolean>(false);
@@ -44,7 +55,7 @@ export const Head = ({ auth, userInfo }: ConnectorProps) => {
             <Logo />
           </NavLink>
           <nav key={"header__navbar"}
-            className={"header__navbar" + (showMenu ? " show" : "")}
+            className={"header__navbar" + (showMenu ? " header__navbar_show" : "")}
             onScroll={(e) => { e.preventDefault(); e.stopPropagation(); }}
           >
             <FlexContainer key={"header__navbarScroll"}
@@ -60,11 +71,13 @@ export const Head = ({ auth, userInfo }: ConnectorProps) => {
                 flexWrap="nowrap"
               >
                 {
-                  navLinks.map((item, index) =>
-                    <li key={index} className={"header__navbarItem"}>
-                      <NavLink to={item.path} end={item.end} className={"header__navbarLink"}>{item.title}</NavLink>
-                    </li>
-                  )
+                  navLinks.map((item, index) => {
+                    return (item.requireAuth && auth) || !item.requireAuth
+                    ? <li key={index} className={"header__navbarItem"}>
+                        <NavLink to={item.path} end={item.end} className={"header__navbarLink"}>{item.title}</NavLink>
+                      </li>
+                    : ""
+                  })
                 }
               </FlexContainer>
             </FlexContainer>

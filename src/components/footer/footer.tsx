@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaInstagram, FaVk } from 'react-icons/fa';
 import { FiArrowRight } from 'react-icons/fi';
 import { NavLink } from 'react-router-dom';
@@ -6,70 +6,71 @@ import { Field } from '../field/field';
 import { FlexContainer } from '../flexContainer/flexContainer';
 import { Logo } from '../logo/logo';
 import "./footer.scss";
-
+import { Button } from '../button/button';
+import { useValidationFieldForm } from '../../hooks/useValidationFieldFormReturn';
+import { ValidationMessage } from '../validationMessage/validationMessage';
+import { subscriptionAPI } from '../../interfaces/subscriptionAPI';
+interface navLink {
+  path: string,
+  title: string,
+  end?: boolean,
+  requireAuth?: boolean,
+}
 export const Footer = () => {
-  const footerNav = [
-    {
-      header: "Навигация",
-      links: [
-        {
-          path: "/",
-          title: "Главная",
-          end: true,
-        },
-        {
-          path: "/",
-          title: "Главная",
-        },
-        {
-          path: "/",
-          title: "Главная",
-        },
-        {
-          path: "/",
-          title: "Главная",
-        },
-      ],
-    },
-    {
-      header: "О нас",
-      links: [
-        {
-          path: "/",
-          title: "Главная",
-        },
-        {
-          path: "/",
-          title: "Главная",
-        },
-        {
-          path: "/",
-          title: "Главная",
-        },
-        {
-          path: "/",
-          title: "Главная",
-        },
-      ],
-    },
-    {
-      header: "Помощь",
-      links: [
-        {
-          path: "/",
-          title: "Главная",
-        },
-        {
-          path: "/",
-          title: "Главная",
-        },
-        {
-          path: "/",
-          title: "Главная",
-        },
-      ],
-    },
-  ]
+  const footerNav: {
+    header: string,
+    links: navLink[],
+  }[] = [
+      {
+        header: "Навигация",
+        links: [
+          {
+            path: "/",
+            title: "Главная",
+            end: true
+          },
+          {
+            path: "/search-rooms",
+            title: "Выбор номера"
+          },
+          {
+            path: "/orders",
+            title: "Мои заказы",
+            requireAuth: true,
+          },
+          {
+            path: "/about-us",
+            title: "О нас",
+          },
+        ],
+      },
+      {
+        header: "О нас",
+        links: [
+          {
+            path: "/about-us/aboutUsInfo",
+            title: "Коротко о нас",
+          },
+          {
+            path: "/about-us/aboutUsContacts",
+            title: "Наши контакты",
+          },
+        ],
+      },
+    ]
+  const [emailForQuickSubscription, setEmailForQuickSubscription] = useState<string>("");
+  const emailForQuickSubscriptionValidator = useValidationFieldForm(emailForQuickSubscription, {
+    isEmail: true,
+  });
+  const onClickEmailForQuickSubscription = () => { 
+    if (emailForQuickSubscriptionValidator.isValid) {
+      subscriptionAPI.AddSubscription(emailForQuickSubscription);
+      alert("Вы подписались на нашу рассылку. Теперь на почту " + emailForQuickSubscription + " будут приходить наши акктуальные новости, персональные скидки и замечательные предложения только для вас:)");
+      setEmailForQuickSubscription("");
+    } else {
+      alert("К сожалению вы ввели значение не соответствующее почте, поэтому мы не согли вас подписать на нашу рассылку:( Исправьте значение и попробуйте еще раз))");
+    }
+   }
   return (
     <footer key={"footer"} className='footer'>
       <div key={"footer__widgets"} className="footer__part">
@@ -92,7 +93,7 @@ export const Footer = () => {
 
           <FlexContainer key={"footer__navbar"}
             className="footer__navbar"
-            justifyContent="space-between"
+            justifyContent={footerNav.length <= 2 ? "space-around" : "space-between"}
             flexDirection="row"
             columnGap={20}
             rowGap={20}
@@ -136,9 +137,26 @@ export const Footer = () => {
               promotions in your inbox!
             </div>
             <Field className='footer__quickSubscriptionField block_size_m' >
-              <input></input>
-              <FiArrowRight size={30} color={"#BC9CFF"} className='footer__quickSubscriptionFieldArrow'></FiArrowRight>
+              <input
+                value={emailForQuickSubscription}
+                onChange={(e) => setEmailForQuickSubscription(e.target.value)}
+                onBlur={() => emailForQuickSubscriptionValidator.setIsDirty(true)}
+              />
+              <Button
+                type="button"
+                disabled={!emailForQuickSubscriptionValidator.isValid}
+                onClick={onClickEmailForQuickSubscription}
+              >
+                <button>
+                  <FiArrowRight size={30} color={"#BC9CFF"} className='footer__quickSubscriptionFieldArrow'></FiArrowRight>
+                </button>
+              </Button>
             </Field>
+            {
+              emailForQuickSubscription !== "" 
+              ? <ValidationMessage {...emailForQuickSubscriptionValidator} />
+              : ""
+            }
           </FlexContainer>
         </div>
       </div>

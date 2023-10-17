@@ -11,10 +11,10 @@ import { ToggleButton } from '../toggleButton/toggleButton';
 import { Modal } from '../modal/modal';
 import { useValidationFieldForm } from '../../hooks/useValidationFieldFormReturn';
 import { ValidationMessage } from '../validationMessage/validationMessage';
-import { child } from 'firebase/database';
 import { DateMaskField } from '../dateMaskField/dateMaskField';
 import { FiArrowRight } from 'react-icons/fi';
 import { Label } from '../label/label';
+import { authAPI } from '../../interfaces/authAPI';
 
 interface NameModelContentProps {
   firstName: string | undefined,
@@ -181,6 +181,14 @@ const Prof = ({ auth, userInfo, FetchLogAut, FetchUserInfo, UpdateUserInfo }: Co
     }
   };
 
+const SendEmailVerificationHandler = () => { 
+  authAPI.SendEmailVerification();
+  setModalContent(
+    <div>На вашу почту выслано письмо для подтверждения вашего email</div>
+  );
+  setIsActiveModal(true);
+ }
+
   return (
     <div className='profile'>
       <Field theme={"card"}>
@@ -224,25 +232,25 @@ const Prof = ({ auth, userInfo, FetchLogAut, FetchUserInfo, UpdateUserInfo }: Co
           <h2 key={"ServisInfoHeader"}>Сервисные данные</h2>
           <FormFieldset key={"ServisInfo"}>
             <Label label='Email:' key={"labelEmail"}>
-              <FlexContainer key={"Email"} justifyContent="space-between">
+              <FlexContainer key={"Email"} justifyContent="space-between" columnGap={5}>
                 <span>
                   {userInfo?.email || "Email не указан"}
                 </span>
                 {
                   auth?.emailVerified
-                    ? "Почта подтверждена"
-                    : <Button>Подтвердить</Button>
+                    ? "Подтверждена"
+                    : <Button type='button' onClick={SendEmailVerificationHandler}>Подтвердить</Button>
                 }
               </FlexContainer>
             </Label>
-            <FlexContainer key={"Subscription"} justifyContent="space-between">
+            <FlexContainer key={"Subscription"} justifyContent="space-between" columnGap={10}>
               <label key={"labelSubscription"}>Подписка на спецпредложения:</label>
               <ToggleButton checked={userInfo?.isSubscription} onChange={chengeSubscriptionHendler}></ToggleButton>
             </FlexContainer>
           </FormFieldset>
           <FlexContainer justifyContent="space-between">
             <Button key={"buttonLogaut"}
-              type="button"
+              type="button" 
               theme="withBorder"
               onClick={() => LogAutHendler()}
             >

@@ -1,33 +1,40 @@
 import React from "react";
 import { CreateWrapElement, WrapElementContentType } from "../createWrapElement/createWrapElement";
 import "./bulletList.scss";
+import { BulletItem } from "../bulletItem/bulletItem";
 
 interface BulletListProps extends React.HTMLAttributes<HTMLUListElement> {
   children: WrapElementContentType,
+  withBorderBetweenBulletItems?: boolean,
 }
-export const BulletList = ({ children, ...props }: BulletListProps) => {
-  const newChildren = Array.isArray(children)
-    ? children.map((item, index) => {
-      if (typeof item !== "string" && typeof item !== "number" && item.type !== "li") {
-        return <li key={index} className="bulletList__item">
-          {item}
-        </li>
-      };
+export const BulletList = ({ children, withBorderBetweenBulletItems, ...props }: BulletListProps) => {
+  // const newChildren = Array.isArray(children)
+  //   ? children.map((item, index) => {
+  //     if (typeof item !== "string" && typeof item !== "number" && item.type !== "li") {
+  //       return <li key={index} className="bulletList__item">
+  //         {item}
+  //       </li>
+  //     };
 
-      return <CreateWrapElement key={index} className="bulletList__item" tagForWrap="li">
-        {item}
-      </CreateWrapElement>;
-    })
-    : typeof children !== "string" && typeof children !== "number" && children.type !== "li"
-      ? <li className="bulletList__item">
-        {children}
-      </li>
-      : <CreateWrapElement className="bulletList__item" tagForWrap="li">
-        {children}
-      </CreateWrapElement>;
+  //     return <CreateWrapElement key={index} className="bulletList__item" tagForWrap="li">
+  //       {item}
+  //     </CreateWrapElement>;
+  //   })
+  //   : typeof children !== "string" && typeof children !== "number" && children.type !== "li"
+  //     ? <li className="bulletList__item">
+  //       {children}
+  //     </li>
+  //     : <CreateWrapElement className="bulletList__item" tagForWrap="li">
+  //       {children}
+  //     </CreateWrapElement>;
 
-  let newClassName = "bulletList" + (props.className ? " " + props.className : "");
+  let newClassName = "bulletList" 
+  + (props.className ? " " + props.className : "")
+  + (withBorderBetweenBulletItems ? " bulletList_withBorderBetweenBulletItems" : "")
+  ;
   return (
-      <ul {...props} className={newClassName}>{newChildren}</ul>
+      <ul {...props} className={newClassName}>
+        {children}
+      </ul>
   )
 }

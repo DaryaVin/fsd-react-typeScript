@@ -4,20 +4,26 @@
   @include baseText;
   color: $color1Opacity75;
   list-style: none;
+  width: $width;
 }
-.bulletList__item {
-  padding-left: 20px;
-  position: relative;
-  max-width: $width;
-  margin-bottom: 10px;
-  &::before {
-    content: "";
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: $color1Opacity25;
-    position: absolute;
-    top: 7px;
-    left: 0px;
+.bulletList_withBorderBetweenBulletItems {
+  & > *:not(:last-child) {
+    border-bottom: 1px solid $color1Opacity25;
   }
 }
+// .bulletList__item {
+//   padding-left: 20px;
+//   position: relative;
+//   max-width: $width;
+//   margin-bottom: 10px;
+//   &::before {
+//     content: "";
+//     width: 10px;
+//     height: 10px;
+//     border-radius: 50%;
+//     background: $color1Opacity25;
+//     position: absolute;
+//     top: 7px;
+//     left: 0px;
+//   }
+// }

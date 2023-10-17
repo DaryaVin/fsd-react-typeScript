@@ -1,0 +1,76 @@
+@import '../baseComponent/baseVariables&Mixins.scss';
+
+.bulletItem {
+  list-style: none;
+  @include baseText;
+  line-height: 18px;
+  padding-left: 20px;
+  // padding: 20px 5px;
+  color: $color1Opacity75;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: start;
+  // max-width: $width;
+  width: 100%;
+
+  &.bulletItem_withExplanation {
+    .bulletItem__label {
+      font-weight: bold;
+      color: $color1Opacity75;
+    }
+  }
+
+  &.bulletItem_withIcon {
+    padding: 20px 0;
+  }
+
+  &:not(.bulletItem_withIcon) {
+    &::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: $color1Opacity25;
+      position: absolute;
+      left: 0px;
+      top: 5px;
+    }
+  }
+}
+
+.bulletItem__label {
+  text-align: left;
+  vertical-align: middle;
+}
+
+.bulletItem__explanation {
+  color: $color1Opacity50;
+  font-size: 12px;
+  line-height: 14px;
+  // padding-top: 5px;
+  font-weight: normal;
+}
+.bulletItem__info {
+  display: flex;
+  align-items: center;
+}
+
+.bulletItem__iconBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // width: 40px;
+  // height: 40px;
+}
+
+.bulletItem__iconGradient {
+  width: 0;
+  height: 0;
+  @include linearGradientForSVG($color2, $color2Gradiend);
+}
+
+.bulletItem__icon {
+  width: 40px;
+  height: 40px;
+}

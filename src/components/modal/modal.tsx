@@ -16,9 +16,11 @@ export const Modal = ({ children, isActive, setIsActive, ...props }: ModalProps)
     if (isActive) {
       setDisplay(isActive);
       setTimeout(() => setShow(isActive), 500);
+      document.body.style.overflow = 'hidden';
     } else {
       setShow(isActive);
       setTimeout(() => setDisplay(isActive), 500);
+      document.body.style.overflow = 'unset';
     }
   }, [isActive]);
 

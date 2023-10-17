@@ -12,6 +12,7 @@
     }
     .dropdown__contenerBlock {
       @include field;
+      padding: 10px;
       border-radius: 0 0 4px 4px;
       border-top-width: 0;
       // padding: 7px 7px 2px 15px;

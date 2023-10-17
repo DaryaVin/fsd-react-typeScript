@@ -75,7 +75,7 @@ export const RevItem = ({
   const onClickLikeButton = async () => { 
     if (auth) {
       const newListWhoLikedThisReviewItem = await RoomsAPI.FetchLikeReviews(auth.uid, roomId, id, newListWhoLikedThisReview);
-      console.log("onClickLikeButton newListWhoLikedThisReviewItem", newListWhoLikedThisReviewItem);
+      // console.log("onClickLikeButton newListWhoLikedThisReviewItem", newListWhoLikedThisReviewItem);
       
       setNewListWhoLikedThisReview(newListWhoLikedThisReviewItem);
     }

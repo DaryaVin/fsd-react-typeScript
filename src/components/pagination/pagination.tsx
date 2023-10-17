@@ -135,9 +135,9 @@ export const Pagination = ({
           }
         </li>
       </ul>
-      {/* <div className="pagination__explanations">
+      <div className="pagination__explanations">
         {(currentPage - 1) * pageSize + 1} - {Math.min((currentPage - 1) * pageSize + pageSize, totalCount)} из {totalCount} вариантов аренды
-      </div> */}
+      </div>
     </div>
   )
 }

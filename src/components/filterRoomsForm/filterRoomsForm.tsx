@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./filterRoomsForm.scss";
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../../store/reducers/rootReducer';
@@ -26,7 +26,6 @@ import { correctDeclensionWord } from '../correctDeclensionWord/correctDeclensio
 import { RangeSlider } from '../rangeSlider/rangeSlider';
 import { InputLengthControl } from '../inputLengthControl/inputLengthControl';
 import { CheckboxButton } from '../checkboxButton/checkboxButton';
-import { useLoaderData } from 'react-router-dom';
 import { designations } from '../../types/filterRooms';
 
 type FilterRoomsForm = {
@@ -52,8 +51,8 @@ const Filter = ({
   const maxPrice = designations?.maxPrice ? designations.maxPrice : 99999;
   const minDate: Date = designations?.minDate ? designations.minDate : new Date();
   const maxDate: Date = designations?.maxDate ? designations.maxDate : new Date(minDate.getFullYear() + 1, minDate.getMonth(), minDate.getDate());
-  const [stateStartDate, setStateStartDate] = useState<Date | null>(setting && setting.stayDates.start !== null ? setting.stayDates.start : minDate);
-  const [stateEndDate, setStateEndDate] = useState<Date | null>(setting && setting.stayDates.end !== null ? setting.stayDates.end : maxDate);
+  const [stateStartDate, setStateStartDate] = useState<Date | null>(setting && setting.stayDates.start !== null ? setting.stayDates.start : null);
+  const [stateEndDate, setStateEndDate] = useState<Date | null>(setting && setting.stayDates.end !== null ? setting.stayDates.end : null);
   useEffect(() => {
     if (stateStartDate !== null
       && stateEndDate !== null
@@ -67,9 +66,6 @@ const Filter = ({
 
   }, [stateStartDate, stateEndDate]);
 
-  // useLayoutEffect(() => {
-  //   FetchDesignations();
-  // }, [])
   const getCorrectFormatDate = (date: Date | null | undefined) => {
     if (date !== null && date !== undefined) {
       const correctFormat = date.toLocaleDateString("ru", { day: "numeric", month: "short" });
@@ -152,9 +148,11 @@ const Filter = ({
           theme="field"
           buttonBlock={<div className='filterRoomsForm__stayDateButtonBlock'>
             {
-              getCorrectFormatDate(stateStartDate)
+              !!stateEndDate && !!stateStartDate 
+              ? getCorrectFormatDate(stateStartDate)
               + " - "
               + getCorrectFormatDate(stateEndDate)
+              : "Даты не указаны"
             }
           </div>}
           contenerBlock={<FlexContainer

@@ -68,7 +68,7 @@ const LogForm = ({
           <ValidationMessage className="form__validationMessage" {...emailValidation} />
           <Field key={"password"}>
             <input
-              type="text"
+              type='password'
               placeholder="Пароль"
               value={password}
               onChange={(e) => ChangePasswordAction(e.target.value)}

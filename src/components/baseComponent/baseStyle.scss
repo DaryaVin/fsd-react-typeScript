@@ -9,6 +9,8 @@ html, body {
   height: 100%;
   @include baseText;
   color: $color1Opacity75;
+  display: flex;
+  align-items: center;
 }
 h1 {
   @include h1;

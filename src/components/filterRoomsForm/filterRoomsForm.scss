@@ -1,8 +1,13 @@
 @import "../baseComponent/baseVariables&Mixins.scss";
 
 .filterRoomsForm {
-  width: $width_size_l;
-
+  width: $width_size_m + 30px;
+  display: flex;
+  flex-direction: column;
+  & > * {
+    flex-shrink: 0;
+  }
+  gap: 30px;
 }
 .filterRoomsForm__item_withMarrginTop20 {
   margin-top: 20px;

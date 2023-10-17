@@ -1,7 +1,7 @@
 @import "../baseComponent/baseVariables&Mixins.scss";
 
 .reviewList {
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
     gap: 1.5rem;
     max-height: $width_size_s;

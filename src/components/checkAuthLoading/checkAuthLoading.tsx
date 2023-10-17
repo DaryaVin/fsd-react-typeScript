@@ -6,16 +6,17 @@ import { AuthValidation } from '../authValidation/authValidation';
 
 type CheckAuthLoadingProps = {
   children: React.ReactChildren | React.ReactChild,
-} & ConnectorProps;
+} & ConnectorProps & React.HTMLAttributes<HTMLDivElement>;
 const checkAuthLoading  = ({
   children,
   isLoading,
+  ...props
 }: CheckAuthLoadingProps) => {
 
   return (
     isLoading
-      ? <span> Идет загрузка</span>
-      : <div className='authForm'>
+      ? <div {...props}> Идет загрузка</div>
+      : <div {...props} className={'authForm' + (props.className ? " " + props.className : "")}>
         {children}
       </div>
   )

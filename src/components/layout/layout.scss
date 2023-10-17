@@ -10,3 +10,16 @@
   display: grid;
   grid-template-rows: auto 1fr auto;
 }
+.layout__wrap1 {
+  max-width: $max_width;
+  width: 100%;
+
+  
+}
+.layout__wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  justify-content: center;
+
+}

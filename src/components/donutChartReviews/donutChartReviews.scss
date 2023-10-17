@@ -1,0 +1,21 @@
+@import '../baseComponent/baseVariables&Mixins.scss';
+
+.donutChartReviews {
+  width: $width;
+  height: $width_size_s;
+  position: relative;
+  // background-color: $color1Opacity25;
+}
+.donutChartReviews__signature {
+  position: absolute;
+  width: 80px;
+  max-height: 80px;
+  top: 80%;
+  left: 82px;
+  transform-origin: 50% 50%;
+  transform: translateY(-50%);
+  @include h2;
+  color: $color2;
+  text-align: center;
+  overflow: hidden;
+} 

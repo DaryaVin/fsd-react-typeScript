@@ -95,7 +95,7 @@ export const useDateState = (
   setState: (date: Date | null) => void,
   minDate?: Date | null,
   maxDate?: Date | null,
-): fullDateState => {
+) => {
   if (state === undefined) setState(null);
   let [stateDay, setStateDay] = useState<string>(state ? prependZerosFunc(state.getDate().toString(), 2) : "");
   let [stateMonth, setStateMonth] = useState<string>(state ? prependZerosFunc((state.getMonth() + 1).toString(), 2) : "");
@@ -107,6 +107,12 @@ export const useDateState = (
 
   const fullSetDays = getFullSet(31);
   const fullSetMonth = getFullSet(12);
+
+  const onClear = () => { 
+    setStateDay("");
+    setStateMonth("");
+    setStateYear("");
+   }
 
   if (minDate && maxDate) {
     if (minDate > maxDate) {
@@ -199,6 +205,7 @@ export const useDateState = (
       state: stateYear,
       setState: setStateYear,
       onChange: onChangeYear,
-    }
+    },
+    onClear: onClear
   }
 }

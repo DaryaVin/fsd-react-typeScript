@@ -64,12 +64,19 @@ interface DateMaskFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   minDate?: Date | null,
   maxDate?: Date | null,
   className?: string,
+  isClear?: boolean,
 }
-export const DateMaskField = ({ minDate, maxDate, state, setState, className, ...props }: DateMaskFieldProps) => {
+export const DateMaskField = ({isClear, minDate, maxDate, state, setState, className, ...props }: DateMaskFieldProps) => {
   if (minDate) minDate.setHours(0, 0, 0, 0);
   if (maxDate) maxDate.setHours(23, 59, 59, 999);
   // let [stateDate, setStateDate] = useState<fullDateState>(useDateState(state, setState, minDate, maxDate));
   const stateDate = useDateState(state, setState, minDate, maxDate);
+
+useEffect(() => { 
+  if (state === null && isClear) {
+    stateDate.onClear();
+  }
+ }, [isClear, state])
 
   const onClickDateMaskField = (e: React.MouseEvent<HTMLElement>) => {
     const el = e.target;

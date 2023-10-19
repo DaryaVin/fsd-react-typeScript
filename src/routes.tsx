@@ -13,6 +13,9 @@ import { searchRoomLoader, SearchRooms } from "./components/searchRooms/searchRo
 import { VerificationEmail } from "./components/verificationEmail/verificationEmail";
 import { RoomPage } from "./components/roomPage/roomPage";
 import { OrdersPage, ordersPageLoader } from "./components/ordersPage/ordersPage";
+import { MainPage } from "./components/mainPage/mainPage";
+import { ContactsPage } from "./components/contactsPage/contactsPage";
+import { ProfilePage } from "./components/profilePage/profilePage";
 
 export interface routesType {
   path: string,
@@ -31,7 +34,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <MainBackgroundAnimation/>,
+        element: <MainPage/>,
       },
       {
         path: "login",
@@ -42,8 +45,14 @@ export const router = createBrowserRouter([
         element: <RequireUnauth redirectPath="/profile"><Registration/></RequireUnauth>,
       },
       {
-        path: "verification-email",
-        element: <RequireAuth redirectPath="/login"><VerificationEmail/></RequireAuth>,
+        path: "about-us",
+        element: <ContactsPage/>,
+        children: [
+          {
+            path: ":block",
+            element: <ContactsPage/>,
+          }
+        ]
       },
       {
         path: "search-rooms",
@@ -62,7 +71,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element:  <RequireAuth redirectPath="/login"><Profile/></RequireAuth>,
+        element:  <RequireAuth redirectPath="/login"><ProfilePage/></RequireAuth>,
       },
       {
         path: "cart",

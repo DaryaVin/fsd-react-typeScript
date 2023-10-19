@@ -22,7 +22,7 @@ export interface bookingItem {
   discount?: number,
   guestsInfo: guestInfo[],
   isPaid?: boolean,
-  status: "booking" | "cancelled" | "completed",
+  status: "booking" | "cancelled" | "completed" | "inProgress",
   rating?: 1 | 2 | 3 | 4 | 5,
 }
 

@@ -2,7 +2,7 @@
 
 .donutChartReviews {
   width: $width;
-  height: $width_size_s;
+  height: 210px;
   position: relative;
   // background-color: $color1Opacity25;
 }
@@ -10,10 +10,10 @@
   position: absolute;
   width: 80px;
   max-height: 80px;
-  top: 80%;
+  top: 75%;
   left: 82px;
-  transform-origin: 50% 50%;
-  transform: translateY(-50%);
+  // transform-origin: 50% 50%;
+  transform: translateY(-50px);
   @include h2;
   color: $color2;
   text-align: center;

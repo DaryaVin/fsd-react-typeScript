@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import "./contactsPage.scss";
-import img1 from '../../img/aboutUs1.jpg';
+import img1 from '../../img/aboutUs.png';
 import img2GisMapScrin from '../../img/2gisMapScrin.png';
 
 import { FlexContainer } from '../flexContainer/flexContainer';

@@ -9,6 +9,7 @@ export const FetchBookingsAction = () => {
         try {
             dispatch({ type: BookingActionType.FETCH_BOOKING });
             const bookings: bookingItem[] = await bookingAPI.FetchBookingsForUser();
+            // const bookings: bookingItem[] = await bookingAPI.FetchBookings();
             if (bookings) {
                 for (let index = 0; index < bookings.length; index++) {
                   let room = await RoomsAPI.FetchRoomItem(bookings[index].roomId);
@@ -22,6 +23,7 @@ export const FetchBookingsAction = () => {
             dispatch({ type: BookingActionType.FETCH_BOOKING__SUCCESS, payload: bookings});
 
         } catch (e) {
+            console.log("FetchBookingsAction error:", e);
             const error = JSON.parse(JSON.stringify(e));
             dispatch({ type: BookingActionType.FETCH_BOOKING__ERROR, payload: error.code });
         }

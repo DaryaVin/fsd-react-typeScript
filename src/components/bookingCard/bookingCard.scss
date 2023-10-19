@@ -3,7 +3,7 @@
 .bookingCard {
 position: relative;
 display: inline-block;
-width: 100%;
+width: $width_size_l + 60px;
 }
 .bookingCard__unavailable {
   color: $color1Opacity50;
@@ -24,4 +24,7 @@ width: 100%;
 }
 .bookingCard__statusElememt_booking {
   color: $color2;
+}
+.bookingCard__statusElememt_inProgress {
+  color: $color3Gradiend
 }

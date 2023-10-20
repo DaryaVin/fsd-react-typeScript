@@ -2,10 +2,13 @@ import React, { useRef, useEffect } from 'react';
 import "./contactsPage.scss";
 import img1 from '../../img/aboutUs.png';
 import img2GisMapScrin from '../../img/2gisMapScrin.png';
-
 import { FlexContainer } from '../flexContainer/flexContainer';
 import { Field } from '../field/field';
 import { useParams } from 'react-router-dom';
+import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
+
+
+
 
 interface ContactsPageProps extends React.HTMLAttributes<HTMLDivElement> {
 
@@ -29,7 +32,7 @@ export const ContactsPage = ({ ...props }: ContactsPageProps) => {
   };
 
   useEffect(() => {
-    
+
     scrollToBlock(params.block);
   }, [params]);
   return (
@@ -38,12 +41,12 @@ export const ContactsPage = ({ ...props }: ContactsPageProps) => {
       flexDirection='colomn'
       rowGap={30}
       justifyContent='center'
-      
+
     >
       <h1 key={"header"} ref={aboutUsInfo}>О нас</h1>
       <div key={"info"}
         className='contactsPage__contentInfo'
-        
+
       >
         <div key={"img"}
           className='contactsPage__imgContener'
@@ -62,7 +65,7 @@ export const ContactsPage = ({ ...props }: ContactsPageProps) => {
         className={"contactsPage__contacts"}
         rowGap={30}
         columnGap={30}
-        
+
       >
         <Field key={"contact"} className='contactsPage__contactsInfo' theme='card' >
           <h2 ref={aboutUsContacts}>Наши контакты</h2>
@@ -85,7 +88,29 @@ export const ContactsPage = ({ ...props }: ContactsPageProps) => {
             <div>toxinProect@mail.com</div>
           </FlexContainer>
         </Field>
-        <img key={"map"} src={img2GisMapScrin} alt='Скрин карты' className='contactsPage__img' />
+        <div key={"map"} className='contactsPage__imgContener'>
+          <YMaps>
+            <Map 
+            style={{
+              width: "100%",
+              height: "100%",
+              minHeight: "200px"
+            }}
+            // className='contactsPage__img'
+            defaultState={{
+              center: [56.453702, 84.948018],
+              zoom: 14,
+              controls: ["zoomControl", "fullscreenControl"],
+
+            }}
+              modules={["control.ZoomControl", "control.FullscreenControl"]}
+            >
+              <Placemark defaultGeometry={[56.453702, 84.948018]} />
+
+            </Map>
+          </YMaps>
+        </div>
+        {/* <img key={"map"} src={img2GisMapScrin} alt='Скрин карты' className='contactsPage__img' /> */}
       </FlexContainer>
     </FlexContainer>
   )

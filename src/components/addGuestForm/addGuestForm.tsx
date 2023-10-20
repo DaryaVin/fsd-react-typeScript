@@ -59,10 +59,10 @@ const ChangeForm = ({ bookingState, ChangeBookingAction, bookingId, setActiveMod
   }
   const [isValid, setIsValid] = useState<boolean>(false);
   return <>
-    <h2>Внесите данные о госте:</h2>
+    <h2 key={"header"}>Внесите данные о госте:</h2>
     <FormFieldset key={"info"}>
       <legend key={"header"}>ФИО</legend>
-      <GuestFullNameForm
+      <GuestFullNameForm key={"fields"}
         guest={value}
         onChangeValueBookingForm={(newGuest: Partial<guestInfo>) => setValue({ ...value, ...newGuest })}
         setValid={setIsValid}
@@ -71,7 +71,7 @@ const ChangeForm = ({ bookingState, ChangeBookingAction, bookingId, setActiveMod
     </FormFieldset>
     <FormFieldset key={"status"}>
       <legend key={"header"}>Возростной статус:</legend>
-      <Field >
+      <Field key={"field"}>
         <select
           value={value.ageStatus}
           onChange={(e) => setValue({ ...value, ageStatus: (e.target.value === "adults" ? "adults" : e.target.value === "children" ? "children" : "babies") })}

@@ -6,10 +6,10 @@ import { Field } from '../field/field';
 
 export const MainPage = () => {
   return (
-    <MainBackgroundAnimation className='mainPage'>
-      <Field key={"form"} 
-       theme='card'>
-      <LightFilterRoomsForm/>
+    <MainBackgroundAnimation key={"MainPage"} className='mainPage'>
+      <Field key={"card"}
+        theme='card'>
+        <LightFilterRoomsForm key={"form"}/>
       </Field>
     </MainBackgroundAnimation>
   )

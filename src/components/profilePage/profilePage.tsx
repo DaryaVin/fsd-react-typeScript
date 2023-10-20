@@ -5,12 +5,12 @@ import { FlexContainer } from '../flexContainer/flexContainer';
 
 export const ProfilePage = () => {
   return (
-      <FlexContainer
+      <FlexContainer key={"profilePage"}
       justifyContent='center'
       alignItems='center'
       >
-      <MainBackgroundAnimation>
-        <Profile/>
+      <MainBackgroundAnimation key={"wrap"}>
+        <Profile key={"profile"}/>
       </MainBackgroundAnimation>
       </FlexContainer>
   )

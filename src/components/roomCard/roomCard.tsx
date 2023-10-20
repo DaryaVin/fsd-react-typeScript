@@ -21,7 +21,7 @@ export const RoomCard = ({id, photos, name, reviews, price, isLux }: RoomItem) =
   }
   
   return (
-    <Field theme="card" className='roomCard block_size_m' onClick={(e) => onClickRoomCard(e)}>
+    <Field key={"roomCard"} theme="card" className='roomCard block_size_m' onClick={(e) => onClickRoomCard(e)}>
       <Carousel key={"roomCard__carousel"}
         className='roomCard__carousel'
         height={150}
@@ -45,7 +45,7 @@ export const RoomCard = ({id, photos, name, reviews, price, isLux }: RoomItem) =
           <div key={"upper-left-lock"}
             className="roomCard__header roomCard__infoItem roomCard__infoItem_leftBlock"
           >
-            <h2>
+            <h2 key={"header"}>
               {
                 name
                 ? name
@@ -59,7 +59,7 @@ export const RoomCard = ({id, photos, name, reviews, price, isLux }: RoomItem) =
           <div key={"upper-right-lock"}
             className="roomCard__infoItem roomCard__infoItem_rightBlock"
           >
-            <span className='roomCard__highlightedInfo'>{price.toLocaleString()}₽</span>&nbsp; в сутки
+            <span key={"highlightedInfo"} className='roomCard__highlightedInfo'>{price.toLocaleString()}₽</span>&nbsp; в сутки
           </div>
         </div>
         <div key={"roomCard__infoItem_bottomBlock"}
@@ -68,12 +68,12 @@ export const RoomCard = ({id, photos, name, reviews, price, isLux }: RoomItem) =
           <div key={"bottom-left-block"}
             className="roomCard__infoItem roomCard__infoItem_leftBlock"
           >
-            <RateBox className='roomCard__rating' rating={rating} />
+            <RateBox key={"rating"} className='roomCard__rating' rating={rating} />
           </div>
           <div key={"bottom-right-block"}
             className="roomCard__infoItem roomCard__infoItem_rightBlock"
           >
-            <span className='roomCard__highlightedInfo'>{reviewsLength}</span>&nbsp;
+            <span key={"highlightedInfo"} className='roomCard__highlightedInfo'>{reviewsLength}</span>&nbsp;
             {correctDeclensionWord({
               options: {
                 1: "Отзыв",

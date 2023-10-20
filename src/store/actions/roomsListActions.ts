@@ -27,46 +27,6 @@ export const ChangeCurrentPage = (currentPage: number) => {
     }
 }
 
-//  export const FetchRoomItem = async (roomId: string) => {
-//     return await RoomsAPI.FetchRoomItem(roomId);
-//   }
-
-// export const fetchRooms = ()=> {
-//     return async (dispatch: Dispatch<RoomAction>) => {
-//         try {
-//           dispatch({ type: RoomActionType.FETCH_ROOMS });
-//           const dbRef = await ref(bdFirebase);
-//           const designations = await get(child(dbRef, `rooms`));
-//           const designationsJSON = JSON.parse(JSON.stringify(designations));
-//           const newDesignations = {
-//             rules: Object.values(designationsJSON.rules),
-//             facility: Object.values(designationsJSON.facility),
-//             equipment: Object.values(designationsJSON.equipment),
-//           }
-//           console.log("designations: ",newDesignations);
-
-//           dispatch({ type: RoomActionType.FETCH_ROOMS__SUCCESS, payload:  });
-//         } catch (e) {
-//           const error = JSON.parse(JSON.stringify(e));
-//           dispatch({ type: RoomActionType.FETCH_ROOMS__ERROR, payload: error.code });
-//         }
-//       }
-
-
-// return async (dispatch: Dispatch<RoomAction>) => {
-//     try {
-//         dispatch({type: RoomActionType.FETCH_ROOMS});
-//         const respons = await axios.get("localhost:3000/products");
-//         dispatch({type:RoomActionType.FETCH_ROOMS__SUCCESS, payload: respons.data});
-//     } catch (e) {
-//         dispatch({
-//             type: RoomActionType.FETCH_ROOMS__ERROR,
-//             payload: "Произошла ошибка при попытке получить спислк комнат с сервера",
-//         })
-//     };
-// }
-// };
-
 export const baseFillingRooms = (roomId: string) => {
     return async () => {
         try {

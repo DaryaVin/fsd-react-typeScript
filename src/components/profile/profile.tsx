@@ -190,78 +190,78 @@ const SendEmailVerificationHandler = () => {
  }
 
   return (
-    <div className='profile'>
-      <Field theme={"card"}>
-        <Form>
-          <h1>Личная карточка</h1>
+    <div key={"profile"} className='profile'>
+      <Field key={"main"} theme={"card"}>
+        <Form key={"form"}>
+          <h1 key={"header"}>Личная карточка</h1>
           <h2 key={"PersonInfoHeader"}>Персональные данные</h2>
           <FormFieldset key={"PersonInfo"}>
             <Label label='Фамилия и Имя:' key={"labelName"}>
               <FlexContainer key="Name" justifyContent="space-between">
-                <span>
+                <span key={"name"}>
                   {userInfo?.lastName + " " + userInfo?.firstName}
                 </span>
-                <Button type="button" onClick={() => { chengeNameHendler() }}>Изменить</Button>
+                <Button key={"buttonChange"} type="button" onClick={() => { chengeNameHendler() }}>Изменить</Button>
               </FlexContainer>
             </Label>
             <Label label='Пол:' key={"labelSex"}>
               <FlexContainer key={"Sex"} justifyContent="space-between">
-                <span>
+                <span key={"sex"}>
                   {
                     userInfo?.sex === "male"
                       ? "Мужчина"
                       : "Женщина"
                   }
                 </span>
-                <Button type="button" onClick={() => { chengeSexHendler() }}>Изменить</Button>
+                <Button key={"buttonChange"} type="button" onClick={() => { chengeSexHendler() }}>Изменить</Button>
               </FlexContainer>
             </Label>
             <Label label='Дата рождения:' key={"labelDateBirthday"}>
               <FlexContainer key={"DateBirthday"} justifyContent="space-between">
-                <span>
+                <span key={"date"}>
                   {
                     userInfo && userInfo.dateBirthday
                       ? userInfo.dateBirthday.toLocaleString('default', { day: "numeric", month: 'long', year: "numeric" })
                       : "Не известна"
                   }
                 </span>
-                <Button type="button" onClick={() => { chengeDateBirthdayHendler() }}>Изменить</Button>
+                <Button key={"buttonChange"} type="button" onClick={() => { chengeDateBirthdayHendler() }}>Изменить</Button>
               </FlexContainer>
             </Label>
           </FormFieldset>
           <h2 key={"ServisInfoHeader"}>Сервисные данные</h2>
           <FormFieldset key={"ServisInfo"}>
-            <Label label='Email:' key={"labelEmail"}>
+            <Label key={"labelEmail"} label='Email:' >
               <FlexContainer key={"Email"} justifyContent="space-between" columnGap={5}>
-                <span>
+                <span key={"email"}>
                   {userInfo?.email || "Email не указан"}
                 </span>
                 {
                   auth?.emailVerified
                     ? "Подтверждена"
-                    : <Button type='button' onClick={SendEmailVerificationHandler}>Подтвердить</Button>
+                    : <Button key={"buttonVerified"} type='button' onClick={SendEmailVerificationHandler}>Подтвердить</Button>
                 }
               </FlexContainer>
             </Label>
             <FlexContainer key={"Subscription"} justifyContent="space-between" columnGap={10}>
               <label key={"labelSubscription"}>Подписка на спецпредложения:</label>
-              <ToggleButton checked={userInfo?.isSubscription} onChange={chengeSubscriptionHendler}></ToggleButton>
+              <ToggleButton key={"button"} checked={userInfo?.isSubscription} onChange={chengeSubscriptionHendler}></ToggleButton>
             </FlexContainer>
           </FormFieldset>
-          <FlexContainer justifyContent="space-between">
+          <FlexContainer key={"buttonLogautContainer"} justifyContent="space-between">
             <Button key={"buttonLogaut"}
               type="button" 
               theme="withBorder"
               onClick={() => LogAutHendler()}
             >
-              <span></span>
+              <span key={"halpBlock"}></span>
               выход
-              <FiArrowRight className="loginForm__buttonArrow"></FiArrowRight>
+              <FiArrowRight key={"icon"} className="loginForm__buttonArrow"></FiArrowRight>
             </Button>
           </FlexContainer>
         </Form>
       </Field>
-      <Modal isActive={isActiveModal} setIsActive={setIsActiveModal}>
+      <Modal key={"modal"} isActive={isActiveModal} setIsActive={setIsActiveModal}>
         {ModalContent}
       </Modal>
     </div>

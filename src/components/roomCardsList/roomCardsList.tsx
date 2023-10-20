@@ -19,13 +19,13 @@ const CardsList = ({
   ChangeCurrentPage,
   ...props
 }: CardsListProps) => {
-  useEffect(() => {
-    // console.log("RoomCardsList useEffect");
 
+  useEffect(() => {
     if (filterSettings && roomsState) {
       FetchRooms(filterSettings, roomsState?.pageSize, roomsState?.currentPage);
     }
-  }, [filterSettings, roomsState?.pageSize, roomsState?.currentPage])
+  }, [filterSettings, roomsState?.pageSize, roomsState?.currentPage]);
+
   if (roomsState?.isLoading) return (
     <FlexContainer {...props}
       className={'roomCardsList' + (props.className ? " " + props.className : "")}
@@ -33,7 +33,8 @@ const CardsList = ({
     >
       Идет загрузка...
     </FlexContainer>
-  )
+  );
+
   if (roomsState?.totalCount === 0) return (
     <FlexContainer {...props}
       className={'roomCardsList' + (props.className ? " " + props.className : "")}
@@ -42,10 +43,10 @@ const CardsList = ({
       rowGap={30}
 
     >
-      <FlexContainer 
-      justifyContent='center'
+      <FlexContainer key={"iconContainer"}
+        justifyContent='center'
       >
-        <svg className='bulletItem__iconGradient'>
+        <svg key={"gradient"} className='bulletItem__iconGradient'>
           <defs>
             <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset={0} />
@@ -53,34 +54,34 @@ const CardsList = ({
             </linearGradient>
           </defs>
         </svg>
-        <PiSmileySadFill fill={"url(#gradient)"} size={100} width={100} height={100} />
+        <PiSmileySadFill key={"icon"} fill={"url(#gradient)"} size={100} width={100} height={100} />
       </FlexContainer>
-      <FlexContainer
-      justifyContent='center'
+      <FlexContainer key={"text"}
+        justifyContent='center'
       >
-      По вашему запросу ничего не найдено
+        По вашему запросу ничего не найдено
       </FlexContainer>
     </FlexContainer>
   )
   return (
     <div {...props} className={'roomCardsList' + (props.className ? " " + props.className : "")}>
-      <FlexContainer
+      <FlexContainer key={"wrap"}
         flexWrap='wrap'
         rowGap={10}
         columnGap={10}
         justifyContent='space-around'
       >
-        <ul >
+        <ul key={"list"}>
           {
             roomsState?.rooms
               ? roomsState.rooms.map((item) => {
-                return <RoomCard {...item} />
+                return <RoomCard key={item.id} {...item} />
               })
               : "Ничего не найдено"
           }
         </ul>
       </FlexContainer>
-      <Pagination
+      <Pagination key={"pagination"}
         currentPage={roomsState ? roomsState.currentPage : 1}
         totalCount={roomsState ? roomsState.totalCount : 0}
         pageSize={roomsState ? roomsState.pageSize : 0}

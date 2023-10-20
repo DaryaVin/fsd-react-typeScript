@@ -51,7 +51,7 @@ export const ContactsPage = ({ ...props }: ContactsPageProps) => {
 
           <img src={img1} alt='Красивое фото' className='contactsPage__img' />
         </div>
-        <Field theme='card' className='contactsPage__textContent'>
+        <Field key={"text"} theme='card' className='contactsPage__textContent'>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum ab, nam error ullam veritatis optio labore id culpa neque ut quos eius vero? Culpa temporibus perspiciatis ea ullam corrupti asperiores repellendus obcaecati odio cumque molestias animi ipsa quae, itaque error maiores excepturi velit dolorem laboriosam ab eaque iusto cupiditate. Eaque ratione soluta voluptatibus commodi itaque ex! Odio, asperiores. Quam, magni reiciendis! Voluptas temporibus quod eos ad veniam?
           </p>
@@ -85,7 +85,7 @@ export const ContactsPage = ({ ...props }: ContactsPageProps) => {
             <div>toxinProect@mail.com</div>
           </FlexContainer>
         </Field>
-        <img src={img2GisMapScrin} alt='Скрин карты' className='contactsPage__img' />
+        <img key={"map"} src={img2GisMapScrin} alt='Скрин карты' className='contactsPage__img' />
       </FlexContainer>
     </FlexContainer>
   )

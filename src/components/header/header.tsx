@@ -20,11 +20,6 @@ export const Head = ({ auth, userInfo }: ConnectorProps) => {
     setshowMenu(false);
   }, [location]);
   const navLinks: navLink[] = [
-    // {
-    //   path: "/",
-    //   title: "Главная",
-    //   end: true
-    // },
     {
       path: "/search-rooms",
       title: "Выбор номера"
@@ -42,9 +37,9 @@ export const Head = ({ auth, userInfo }: ConnectorProps) => {
   const [showMenu, setshowMenu] = useState<boolean>(false);
   return (
 
-    <header className='header'>
-      <div className="header__flowOccupyingPart"></div>
-      <div className="header__fixedPart">
+    <header key={"header"} className='header'>
+      <div key={"flowOccupyingPart"} className="header__flowOccupyingPart"></div>
+      <div key={"fixedPart"} className="header__fixedPart">
         <div key={"header__wrap"}
           className={"header__wrap"}
         >
@@ -62,7 +57,7 @@ export const Head = ({ auth, userInfo }: ConnectorProps) => {
               className="header__navbarScroll"
               justifyContent="space-between"
             >
-              <div></div>
+              <div key={"helpBlock"}></div>
               <FlexContainer key={"header__navbarList"}
                 className='header__navbarList'
                 tagForWrap='ul'
@@ -106,7 +101,7 @@ export const Head = ({ auth, userInfo }: ConnectorProps) => {
                     </Button>
                   </li>
                   <li>
-                    <Button key={"/registration"} theme="fillBcg">
+                    <Button key={"registration"} theme="fillBcg">
                       <NavLink to="/registration">Зарегистрироваться</NavLink>
                     </Button>
                   </li>
@@ -129,11 +124,6 @@ const mapStateToProps = (state: RootState) => {
     userInfo: state.auth?.userInfo,
   })
 }
-// const mapDispatchToProps = {
-//   FetchLogAut,
-//   FetchUserInfo,
-//   UpdateUserInfo,
-// };
 
 const connector = connect(mapStateToProps);
 type ConnectorProps = ConnectedProps<typeof connector>;

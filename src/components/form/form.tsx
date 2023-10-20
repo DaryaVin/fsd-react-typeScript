@@ -7,7 +7,7 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 }
 export const Form = ({ className, children, ...props }: FormProps) => {
   return (
-    <form className={"form" + (className ? " " + className : "")} {...props}>
+    <form {...props} className={"form" + (className ? " " + className : "")} >
       {children}
     </form>
   )
@@ -41,7 +41,7 @@ export const FormFieldset = ({ className, children, ...props }: FieldsetProps) =
   }
 
   return (
-    <fieldset className={"form__fieldset" + (className ? " " + className : "")} {...props}>
+    <fieldset {...props} className={"form__fieldset" + (className ? " " + className : "")} >
       {newChildren}
     </fieldset>
   )

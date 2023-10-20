@@ -90,10 +90,10 @@ export const CostCalculation = ({ price, unitPrice, startDateSate, endDateSate, 
       <FormFieldset {...props} key={"totalAmound"}
         className={"orderForm__totalAmound"}
       >
-        <FlexContainer
+        <FlexContainer key={"wrap"}
           justifyContent="space-between"
         >
-          <h2>
+          <h2 key={"header"}>
             <div key={"text"} >Итого</div>
             <div key={"decor"} className='orderForm__dotDecor'></div>
             <div key={"totalAmound"}>

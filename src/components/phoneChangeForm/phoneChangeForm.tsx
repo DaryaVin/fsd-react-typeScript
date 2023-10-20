@@ -41,7 +41,7 @@ const ChangeForm = ({ ChangeBookingAction, bookingId, phone, bookingState, setAc
       <FormFieldset key={"field"}>
         <legend key={"header"}>Новый email:</legend>
         <Field key={"info"}>
-          <ReactInputMask
+          <ReactInputMask key={"input"}
             mask={"+9-999-999-99-99"}
             placeholder='+_ ___ ___ __ __'
             value={newPhone}

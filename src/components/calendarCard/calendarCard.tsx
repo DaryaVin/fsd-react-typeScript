@@ -73,7 +73,7 @@ export const CalendarCard = ({ onChangeValue, state, setState, state2, setState2
   return (
     <>
       <div {...props} className={"calendarCard" + (className ? " " + className : "")}>
-        <CalendarReact
+        <CalendarReact key={"CalendarReact"}
           {...propsForCalendar}
           value={value}
           onChange={onChange}

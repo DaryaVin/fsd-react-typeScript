@@ -34,7 +34,7 @@ const usePagination = ({
     );
 
     const shouldShowLeftDots = leftSiblingIndex > 3;
-    const shouldShowRightDots  = rightSiblingIndex < totalPageCount - 2;
+    const shouldShowRightDots = rightSiblingIndex < totalPageCount - 2;
 
     const firstPageIndex = 1;
     const lastPageIndex = totalPageCount;
@@ -46,7 +46,7 @@ const usePagination = ({
       return [...leftRange, "DOTS", totalPageCount];
     }
     if (shouldShowLeftDots && !shouldShowRightDots) {
-      
+
       let rightItemCount = 3 + 2 * siblingCount;
       let rightRange = range(
         totalPageCount - rightItemCount + 1,
@@ -58,13 +58,13 @@ const usePagination = ({
       let middleRange = range(leftSiblingIndex, rightSiblingIndex);
       return [firstPageIndex, "DOTS", ...middleRange, "DOTS", lastPageIndex];
     }
-     
- }, [totalCount, pageSize, siblingCount, currentPage]);
 
- return paginationRange;
+  }, [totalCount, pageSize, siblingCount, currentPage]);
+
+  return paginationRange;
 }
 
-interface PaginationProps extends usePaginationProps  {
+interface PaginationProps extends usePaginationProps {
   onPageChange: (numberPage: number) => void,
   className?: string,
 }
@@ -94,22 +94,22 @@ export const Pagination = ({
   let lastPage = paginationRange !== undefined && paginationRange[paginationRange.length - 1];
 
   return (
-    <div className={"pagination " + className}>
-      <ul className="pagination__buttonsBlock">
+    <div key={"pagination"} className={"pagination " + className}>
+      <ul key={"buttonsList"} className="pagination__buttonsBlock">
         <li className="pagination__button pagination__button_prevButton" key="prevButton">
           {
             currentPage !== 1 && (
-              <button type="button" onClick={onPrevious}>
-                <svg width="17" height="18" viewBox="0 0 17 18" fill="#000" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M16.1755 8.01562V9.98438H3.98801L9.56613 15.6094L8.15988 17.0156L0.144258 9L8.15988 0.984375L9.56613 2.39062L3.98801 8.01562H16.1755Z" fill="#fff"/>
+              <button key={"button"} type="button" onClick={onPrevious}>
+                <svg key={"icon"} width="17" height="18" viewBox="0 0 17 18" fill="#000" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16.1755 8.01562V9.98438H3.98801L9.56613 15.6094L8.15988 17.0156L0.144258 9L8.15988 0.984375L9.56613 2.39062L3.98801 8.01562H16.1755Z" fill="#fff" />
                 </svg>
               </button>
             )
-          }   
+          }
         </li>
         {paginationRange && paginationRange.map((pageNumber, index) => {
-         if (pageNumber === "DOTS") {
-           return <li className="pagination__dots" key={index}>
+          if (pageNumber === "DOTS") {
+            return <li className="pagination__dots" key={index}>
               <span>
                 &#8230;
               </span>
@@ -118,24 +118,24 @@ export const Pagination = ({
           return (
             <li className="pagination__button" key={index}>
               <button type="button" onClick={() => onPageChange(pageNumber)} disabled={pageNumber === currentPage}>
-              {pageNumber}
+                {pageNumber}
               </button>
             </li>
-         );
+          );
         })}
         <li className="pagination__button pagination__button_nextButton" key="nextButton">
           {
             currentPage !== lastPage && (
-              <button type="button" onClick={onNext}>
-                <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M8.36301 0.984375L16.3786 9L8.36301 17.0156L6.95676 15.6094L12.5349 9.98438H0.347383V8.01562H12.5349L6.95676 2.39062L8.36301 0.984375Z" fill="#BC9CFF"/>
+              <button key={"button"} type="button" onClick={onNext}>
+                <svg key={"icon"} width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8.36301 0.984375L16.3786 9L8.36301 17.0156L6.95676 15.6094L12.5349 9.98438H0.347383V8.01562H12.5349L6.95676 2.39062L8.36301 0.984375Z" fill="#BC9CFF" />
                 </svg>
               </button>
             )
           }
         </li>
       </ul>
-      <div className="pagination__explanations">
+      <div key={"explanations"} className="pagination__explanations">
         {(currentPage - 1) * pageSize + 1} - {Math.min((currentPage - 1) * pageSize + pageSize, totalCount)} из {totalCount} вариантов аренды
       </div>
     </div>

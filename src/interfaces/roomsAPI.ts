@@ -2,7 +2,6 @@ import { child, get, ref, set, update } from "firebase/database";
 import { bdFirebase } from "../firebase";
 import { settings } from "../types/filterRooms";
 import { ReviewItem, RoomItem } from "../types/rooms";
-// import { bookingAPI } from "./bookingAPI";
 import { bookingItem } from "../types/booking";
 
 export const RoomsAPI = {
@@ -93,7 +92,6 @@ export const RoomsAPI = {
         return filterResult;
       })
     });
-    // console.log("RoomsAPI",rooms);
 
     const roomsItems: RoomItem[] = Object.values(JSON.parse(JSON.stringify(rooms)));
     let roomsItemsWithPagination: RoomItem[] = [];
@@ -146,12 +144,10 @@ export const RoomsAPI = {
       })
       newListWhoLikedThisReview = [...listWhoLikedThisReview];
       newListWhoLikedThisReview.splice(index, 1);
-      // console.log("FetchLikeReviews newListWhoLikedThisReview", newListWhoLikedThisReview);
 
       await update(dbRef, { [`rooms/${roomId}/reviews/${reviewId}/listWhoLikedThisReview`]: newListWhoLikedThisReview });
     } else {
       newListWhoLikedThisReview = [...listWhoLikedThisReview, userId];
-      // console.log("FetchLikeReviews newListWhoLikedThisReview", newListWhoLikedThisReview);
       await update(dbRef, { [`rooms/${roomId}/reviews/${reviewId}/listWhoLikedThisReview`]: newListWhoLikedThisReview });
     }
     return newListWhoLikedThisReview;

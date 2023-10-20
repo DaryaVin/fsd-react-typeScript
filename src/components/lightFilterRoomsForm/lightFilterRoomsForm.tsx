@@ -109,7 +109,7 @@ const LightForm = ({
             </FlexContainer>,
           ]}
           contenerBlock={
-            <Field
+            <Field key={"field"}
               className='orderForm__calendarCardInDropdown'
               theme="card"
               style={{
@@ -117,7 +117,7 @@ const LightForm = ({
                 marginTop: 10,
               }}
             >
-              <CalendarCard
+              <CalendarCard key={"calendar"}
                 minDate={new Date()}
                 state={stateStartDate}
                 setState={setStateStartDate}
@@ -127,14 +127,13 @@ const LightForm = ({
             </Field>
           }
         />
-        {/* <ValidationMessage key={"validator"} {...stayDatesValidator} /> */}
       </FormFieldset>
       <FormFieldset key={"guests"}>
         <legend key={"legend"}>гости</legend>
         <Dropdown key={"dropdown"}
           className={"orderForm__guests"}
           theme="field"
-          buttonBlock={<div className=''>
+          buttonBlock={<div key={"buttonBlock"} className=''>
               {
                 setting
                   && (setting.numberOfGuests.adults + setting.numberOfGuests.children) !== 0
@@ -162,12 +161,10 @@ const LightForm = ({
                   : "Сколько гостей"
               }
           </div>}
-          contenerBlock={<FlexContainer
+          contenerBlock={<FlexContainer key={"contenerBlock"}
             className='filterRoomsForm__guestsConteiner'
             flexDirection="colomn"
             rowGap={7}
-          // onBlurCapture={() => { numberOfGuestsValidator.setIsDirty(true); }}
-          // onMouseLeave={() => { numberOfGuestsValidator.setIsDirty(true); }}
           >
             <FlexContainer key={"adults"}
               justifyContent="space-between"
@@ -210,9 +207,8 @@ const LightForm = ({
             </FlexContainer>
           </FlexContainer>}
         />
-        {/* <ValidationMessage key={"validator"} {...numberOfGuestsValidator} /> */}
       </FormFieldset>
-      <NavLink
+      <NavLink key={"link"}
       to={"/search-rooms"}
       >
       <Button key={"buttonForm"}
@@ -222,9 +218,9 @@ const LightForm = ({
         <FlexContainer
           justifyContent='space-between'
         >
-          <span></span>
-          <span>Подрбрать номер</span>
-          <FiArrowRight className='loginForm__buttonArrow' />
+          <span key={"halpBlock"}></span>
+          <span key={"text"}>Подрбрать номер</span>
+          <FiArrowRight key={"icon"} className='loginForm__buttonArrow' />
         </FlexContainer>
       </Button>
       </NavLink>

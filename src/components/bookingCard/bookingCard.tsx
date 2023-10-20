@@ -123,7 +123,7 @@ export const BookingCard = ({ bookingItem, ...props }: BookingCardProps) => {
       {...props}
       className={"bookingCard" + (props.className ? " " + props.className : "")}
     >
-      <Field theme="card">
+      <Field key={"field"} theme="card">
         <Form className={status !== "booking" ? "bookingCard__unavailable" : ""}>
           {
             status === "completed"

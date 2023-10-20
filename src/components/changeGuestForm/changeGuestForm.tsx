@@ -28,10 +28,10 @@ const ChangeForm = ({ ChangeBookingAction, bookingId, bookingState, guestInddex,
     }
   }
   return <>
-    <h2>Измените данные о госте:</h2>
+    <h2 key={"header"}>Измените данные о госте:</h2>
     <FormFieldset key={"info"}>
       <legend key={"header"}>ФИО</legend>
-      <GuestFullNameForm
+      <GuestFullNameForm key={"fields"}
         guest={value}
         onChangeValueBookingForm={(newGuest: Partial<guestInfo>) => setValue({ ...value, ...newGuest })}
         setValid={setIsValid}

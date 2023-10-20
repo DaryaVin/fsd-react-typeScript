@@ -31,10 +31,10 @@ export const LengthControlComponent = ({children, className, ...props}: LengthCo
   return (
     <>
       <div className={newClassName} {...props} >
-        <span className="lengthControlComponent__lengthDefinitionElement">
+        <span key={"lengthDefinitionElement"} className="lengthControlComponent__lengthDefinitionElement">
           {lengthDefinitionElementValue}
         </span>
-        <CreateWrapElement tagForWrap="input" className="lengthControlComponent__mainElement">
+        <CreateWrapElement key={"mainElement"} tagForWrap="input" className="lengthControlComponent__mainElement">
           {children}
         </CreateWrapElement>
       </div>

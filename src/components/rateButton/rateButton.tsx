@@ -22,12 +22,12 @@ export const RateButton = ({size = 24, state, setState, className, ...props}: Ra
         {[...Array(5)].map((item, index) => {
           const value = index + 1;
           return (
-              <li className="rateButton__item" style={{width: size, height: size}} key={index}>
-                <label 
+              <li key={index} className="rateButton__item" style={{width: size, height: size}} >
+                <label key={"wrap"}
                   onMouseEnter={() => setHoverState(value)}
                   onMouseLeave={() => setHoverState(null)}
                 >
-                  <input 
+                  <input key={"input"}
                     className="rateButton__radioButton"
                     type="radio" 
                     name="rateButton" 
@@ -35,8 +35,8 @@ export const RateButton = ({size = 24, state, setState, className, ...props}: Ra
                     checked={state === index + 1 ? true : false}
                     onChange={onChange}
                   />
-                  <svg width={size} height={size}>
-                    <defs>
+                  <svg key={"iconContainer"} width={size} height={size}>
+                    <defs key={"gradient"}>
                       <linearGradient id="grad1" x1="50%" y1="0%" x2="50%" y2="100%" className="rateButton__svgGradient">
                         <stop offset="0%" stopColor="gray"/>
                         <stop offset="100%" stopColor="grey"/>
@@ -45,14 +45,14 @@ export const RateButton = ({size = 24, state, setState, className, ...props}: Ra
                     { 
                       (state && !hoverState && value <= state) || (hoverState && value <=hoverState)
                       ? (
-                        <FaStar 
+                        <FaStar key={"icon"}
                           className="rateButton__icon rateButton__icon_full" 
                           size={size} 
                           fill={"url(#grad1)"}
                         />
                       )
                       : (
-                        <FaRegStar 
+                        <FaRegStar key={"icon"}
                           className="rateButton__icon rateButton__icon_empty"
                           size={size} 
                           fill={"url(#grad1)"}

@@ -34,14 +34,14 @@ export const Modal = ({ children, isActive, setIsActive, ...props }: ModalProps)
   return (
     display
       ? <div {...props} className={newClassName + (show ? " modal_isActive" : "")} onClick={toggleIsActive}>
-        <div className='modal_content'>
+        <div key={"content"} className='modal_content'>
 
-          <Field className='modal_window' theme="card" onClick={(e) => { e.stopPropagation() }}>
+          <Field key={"card"} className='modal_window' theme="card" onClick={(e) => { e.stopPropagation() }}>
             {
               children
             }
           </Field>
-          <button type='button' className='modal__closeButton' onClick={toggleIsActive}>закрыть</button>
+          <button key={"buttonClose"} type='button' className='modal__closeButton' onClick={toggleIsActive}>закрыть</button>
         </div>
       </div>
       : null

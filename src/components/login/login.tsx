@@ -9,10 +9,11 @@ export const Login = () => {
       <FlexContainer
         justifyContent='center'
         alignItems='center'
+        key={"contener"}
       >
-        <MainBackgroundAnimation>
-          <CheckAuthLoading>
-            <LoginForm />
+        <MainBackgroundAnimation key={"login"}>
+          <CheckAuthLoading key={"checkAuth"}>
+            <LoginForm key={"form"}/>
           </CheckAuthLoading>
         </MainBackgroundAnimation>
       </FlexContainer>

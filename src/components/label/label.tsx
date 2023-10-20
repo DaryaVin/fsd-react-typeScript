@@ -13,7 +13,7 @@ interface LabelProps {
     className="label"
     {...props}
     >
-      <span className="label__text">{label}</span>
+      <span key={"text"} className="label__text">{label}</span>
       {children}
     </label>
   )

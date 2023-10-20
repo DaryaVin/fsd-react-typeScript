@@ -2,13 +2,12 @@ import React, { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
 import { router } from '../../routes';
-import { CheckAuth, FetchUserInfo } from "../../store/actions/authActions";
+import { FetchUserInfo } from "../../store/actions/authActions";
 import { RootState } from '../../store/reducers/rootReducer';
 // import { baseFillingRooms } from '../../store/actions/roomsListActions';
 
 const AppRout = ({ 
   auth, 
-  CheckAuth, 
   FetchUserInfo, 
   // baseFillingRooms,
 }: ConnectorProps) => {
@@ -21,9 +20,6 @@ const AppRout = ({
     FetchUserInfo(auth?.uid);
   }, [auth]);
   return (
-    // <Routes>
-    //   {routesParser(routes)}
-    // </Routes>
     <RouterProvider router={router}/>
   )
 }
@@ -33,7 +29,6 @@ const mapStateToProps = (state: RootState) => {
   })
 };
 const mapDispatchToProps = {
-  CheckAuth,
   FetchUserInfo,
   // baseFillingRooms,
 };

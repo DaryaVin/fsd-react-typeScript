@@ -8,17 +8,7 @@ export const FetchDesignations = () => {
   return async (dispatch: Dispatch<FilterRoomsAction>) => {
     try {
       dispatch({ type: FilterRoomsActionType.FETCH_DESIGNATIONS });
-      // const dbRef = await ref(bdFirebase);
-      // const designations = await get(child(dbRef, `designations`));
-      // const designationsJSON = JSON.parse(JSON.stringify(designations));
-      // const newDesignations = {
-      //   rules: Object.values(designationsJSON.rules),
-      //   facility: Object.values(designationsJSON.facility),
-      //   equipment: Object.values(designationsJSON.equipment),
-      // }
       const newDesignations = await FilterRoomsAPI.FetchDesignations();
-      // console.log("designations: ",newDesignations);
-
       dispatch({ type: FilterRoomsActionType.FETCH_DESIGNATIONS__SUCCESS, payload: newDesignations });
     } catch (e) {
       const error = JSON.parse(JSON.stringify(e));

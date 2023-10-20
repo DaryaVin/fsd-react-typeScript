@@ -3,7 +3,7 @@ import "./loginForm.scss";
 import { Button } from "../button/button";
 import { Field } from "../field/field";
 import { FiArrowRight } from "react-icons/fi";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FlexContainer } from "../flexContainer/flexContainer";
 import { Form, FormFieldset } from "../form/form";
 import { connect, ConnectedProps } from "react-redux";
@@ -51,11 +51,11 @@ const LogForm = ({
     }
   }
   return (
-    <Field theme="card" className="loginForm">
-      <Form onSubmit={(e) => handleSubmit(e)}>
-        <h1>Войти</h1>
-        <AuthValidation></AuthValidation>
-        <FormFieldset >
+    <Field key={"loginForm"} theme="card" className="loginForm">
+      <Form key={"form"} onSubmit={(e) => handleSubmit(e)}>
+        <h1 key={"header"}>Войти</h1>
+        <AuthValidation key={"validator"}></AuthValidation>
+        <FormFieldset key={"main"}>
           <Field key={"email"}>
             <input
               type="text"
@@ -65,7 +65,7 @@ const LogForm = ({
               onBlur={() => emailValidation.setIsDirty(true)}
             />
           </Field>
-          <ValidationMessage className="form__validationMessage" {...emailValidation} />
+          <ValidationMessage key={"emailValidation"} className="form__validationMessage" {...emailValidation} />
           <Field key={"password"}>
             <input
               type='password'
@@ -75,16 +75,17 @@ const LogForm = ({
               onBlur={(e) => passwordValidation.setIsDirty(true)}
             />
           </Field>
-          <ValidationMessage className="form__validationMessage"  {...passwordValidation} />
+          <ValidationMessage key={"passwordValidation"} className="form__validationMessage"  {...passwordValidation} />
         </FormFieldset>
-        <Button theme="fillBcg" className="loginForm__submitButton" type="submit" disabled={!passwordValidation.isValid || !emailValidation.isValid}>
-          <span></span>
+        <Button key={"buuton"} theme="fillBcg" className="loginForm__submitButton" type="submit" disabled={!passwordValidation.isValid || !emailValidation.isValid}>
+          <span key={"halpBlock"}></span>
           Войти
-          <FiArrowRight className="loginForm__buttonArrow"></FiArrowRight>
+          <FiArrowRight key={"icon"} className="loginForm__buttonArrow"></FiArrowRight>
         </Button>
-        <FlexContainer tagForWrap="label" justifyContent="space-between" alignItems="center">
+        <FlexContainer key={"alternative"} tagForWrap="label" justifyContent="space-between" alignItems="center">
           Нет аккаунта на Toxin?
-          <Button theme="withBorder"
+          <Button key={"button"}
+          theme="withBorder"
           type='button'
           onClick={() => { navigate("/registration", {state: location.state}) }}
           >

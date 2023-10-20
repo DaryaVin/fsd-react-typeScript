@@ -22,15 +22,15 @@ export const LikeButton = ({checked, numberLikes, className, ...props}: LikeButt
   }
   return (
     <label className={"likeButton" + (className ? " " + className : "") + (checked ? " likeButton_checked" : "")}>
-      <input type={"checkbox"} className="likeButton__button" checked={checked} {...props}></input>
-      <div className="likeButton__checkmark">
+      <input key={"checkbox"} type={"checkbox"} className="likeButton__button" checked={checked} {...props}></input>
+      <div key={"checkmark"} className="likeButton__checkmark">
         {
           checked 
-          ? <FaHeart className="likeButton__innerPoint"></FaHeart>
-          : <FaRegHeart className="likeButton__innerPoint"></FaRegHeart>
+          ? <FaHeart key={"icon"} className="likeButton__innerPoint"></FaHeart>
+          : <FaRegHeart key={"icon"} className="likeButton__innerPoint"></FaRegHeart>
         }
       </div>
-      <div className="likeButton__label">
+      <div key={"label"} className="likeButton__label">
         {correctFomatNumberLikesFunc(numberLikes)}
       </div>
     </label>

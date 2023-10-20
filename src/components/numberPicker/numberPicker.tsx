@@ -55,7 +55,7 @@ export const NumberPicker = ({ state, setState, minValue, maxValue, step = 1, de
   return (
     <>
       <div {...props} className={"numberPicker" + (props.className ? " " + props.className : "")}>
-        <button
+        <button key={"minusButton"}
           className="numberPicker__button numberPicker__minusButton"
           type="button"
           onClick={() => onChangeValue(state !== null && state !== undefined ? state - step : defaultValue)}
@@ -63,7 +63,7 @@ export const NumberPicker = ({ state, setState, minValue, maxValue, step = 1, de
         >
           -
         </button>
-        <input
+        <input key={"input"}
           type={"number"}
           onChange={onChengeInputValue}
           onBlur={onBlurInputValue}
@@ -75,7 +75,7 @@ export const NumberPicker = ({ state, setState, minValue, maxValue, step = 1, de
           step={step}
 
         />
-        <button
+        <button key={"plusButton"}
           className="numberPicker__button numberPicker__plusButton"
           type="button"
           onClick={() => onChangeValue(state !== null && state !== undefined ? state + step : defaultValue)}

@@ -38,8 +38,8 @@ const ChangeForm = ({ auth, userInfo, bookingState, bookingId, setActiveModal, R
   return <>
     <FormFieldset key={"info"}>
       <h2 key={"header"}>Отставьте свой отзыв:</h2>
-      <RateButton state={rating} setState={setRating} onBlur={() => ratingValidator.setIsDirty(true)}/>
-      <Field>
+      <RateButton key={"rate"} state={rating} setState={setRating} onBlur={() => ratingValidator.setIsDirty(true)}/>
+      <Field key={"field"}>
         <textarea
         value={reviewText}
         onChange={(e) => setReviewText(e.target.value)}

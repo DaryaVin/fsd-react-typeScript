@@ -38,7 +38,7 @@ export const DonutChartReviews = ({ reviews, ...props }: DonutChartReviewsProps)
   return (
     <div {...props} className={'donutChartReviews' + (props.className ? " " + props.className : "")}>
 
-      <Chart
+      <Chart key={"donut"}
         className="donutChartReviews__donut"
         chartLanguage='ru-Ru'
         height={"240px"}
@@ -52,7 +52,7 @@ export const DonutChartReviews = ({ reviews, ...props }: DonutChartReviewsProps)
           pieHole: 0.9,
         }}
       />
-      <div className='donutChartReviews__signature'>
+      <div key={"signature"} className='donutChartReviews__signature'>
         {
           reviews.length + " "
           + correctDeclensionWord({

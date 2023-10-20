@@ -2,7 +2,6 @@ import React from 'react';
 import "./checkAuthLoading.scss";
 import { RootState } from '../../store/reducers/rootReducer';
 import { connect, ConnectedProps } from 'react-redux';
-import { AuthValidation } from '../authValidation/authValidation';
 
 type CheckAuthLoadingProps = {
   children: React.ReactChildren | React.ReactChild,

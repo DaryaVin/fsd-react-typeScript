@@ -131,18 +131,18 @@ export const Footer = () => {
             flexDirection="colomn"
             rowGap={20}
           >
-            <h3>Subscribe to our newsletter</h3>
-            <div className="footer__description">
+            <h3 key={"header"}>Subscribe to our newsletter</h3>
+            <div key={"description"} className="footer__description">
               Receive our latest news and
               promotions in your inbox!
             </div>
-            <Field className='footer__quickSubscriptionField block_size_m' >
-              <input
+            <Field key={"field"} className='footer__quickSubscriptionField block_size_m' >
+              <input key={"input"}
                 value={emailForQuickSubscription}
                 onChange={(e) => setEmailForQuickSubscription(e.target.value)}
                 onBlur={() => emailForQuickSubscriptionValidator.setIsDirty(true)}
               />
-              <Button
+              <Button key={"button"}
                 type="button"
                 disabled={!emailForQuickSubscriptionValidator.isValid}
                 onClick={onClickEmailForQuickSubscription}
@@ -154,7 +154,7 @@ export const Footer = () => {
             </Field>
             {
               emailForQuickSubscription !== "" 
-              ? <ValidationMessage {...emailForQuickSubscriptionValidator} />
+              ? <ValidationMessage key={"validator"} {...emailForQuickSubscriptionValidator} />
               : ""
             }
           </FlexContainer>

@@ -1,38 +1,20 @@
 import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';
-import { bookingAPI } from '../../interfaces/bookingAPI';
 import { BookingCard } from '../bookingCard/bookingCard';
-import { RoomsAPI } from '../../interfaces/roomsAPI';
 import { RootState } from '../../store/reducers/rootReducer';
 import { ConnectedProps, connect } from 'react-redux';
 import { FetchBookingsAction } from "../../store/actions/bookingActions";
 import { FlexContainer } from '../flexContainer/flexContainer';
-import { store } from '../../store/store';
 
-
-export async function ordersPageLoader() {
-  // const bookings = await bookingAPI.FetchBookingsForUser();
-  // if (bookings) {
-  //   for (let index = 0; index < bookings.length; index++) {
-  //     let room = await RoomsAPI.FetchRoomItem(bookings[index].roomId);
-  //     bookings[index] = {
-  //       ...bookings[index],
-  //       isLux: room.isLux,
-  //       roomName: room.name,
-  //     };
-  //   }
-  // }
-  // return bookings;
-  // await FetchBookingsAction()(store.dispatch);
-  return null;
-}
 
 type OrdersPageProps = React.HTMLAttributes<HTMLDivElement> & {
 
 } & ConnectorProps;
 const Page = ({ bookingState, FetchBookingsAction, ...props }: OrdersPageProps) => {
+
   useLayoutEffect(() => { 
     FetchBookingsAction();
-   }, [])
+   }, []);
+
   useEffect(() => {
     const handleResize = () => {      
       let newDistributionBookingItems: JSX.Element[] = [];
@@ -82,7 +64,7 @@ const Page = ({ bookingState, FetchBookingsAction, ...props }: OrdersPageProps) 
       className={"ordersPage" + (props.className ? " " + props.className : "")}
       ref={orderPageRef}
     >
-      <FlexContainer
+      <FlexContainer key={"container"}
         justifyContent='center'
         columnGap={20}
       >
@@ -97,7 +79,7 @@ const Page = ({ bookingState, FetchBookingsAction, ...props }: OrdersPageProps) 
                   distributionBookingItems
                 }
               </ul>
-              : <div>
+              : <div key={"wrap"}>
                 Список ваших заказов пуст
               </div>
         }

@@ -9,7 +9,7 @@ interface DropdownProps {
   hasDropButton?: boolean,
   theme?: "field",
 }
-export const dropButton = (<button type="button" className="dropdown__dropButton ">Кнопка выподающего элемента</button>);
+export const dropButton = (<button key={"dropdown__dropButton"} type="button" className="dropdown__dropButton ">Кнопка выподающего элемента</button>);
 export const Dropdown = ({ buttonBlock, contenerBlock, className, hasDropButton, theme }: DropdownProps) => {
   let [show, setShow] = useState<boolean>(false);
   let [newButtonBlock, setNewButtonBlock] = useState<WrapElementContentType>(buttonBlock);
@@ -86,14 +86,13 @@ export const Dropdown = ({ buttonBlock, contenerBlock, className, hasDropButton,
   }, []);
 
   return (
-    <div
+    <div key={"dropdown"}
       className={"dropdown " + (className || "") + (theme ? " dropdown_theme_" + theme : "")}
       ref={dropdownComponent}
     >
-      <div
+      <div key={"dropdown__buttonBlock"}
         className={"dropdown__buttonBlock" + (show ? " dropdown__buttonBlock_version_show" : "")}
         ref={buttonBlockRef}
-        key={"dropdown__buttonBlock"}
         onClick={onClickButtonBlock}
       >
         {
@@ -104,9 +103,8 @@ export const Dropdown = ({ buttonBlock, contenerBlock, className, hasDropButton,
             : newButtonBlock
         }
       </div>
-      <div
+      <div key={"dropdown__contenerBlock"}
         className={"dropdown__contenerBlock" + (show ? " show" : "")}
-        key={"dropdown__contenerBlock"}
       >
         {contenerBlock}
       </div>

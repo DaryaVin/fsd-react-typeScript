@@ -12,7 +12,7 @@ import {
   FetchNewUserInfo,
 } from "../../store/actions/authActions";
 import { FiArrowRight } from 'react-icons/fi';
-import { Navigate, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import {  useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../button/button';
 import { DateMaskField } from '../dateMaskField/dateMaskField';
 import { Field } from '../field/field';
@@ -73,13 +73,13 @@ const RegForm = ({
   });
 
   return (
-    <Field theme="card" className="loginForm">
-      <Form onSubmit={handleSubmit}>
+    <Field key={"registrationForm"} theme="card" className="loginForm">
+      <Form key={"form"} onSubmit={handleSubmit}>
         <h1 key={'header'}>Регистрация аккаунта</h1>
-        <AuthValidation></AuthValidation>
+        <AuthValidation key={"AuthValidation"}></AuthValidation>
         <FormFieldset key={"personInfo"}>
           <Field key={"firstName"}>
-            <input
+            <input key={"input"}
               type="text"
               placeholder="Имя"
               value={userInfo?.firstName}
@@ -87,9 +87,9 @@ const RegForm = ({
               onBlur={() => firstNameValidation.setIsDirty(true)}
             />
           </Field>
-          <ValidationMessage className="form__validationMessage" {...firstNameValidation} />
+          <ValidationMessage key={"firstNameValidator"} className="form__validationMessage" {...firstNameValidation} />
           <Field key={"lastName"}>
-            <input
+            <input key={"input"}
               type="text"
               placeholder="Фамилия"
               value={userInfo?.lastName}
@@ -97,12 +97,12 @@ const RegForm = ({
               onBlur={() => lastNameValidation.setIsDirty(true)}
             />
           </Field>
-          <ValidationMessage className="form__validationMessage" {...lastNameValidation} />
+          <ValidationMessage key={"lastNameValidator"} className="form__validationMessage" {...lastNameValidation} />
           <FlexContainer key={"sex"}
             justifyContent="start"
             columnGap={20}
           >
-            <RadioButton
+            <RadioButton key={"male"}
               value={"male"}
               checked={userInfo?.sex === "male" ? true : false}
               onChange={(e) => { if (e.target.checked) ChangeSexAction("male"); }}
@@ -110,7 +110,7 @@ const RegForm = ({
             >
               Мужчина
             </RadioButton>
-            <RadioButton
+            <RadioButton key={"female"}
               value={"female"}
               checked={userInfo?.sex === "female" ? true : false}
               onChange={(e) => { if (e.target.checked) ChangeSexAction("female"); }}
@@ -119,12 +119,12 @@ const RegForm = ({
               Женщина
             </RadioButton>
           </FlexContainer>
-          <ValidationMessage className="form__validationMessage" {...sexValidation}/>
+          <ValidationMessage key={"sexValidator"} className="form__validationMessage" {...sexValidation}/>
         </FormFieldset>
         <FormFieldset key={"birthday"}>
           <legend key={"label"}>Дата рождения</legend>
-          <Field>
-            <DateMaskField
+          <Field key={"field"}>
+            <DateMaskField key={"date"}
               state={userInfo?.dateBirthday ? userInfo.dateBirthday : null}
               setState={(date) => { ChangeDateBirthdayAction(date); }}
               minDate={new Date(1900, 0, 1)}
@@ -132,12 +132,12 @@ const RegForm = ({
               onBlur={(e) => {dateBirthdayValidation.setIsDirty(true)}}
             />
           </Field>
-          <ValidationMessage className="form__validationMessage" {...dateBirthdayValidation}/>
+          <ValidationMessage key={"birthdayValidator"} className="form__validationMessage" {...dateBirthdayValidation}/>
         </FormFieldset>
         <FormFieldset key={"forServesInfo"}>
-          <legend>Данные для входа в сервис</legend>
+          <legend key={"header"}>Данные для входа в сервис</legend>
           <Field key={"email"}>
-            <input
+            <input key={'input'}
               value={userInfo?.email}
               type="text"
               placeholder="Email"
@@ -145,9 +145,9 @@ const RegForm = ({
               onBlur={(e) => {emailValidation.setIsDirty(true)}}
             />
           </Field>
-          <ValidationMessage className="form__validationMessage" {...emailValidation}/>
+          <ValidationMessage key={"emailValidator"} className="form__validationMessage" {...emailValidation}/>
           <Field key={"password"}>
-            <input
+            <input key={"input"}
               value={userInfo?.password}
               type="text"
               placeholder="Пароль"
@@ -155,7 +155,7 @@ const RegForm = ({
               onBlur={(e) => {passwordValidation.setIsDirty(true)}}
             />
           </Field>
-          <ValidationMessage className="form__validationMessage"  {...passwordValidation}/>
+          <ValidationMessage key={"passwordValidation"} className="form__validationMessage"  {...passwordValidation}/>
           <ToggleButton key={"isSubscription"}
             onChange={(e) => { ChangeIsSubscriptionAction(e.target.checked); }}
             checked={userInfo?.isSubscription}
@@ -176,9 +176,9 @@ const RegForm = ({
             && passwordValidation.isValid
           )}
         >
-          <span></span>
+          <span key={"halpBlock"}></span>
           Зарегистрироваться
-          <FiArrowRight className="loginForm__buttonArrow"></FiArrowRight>
+          <FiArrowRight key={"icon"} className="loginForm__buttonArrow"></FiArrowRight>
         </Button>
         <FlexContainer key={"helpInfo"}
           tagForWrap="label"
@@ -186,7 +186,7 @@ const RegForm = ({
           alignItems="center"
         >
           Уже есть аккаунт на Toxin
-          <Button theme="withBorder"
+          <Button key={"button"} theme="withBorder"
           type='button'
           onClick={() => { navigate("/login", {state: location.state}) }}
           >

@@ -20,7 +20,7 @@ export const SearchRooms = () => {
     <div className='searchRooms'>
       <RoomCardsList key={"RoomCardsList"} className='searchRooms__itemList' />
       <div className="searchRooms__filter">
-        <Button
+        <Button key={"filterButton"}
           type='button'
           className={"searchRooms__filterButton"}
           onClick={() => setIsFilterShow(!isFilterShow)}

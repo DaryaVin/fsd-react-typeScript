@@ -6,13 +6,13 @@ import { FlexContainer } from '../flexContainer/flexContainer';
 
 export const Registration = () => {
   return (
-    <FlexContainer
+    <FlexContainer key={"registration"}
       justifyContent='center'
       alignItems='center'
     >
-      <MainBackgroundAnimation>
-        <CheckAuthLoading >
-          <RegistrationForm />
+      <MainBackgroundAnimation key={"wrap"}>
+        <CheckAuthLoading key={"checkAuth"}>
+          <RegistrationForm key={"Form"}/>
         </CheckAuthLoading>
       </MainBackgroundAnimation>
     </FlexContainer>

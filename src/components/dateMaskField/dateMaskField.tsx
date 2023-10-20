@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import "./dateMaskField.scss";
-import { fullDateState, useDateState } from '../../hooks/useDateState';
+import { useDateState } from '../../hooks/useDateState';
 import { emulateTab } from "emulate-tab";
 import { LengthControlComponent } from "../lengthControlComponent/lengthControlComponent";
 import { FlexContainer } from "../flexContainer/flexContainer";
@@ -84,12 +84,10 @@ useEffect(() => {
       el.getElementsByTagName("input")[0].focus();
     }
   }
-  // console.log("stateDate", stateDate);
 
   return (
     <div
     {...props}
-    // onBlurCapture={(e) => { props.onBlur && props.onBlur(e) }}
     className={"dateMaskField " + (!(stateDate.day.state || stateDate.month.state || stateDate.year.state) ? "empty " : "") + (className || "")}
     onClick={onClickDateMaskField}
     >

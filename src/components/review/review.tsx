@@ -75,36 +75,35 @@ export const RevItem = ({
   const onClickLikeButton = async () => { 
     if (auth) {
       const newListWhoLikedThisReviewItem = await RoomsAPI.FetchLikeReviews(auth.uid, roomId, id, newListWhoLikedThisReview);
-      // console.log("onClickLikeButton newListWhoLikedThisReviewItem", newListWhoLikedThisReviewItem);
       
       setNewListWhoLikedThisReview(newListWhoLikedThisReviewItem);
     }
    }
   return (
     <div {...props} className={props.className ? props.className + " review" : "review"}>
-      <CreateWrapElement className="review__photo">
+      <CreateWrapElement key={"photo"} className="review__photo">
         {
           authorPhotoURL
             ? <img src={authorPhotoURL} alt="Фото автора отзыва" />
             : "Фото нет"
         }
       </CreateWrapElement>
-      <div className="review__info">
-        <div className="review__authorName">
+      <div key={"info"} className="review__info">
+        <div key={"name"} className="review__authorName">
           {authorName}
         </div>
-        <div className="review__date">
+        <div key={"date"} className="review__date">
           {useDateFormat(dateToCreating, new Date())}
         </div>
       </div>
-      <div className="review__likeButton">
-        <LikeButton
+      <div key={"like"} className="review__likeButton">
+        <LikeButton key={"button"}
           checked={auth ? newListWhoLikedThisReview.includes(auth.uid) : false}
           numberLikes={newListWhoLikedThisReview.length}
           onClick={onClickLikeButton}
         />
       </div>
-      <div className="review__content">
+      <div key={"content"} className="review__content">
         {content}
       </div>
 
@@ -116,10 +115,6 @@ export const RevItem = ({
 const mapStateToProps = (state: RootState) => {
   return ({
     auth: state.auth?.auth,
-    // userInfo: state.auth?.userInfo,
-    // settings: state.filterRooms?.settings,
-    // designations: state.filterRooms?.designations,
-    // isLoading: state.filterRooms?.isLoading
   })
 }
 const mapDispatchToProps = {

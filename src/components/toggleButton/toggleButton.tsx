@@ -10,12 +10,12 @@ interface ToggleButtonProps extends  React.InputHTMLAttributes<HTMLInputElement>
 export const ToggleButton = ({label, className, children, ...props}: ToggleButtonProps) => {
   return (
     <>
-    <label className={"toggleButton" + (className ? " " + className : "")}>
-      <div className={"toggleButton__field" + (props.checked ? " " + "toggleButton__field_checked" : "")}>
-        <input type={"checkbox"} className="toggleButton__button" {...props}></input>
-        <div className="toggleButton__checkmark"/>
+    <label key={"toggleButton"} className={"toggleButton" + (className ? " " + className : "")}>
+      <div key={"field"} className={"toggleButton__field" + (props.checked ? " " + "toggleButton__field_checked" : "")}>
+        <input key={"input"} type={"checkbox"} className="toggleButton__button" {...props}></input>
+        <div key={"checkmark"} className="toggleButton__checkmark"/>
       </div>
-      <div className={"toggleButton__label"}>
+      <div key={"label"} className={"toggleButton__label"}>
         {label}
         {children}
       </div>

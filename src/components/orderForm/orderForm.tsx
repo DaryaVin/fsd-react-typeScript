@@ -84,13 +84,13 @@ const Order = ({
     }
   })
 
-useEffect(() => {
-  if (dateSelectionError !== "" && startDateSate !== null && endDateSate !== null) setDateSelectionError("");
+  useEffect(() => {
+    if (dateSelectionError !== "" && startDateSate !== null && endDateSate !== null) setDateSelectionError("");
 
-  // return () => {
-    
-  // }
-}, [startDateSate, endDateSate])
+    // return () => {
+
+    // }
+  }, [startDateSate, endDateSate])
 
 
   const tileDisabled = (tile: CalendarTileProperties) => {
@@ -183,22 +183,22 @@ useEffect(() => {
             <legend key={"header"}>
               Email:
             </legend>
-            <Field>
-              <input
+            <Field key={"field"}>
+              <input key={"input"}
                 type="email"
                 value={orderEmail}
                 onChange={(e) => { setOrderEmail(e.target.value) }}
                 onBlur={() => orderEmailValidator.setIsDirty(true)}
               />
             </Field>
-            <ValidationMessage {...orderEmailValidator} />
+            <ValidationMessage key={"validator"} {...orderEmailValidator} />
           </FormFieldset>,
           <FormFieldset key={"phone"}>
             <legend key={"header"}>
               Телефон (необязательно):
             </legend>
-            <Field>
-              <ReactInputMask
+            <Field key={"field"}>
+              <ReactInputMask key={"input"}
                 mask={"+9-999-999-99-99"}
                 placeholder='+_ ___ ___ __ __'
                 value={orderPhone}
@@ -207,7 +207,7 @@ useEffect(() => {
               />
             </Field>
             {
-              orderPhone ? <ValidationMessage {...orderPhoneValidator} /> : ""
+              orderPhone ? <ValidationMessage key={"validator"} {...orderPhoneValidator} /> : ""
             }
           </FormFieldset>,
           <Button key={"ButtonNext"}
@@ -509,7 +509,7 @@ useEffect(() => {
       </FlexContainer>
       <FormFieldset key={"stayDates"}>
         <div key={"DateError"}>{dateSelectionError}</div>
-        <Dropdown
+        <Dropdown key={"stayDatesDropdown"}
           className='orderForm__stayDates'
           hasDropButton
           buttonBlock={[
@@ -517,9 +517,9 @@ useEffect(() => {
               flexDirection="colomn"
               rowGap={5}
             >
-              <Label className={"block_size_s"} label='Дата прибытия:'>
-                <Field>
-                  <DateMaskField
+              <Label key={"dateField"} className={"block_size_s"} label='Дата прибытия:'>
+                <Field key={"field"}>
+                  <DateMaskField key={"date"}
                     state={startDateSate}
                     setState={setStartDateSate}
                     onBlur={() => { stayDatesValidator.setIsDirty(true); }}
@@ -534,9 +534,9 @@ useEffect(() => {
               justifyContent="start"
               rowGap={5}
             >
-              <Label className={"block_size_s"} label='Дата выезда:'>
-                <Field>
-                  <DateMaskField
+              <Label key={"dateField"} className={"block_size_s"} label='Дата выезда:'>
+                <Field key={"field"}>
+                  <DateMaskField key={"date"}
                     state={endDateSate}
                     setState={setEndDateSate}
                     onBlur={() => { stayDatesValidator.setIsDirty(true); }}
@@ -548,8 +548,8 @@ useEffect(() => {
             </FlexContainer>,
           ]}
           contenerBlock={
-            <Field className='orderForm__calendarCardInDropdown' theme="card">
-              <CalendarCard
+            <Field key={"contenerBlock"} className='orderForm__calendarCardInDropdown' theme="card">
+              <CalendarCard key={"calendar"}
                 minDate={new Date()}
                 state={startDateSate}
                 setState={setStartDateSate}
@@ -570,8 +570,8 @@ useEffect(() => {
         <Dropdown key={"dropdown"}
           className={"orderForm__guests"}
           theme="field"
-          buttonBlock={<div className='filterRoomsForm__guestsButtonBlock'>
-            <div>
+          buttonBlock={<div key={"buttonBlock"} className='filterRoomsForm__guestsButtonBlock'>
+            <div key={"wrap"}>
               {
                 numberOfGuestsState.adults + numberOfGuestsState.children !== 0
                   ? numberOfGuestsState.adults + numberOfGuestsState.children + " " + correctDeclensionWord({
@@ -599,7 +599,7 @@ useEffect(() => {
               }
             </div>
           </div>}
-          contenerBlock={<FlexContainer
+          contenerBlock={<FlexContainer key={"contenerBlock"}
             className='filterRoomsForm__guestsConteiner'
             flexDirection="colomn"
             rowGap={7}
@@ -611,8 +611,8 @@ useEffect(() => {
               flexDirection="row"
               alignItems="center"
             >
-              <Label label='взрослые'>
-                <NumberPicker
+              <Label key={"numberOfGuestsField"} label='взрослые'>
+                <NumberPicker key={"field"}
                   state={numberOfGuestsState.adults}
                   setState={(val) => setNumberOfGuestsState({ ...numberOfGuestsState, adults: val })}
                   minValue={0}
@@ -625,8 +625,8 @@ useEffect(() => {
               flexDirection="row"
               alignItems="center"
             >
-              <Label label='дети'>
-                <NumberPicker
+              <Label key={"numberOfGuestsField"} label='дети'>
+                <NumberPicker key={"field"}
                   state={numberOfGuestsState.children}
                   setState={(val) => setNumberOfGuestsState({ ...numberOfGuestsState, children: val })}
                   minValue={0}
@@ -639,8 +639,8 @@ useEffect(() => {
               flexDirection="row"
               alignItems="center"
             >
-              <Label label='младенцы' flexDirection="colomn">
-                <NumberPicker
+              <Label key={"numberOfGuestsField"} label='младенцы' flexDirection="colomn">
+                <NumberPicker key={"field"}
                   state={numberOfGuestsState.babies}
                   setState={(val) => setNumberOfGuestsState({ ...numberOfGuestsState, babies: val })}
                   minValue={0}
@@ -654,7 +654,7 @@ useEffect(() => {
       {
         startDateSate && endDateSate
         && <>
-          <CostCalculation
+          <CostCalculation key={"CostCalculation"}
             price={price}
             unitPrice={unitPrice}
             startDateSate={startDateSate}
@@ -665,7 +665,7 @@ useEffect(() => {
           <FlexContainer key={"buttonSubmit"}
             justifyContent='space-between'
           >
-            <Button
+            <Button key={"button"}
               theme="fillBcg"
               className="orderForm__submitButton"
               type="button"
@@ -678,14 +678,14 @@ useEffect(() => {
                 }
               }}
             >
-              <span></span>
+              <span key={"halpBlock"}></span>
               Забронировать
-              <FiArrowRight className="loginForm__buttonArrow"></FiArrowRight>
+              <FiArrowRight key={"icon"} className="loginForm__buttonArrow"></FiArrowRight>
             </Button>
           </FlexContainer>
         </>
       }
-      <Modal isActive={isActiveModal} setIsActive={setIsActiveModal}>
+      <Modal key={"modal"} isActive={isActiveModal} setIsActive={setIsActiveModal}>
         <Form key={"form"} className={"bookingForm__form"}>
           {moduleContent()}
         </Form>

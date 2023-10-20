@@ -91,7 +91,6 @@ export const Carousel = ({ children, width, height, className, theme = "small", 
       if (carouselRef.current?.clientWidth && carouselRef.current.clientWidth < 768 && theme === "big") {
         setThemeState("small");
         if (contentContenerRef.current) {
-          // console.log("contentContenerRef.current.children[currentItemState]", contentContenerRef.current.children[currentItemState]);
           contentContenerRef.current.style.transform = `translateX(${-translayteState * contentContenerRef.current.clientWidth}px)`;
           contentContenerRef.current.children[currentItemState].setAttribute("style", "");
         }
@@ -112,10 +111,11 @@ export const Carousel = ({ children, width, height, className, theme = "small", 
   }, []);
   useEffect(() => {
     if (contentContenerRef.current && themeState === "small") {
-      contentContenerRef.current.style.transform = `translateX(${-translayteState * contentContenerRef.current.clientWidth}px)`;
+      contentContenerRef.current.style.transform =
+        `translateX(${-translayteState * contentContenerRef.current.clientWidth}px)`;
       contentContenerRef.current.children[currentItemState].setAttribute("style", "");
     }
-   }, [themeState])
+  }, [themeState])
 
   useEffect(() => {
     if (contentContenerRef.current?.clientHeight) {
@@ -129,8 +129,16 @@ export const Carousel = ({ children, width, height, className, theme = "small", 
   }, [contentContenerRef.current?.clientWidth, width]);
 
   const contentContenerTransform = ""
-    + (themeState === "big" ? `translateY(${(-translayteState * heightState * 0.5) + 0.5 * heightState}px)` : "")
-    + (themeState === "small" ? `translateX(${-translayteState * widthState}px)` : "");
+    + (
+      themeState === "big"
+        ? `translateY(${(-translayteState * heightState * 0.5) + 0.5 * heightState}px)`
+        : ""
+    )
+    + (
+      themeState === "small"
+        ? `translateX(${-translayteState * widthState}px)`
+        : ""
+    );
 
 
   useEffect(() => {
@@ -192,7 +200,8 @@ export const Carousel = ({ children, width, height, className, theme = "small", 
     const draw = (timePassed: number) => {
       if (contentContenerRef.current !== null) {
         if (themeState === "big") {
-          const newPosition = (-((newTranslayte - translayteState) * timePassed + translayteState) * heightState * 0.5) + 0.5 * heightState;
+          const newPosition = (-((newTranslayte - translayteState) * timePassed + translayteState) * heightState * 0.5)
+            + 0.5 * heightState;
           contentContenerRef.current.style.transform = `translateY(${newPosition}px)`;
 
           let currentItemStyle = "";
@@ -303,8 +312,7 @@ export const Carousel = ({ children, width, height, className, theme = "small", 
         </div>
         {
           isMovable ?
-            <button
-              key={"carousel__buttonPrev"}
+            <button key={"carousel__buttonPrev"}
               ref={buttonPrevRef} type="button"
               className="carousel__button carousel__buttonPrev"
               onClick={() => onClickBtnMovementOfItems("prev")}
@@ -315,8 +323,7 @@ export const Carousel = ({ children, width, height, className, theme = "small", 
         }
         {
           isMovable ?
-            <button
-              key={"carousel__buttonNext"}
+            <button key={"carousel__buttonNext"}
               ref={buttonNextRef}
               type="button"
               className="carousel__button carousel__buttonNext"
@@ -334,11 +341,10 @@ export const Carousel = ({ children, width, height, className, theme = "small", 
                 ? items.map((item, index) => {
                   return (
                     items.length - 5 >= index ?
-                      <li
+                      <li key={index}
                         tabIndex={0}
                         onClick={() => { onChengeCurrentItemsState(currentItemState - 2, index) }}
                         onKeyDown={(e) => { if (e.code === "Enter") setCurrentItemState(index) }}
-                        key={index}
                         className={
                           index === currentItemState - 2
                             ? "carousel__dotsItem carousel__dotsItem_current"

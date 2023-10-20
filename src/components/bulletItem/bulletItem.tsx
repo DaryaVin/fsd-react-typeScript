@@ -10,21 +10,22 @@ interface BulletItemProps extends React.LiHTMLAttributes<HTMLLIElement> {
 }
 export const BulletItem = ({ children, explanation, icon, ...props }: BulletItemProps) => {
   let newChildren = explanation
-    ? <FlexContainer
+    ? <FlexContainer key={"wrap"}
       flexDirection='colomn'
       rowGap={5}
     >
       <div className='bulletItem__label'>
         {children}
-        <p className="bulletItem__explanation">{explanation}</p>
+        <p key={"explanation"} className="bulletItem__explanation">{explanation}</p>
       </div>
     </FlexContainer>
     : children;
   if (icon) {
     newChildren = <FlexContainer
       columnGap={10}
+      key={"wrap"}
     >
-      <div className='bulletItem__iconBox'>
+      <div key={"icon"} className='bulletItem__iconBox'>
         <svg className='bulletItem__iconGradient'>
           <defs>
             <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -35,7 +36,7 @@ export const BulletItem = ({ children, explanation, icon, ...props }: BulletItem
         </svg>
         {icon({ fill: "url(#gradient)", className: "bulletItem__icon" })}
       </div>
-      <div className='bulletItem__info'>
+      <div key={"info"} className='bulletItem__info'>
         {newChildren}
       </div>
     </FlexContainer >

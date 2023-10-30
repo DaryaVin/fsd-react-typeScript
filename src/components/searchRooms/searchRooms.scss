@@ -1,6 +1,7 @@
 @import "../baseComponent/baseVariables&Mixins.scss";
 
 .searchRooms {
+  padding: 30px;
   @media (max-width: 930px) {
     position: relative;
     display: flex;
@@ -49,7 +50,7 @@
     grid-template-columns: auto 1fr;
     align-items: start;
     gap: 2rem;
-    padding-left: 1rem;
+    // padding-left: 1rem;
     .searchRooms__filter {
       order: -1;
     }

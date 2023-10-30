@@ -68,26 +68,28 @@ export const Head = ({ auth, userInfo }: ConnectorProps) => {
                 {
                   navLinks.map((item, index) => {
                     return (item.requireAuth && auth) || !item.requireAuth
-                    ? <li key={index} className={"header__navbarItem"}>
+                      ? <li key={index} className={"header__navbarItem"}>
                         <NavLink to={item.path} end={item.end} className={"header__navbarLink"}>{item.title}</NavLink>
                       </li>
-                    : ""
+                      : ""
                   })
                 }
               </FlexContainer>
             </FlexContainer>
             {
               auth && userInfo
-                ? <NavLink key={"header__authBlock"}
-                  to={"/profile"}
-                  className="header__authBlock header__authBlock_auth"
-                >
-                  {
-                    userInfo.lastName || userInfo.firstName
-                      ? userInfo.lastName + " " + userInfo.firstName
-                      : "Не известный"
-                  }
-                </NavLink>
+                ? <div className='header__navbarItem'>
+                  <NavLink key={"header__authBlock"}
+                    to={"/profile"}
+                    className="header__authBlock header__authBlock_auth"
+                  >
+                    {
+                      userInfo.lastName || userInfo.firstName
+                        ? userInfo.lastName + " " + userInfo.firstName
+                        : "Не известный"
+                    }
+                  </NavLink>
+                </div>
                 : <FlexContainer key={"header__authBlock"}
                   tagForWrap='ul'
                   justifyContent="space-between"

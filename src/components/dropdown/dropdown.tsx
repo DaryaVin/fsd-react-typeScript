@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { CreateWrapElement, KEYWORD_CREATEWRAPELEMENT, WrapElementContentType } from "../createWrapElement/createWrapElement";
 import "./dropdown.scss";
+import { FlexContainer } from "../flexContainer/flexContainer";
+import { Button } from "../button/button";
+import { Field } from "../field/field";
 
 interface DropdownProps {
   buttonBlock: WrapElementContentType,
@@ -8,11 +11,64 @@ interface DropdownProps {
   className?: string,
   hasDropButton?: boolean,
   theme?: "field",
+  closeButtonInContenerBlock?: boolean | string;
+  funcForResetButtonInContenerBlock?: () => void;
 }
 export const dropButton = (<button key={"dropdown__dropButton"} type="button" className="dropdown__dropButton ">Кнопка выподающего элемента</button>);
-export const Dropdown = ({ buttonBlock, contenerBlock, className, hasDropButton, theme }: DropdownProps) => {
+export const Dropdown = ({
+  buttonBlock,
+  contenerBlock,
+  className,
+  hasDropButton,
+  theme,
+  closeButtonInContenerBlock,
+  funcForResetButtonInContenerBlock
+}: DropdownProps) => {
   let [show, setShow] = useState<boolean>(false);
   let [newButtonBlock, setNewButtonBlock] = useState<WrapElementContentType>(buttonBlock);
+
+  const containerButtons = <FlexContainer key={"button"}
+    className="dropdown__buttonsContenerBlock"
+    justifyContent='space-between'
+  >
+    {
+      funcForResetButtonInContenerBlock
+        ? <Button key={"resetButton"}
+          type='button'
+          onClick={funcForResetButtonInContenerBlock}
+        >
+          Очистить
+        </Button>
+        : <div key={"helpBlock1"}></div>
+    }
+    {
+      closeButtonInContenerBlock
+        ?
+        <Button key={"closeButton"}
+          type='button'
+          onClick={() => setShow(!show)}
+        >
+          {
+            typeof closeButtonInContenerBlock === "string"
+              ? closeButtonInContenerBlock
+              : "Применить"
+          }
+        </Button>
+        : <div key={"helpBlock2"}></div>
+    }
+  </FlexContainer>;
+  const newContainerBlock = closeButtonInContenerBlock || funcForResetButtonInContenerBlock
+    ? theme === 'field'
+      ? [
+        contenerBlock,
+        containerButtons
+      ]
+      : <CreateWrapElement
+        childrenContent={[KEYWORD_CREATEWRAPELEMENT, containerButtons]}
+      >
+        {contenerBlock}
+      </CreateWrapElement>
+    : contenerBlock;
 
   const buttonBlockRef = useRef<HTMLDivElement>(null);
 
@@ -106,7 +162,7 @@ export const Dropdown = ({ buttonBlock, contenerBlock, className, hasDropButton,
       <div key={"dropdown__contenerBlock"}
         className={"dropdown__contenerBlock" + (show ? " show" : "")}
       >
-        {contenerBlock}
+        {newContainerBlock}
       </div>
     </div>
   )

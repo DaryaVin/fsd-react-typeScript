@@ -58,8 +58,10 @@ const LightForm = ({
       setStateStartDate(stateEndDate);
       setStateEndDate(stateStartDate);
     }
-    const start = setting && stateStartDate === null ? setting.stayDates.start : stateStartDate;
-    const end = setting && stateEndDate === null ? setting.stayDates.end : stateEndDate;
+    const start =  stateStartDate;
+    const end =  stateEndDate;
+    // const start = setting && stateStartDate === null ? setting.stayDates.start : stateStartDate;
+    // const end = setting && stateEndDate === null ? setting.stayDates.end : stateEndDate;
     ChangeStayDates({ end, start });
 
   }, [stateStartDate, stateEndDate]);
@@ -73,6 +75,11 @@ const LightForm = ({
         <Dropdown key={"dropdown"}
           className='orderForm__stayDates'
           hasDropButton
+          closeButtonInContenerBlock
+          funcForResetButtonInContenerBlock={() => { 
+            setStateStartDate(null);
+            setStateEndDate(null);
+           }}
           buttonBlock={[
             <FlexContainer key={"startDate"}
               flexDirection="colomn"
@@ -83,6 +90,7 @@ const LightForm = ({
                   <DateMaskField
                     state={stateStartDate}
                     setState={setStateStartDate}
+                    isClear
                   // onBlur={() => { stayDatesValidator.setIsDirty(true); }}
                   // isClear={!!dateSelectionError}
                   />
@@ -100,6 +108,7 @@ const LightForm = ({
                   <DateMaskField
                     state={stateEndDate}
                     setState={setStateEndDate}
+                    isClear
                   // onBlur={() => { stayDatesValidator.setIsDirty(true); }}
                   // isClear={!!dateSelectionError}
                   />
@@ -133,6 +142,16 @@ const LightForm = ({
         <Dropdown key={"dropdown"}
           className={"orderForm__guests"}
           theme="field"
+          closeButtonInContenerBlock
+          funcForResetButtonInContenerBlock={() => {
+            ChangeNumberOfGuests(
+              {
+                adults: 0,
+                children: 0,
+                babies: 0,
+              }
+            );            
+          }}
           buttonBlock={<div key={"buttonBlock"} className=''>
               {
                 setting

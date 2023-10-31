@@ -60,8 +60,10 @@ const Filter = ({
       setStateStartDate(stateEndDate);
       setStateEndDate(stateStartDate);
     }
-    const start = setting && stateStartDate === null ? setting.stayDates.start : stateStartDate;
-    const end = setting && stateEndDate === null ? setting.stayDates.end : stateEndDate;
+    // const start = setting && stateStartDate === null ? setting.stayDates.start : stateStartDate;
+    // const end = setting && stateEndDate === null ? setting.stayDates.end : stateEndDate;
+    const start = stateStartDate;
+    const end = stateEndDate;
     ChangeStayDates({ end, start });
 
   }, [stateStartDate, stateEndDate]);
@@ -146,6 +148,8 @@ const Filter = ({
         <Dropdown key={"dropdown"}
           className={"filterRoomsForm__stayDates"}
           theme="field"
+          closeButtonInContenerBlock
+          funcForResetButtonInContenerBlock={() => { setStateStartDate(null); setStateEndDate(null); }}
           buttonBlock={<div className='filterRoomsForm__stayDateButtonBlock'>
             {
               !!stateEndDate && !!stateStartDate 
@@ -172,6 +176,7 @@ const Filter = ({
                       setState={setStateStartDate}
                       minDate={minDate}
                       maxDate={maxDate}
+                      isClear
                     />
                   </Field>
                 </Label>
@@ -187,6 +192,7 @@ const Filter = ({
                       setState={setStateEndDate}
                       minDate={minDate}
                       maxDate={maxDate}
+                      isClear
                     />
                   </Field>
                 </Label>
@@ -208,6 +214,14 @@ const Filter = ({
         <Dropdown key={"dropdown"}
           className={"filterRoomsForm__guests"}
           theme="field"
+          closeButtonInContenerBlock
+          funcForResetButtonInContenerBlock={() => { 
+            ChangeNumberOfGuests({
+              adults: 0,
+              children: 0,
+              babies: 0,
+            });
+           }}
           buttonBlock={<div className='filterRoomsForm__guestsButtonBlock'>
             {
               setting
@@ -383,6 +397,12 @@ const Filter = ({
         <Dropdown key={"mainEquipmentInRoom"}
           className={"filterRoomsForm__mainEquipment"}
           theme="field"
+          closeButtonInContenerBlock
+          funcForResetButtonInContenerBlock={() => { 
+            ChangeBeds(0);
+            ChangeBedrooms(0);
+            ChangeBathrooms(0);
+           }}
           buttonBlock={<div className='filterRoomsForm__mainEquipmentButtonBlock'>
               {
 

@@ -512,6 +512,11 @@ const Order = ({
         <Dropdown key={"stayDatesDropdown"}
           className='orderForm__stayDates'
           hasDropButton
+          closeButtonInContenerBlock
+          funcForResetButtonInContenerBlock={() => { 
+            setEndDateSate(null);
+            setStartDateSate(null);
+           }}
           buttonBlock={[
             <FlexContainer key={"startDate"}
               flexDirection="colomn"
@@ -523,7 +528,7 @@ const Order = ({
                     state={startDateSate}
                     setState={setStartDateSate}
                     onBlur={() => { stayDatesValidator.setIsDirty(true); }}
-                    isClear={!!dateSelectionError}
+                    isClear
                   />
                   {dropButton}
                 </Field>
@@ -540,7 +545,7 @@ const Order = ({
                     state={endDateSate}
                     setState={setEndDateSate}
                     onBlur={() => { stayDatesValidator.setIsDirty(true); }}
-                    isClear={!!dateSelectionError}
+                    isClear
                   />
                   {dropButton}
                 </Field>
@@ -570,6 +575,14 @@ const Order = ({
         <Dropdown key={"dropdown"}
           className={"orderForm__guests"}
           theme="field"
+          closeButtonInContenerBlock
+          funcForResetButtonInContenerBlock={() => { 
+            setNumberOfGuestsState({
+              adults: 0,
+              children: 0,
+              babies: 0,
+            })
+           }}
           buttonBlock={<div key={"buttonBlock"} className='filterRoomsForm__guestsButtonBlock'>
             <div key={"wrap"}>
               {

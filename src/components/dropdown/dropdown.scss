@@ -20,6 +20,9 @@
       background: $colorBcg;
       box-shadow: 0px 10px 20px $color1Opacity05;
     }
+    .dropdown__buttonsContenerBlock {
+      margin-top: 20px;
+    }
   }
 }
 .dropdown__buttonBlock {
@@ -76,4 +79,9 @@
   display: block;
   position: absolute;
   top: 100%;
+}
+.dropdown__buttonsContenerBlock {
+  // padding: 20px 0 0 0;
+  color: $color2;
+  // margin-top: 20px;
 }

@@ -1,7 +1,7 @@
 @import "../baseComponent/baseVariables&Mixins.scss";
 
 .filterRoomsForm {
-  width: $width_size_m + 30px;
+  width: $width + 20px;
   display: flex;
   flex-direction: column;
   & > * {

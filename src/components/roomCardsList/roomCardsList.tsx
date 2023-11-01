@@ -64,7 +64,12 @@ const CardsList = ({
     </FlexContainer>
   )
   return (
-    <div {...props} className={'roomCardsList' + (props.className ? " " + props.className : "")}>
+    <FlexContainer 
+    {...props} 
+    className={'roomCardsList' + (props.className ? " " + props.className : "")}
+    flexDirection='colomn'
+    rowGap={20}
+    >
       <FlexContainer key={"wrap"}
         flexWrap='wrap'
         rowGap={10}
@@ -87,7 +92,7 @@ const CardsList = ({
         pageSize={roomsState ? roomsState.pageSize : 0}
         onPageChange={ChangeCurrentPage}
       />
-    </div>
+    </FlexContainer>
   )
 }
 const mapStateToProps = (state: RootState) => {

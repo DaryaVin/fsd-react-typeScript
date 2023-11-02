@@ -1,6 +1,6 @@
 import React from 'react';
 import "./layout.scss";
-import { Outlet } from 'react-router-dom';
+import { Outlet, ScrollRestoration } from 'react-router-dom';
 import { Footer } from '../footer/footer';
 import { Header } from '../header/header';
 import { SetAuthWatcher } from "../../store/actions/authActions";
@@ -21,6 +21,7 @@ export const Layout = () => {
         </div>
       </div>
       <Footer key={"footer"}></Footer>
+      <ScrollRestoration />
     </div>
   )
 }
